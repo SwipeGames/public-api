@@ -1,0 +1,116 @@
+openapi: 3.0.3
+info:
+  title: Swipe Games Public Core API
+  version: 1.0.0
+
+paths:
+  /create-new-game:
+    post:
+      description: |
+        Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
+        for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
+        Read more about Launcher URL in the [Launcher URL](#laucher-url) section.
+      parameters:
+        - name: X-REQUEST-SIGN
+          in: header
+          required: true
+          description: Request signature (read more in the Authentication section)
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNewGameRequest"
+
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateNewGameResponse"
+
+        401:
+          description: Wrong signature or API key
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+
+        500:
+          description: Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    CreateNewGameRequest:
+      type: object
+      required:
+        - cID
+        - gameID
+        - user
+        - currency
+        - locale
+      properties:
+        cID:
+          description: |
+            Client's ID. It's provided by Swipe Games and is used as your idintifier.
+          type: string
+          format: uuid
+        extCID:
+          description: |
+            External Client's ID (client/platform/game aggregator/integrator or casino on your side). This is provided from your side, and this is
+            how you identify your clients. We use it in all callbacks to you. Not required for demo games, since we don't use callbacks for demo games.
+          type: string
+        gameID:
+          description: |
+            Game's ID. This is Swipe Games's game idintifier. See the list of supported games in `Game IDs` section.
+          type: string
+        sessionID:
+          description: |
+            Session ID (game integrator or casino).This is your Session ID. We use
+            it in all callbacks to you. Not required for demo games, since we don't use callbacks for demo games.
+          type: string
+        returnURL:
+          description: Return URL which we could use to redirect the user after the game is finished/exited.
+            If you don't provide this URL, return button in the game will be disabled. Please make sure you provide this URL
+            when using redirect to open the game, otherwise player cannot
+          type: string
+        currency:
+          description: Currency code in ISO4217.
+          type: string
+        language:
+          description: Language code in IIETF BCP 47 (ISO 639).
+          type: string
+        platform:
+          description: Platform code. This is used to identify the platform where the game is launched.
+          type: string
+          enum:
+            - desktop
+            - mobile
+        demo:
+          description: |
+            Demo mode. If true, the game will be launched in demo mode (means no callbacks will be fired on your side,
+            and we use our demo balance for the game). If false, the game will be launched in real mode.
+          type: boolean
+        user:
+          description: User information we show in the game.
+          x-go-type: User
+          $ref: "../common-components.yaml#/components/schemas/User"
+
+    CreateNewGameResponse:
+      type: object
+      required:
+        - game_url
+        - game_session_id
+      properties:
+        game_url:
+          type: string
+        game_session_id:
+          type: string
+          format: uuid

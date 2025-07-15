@@ -1,0 +1,1 @@
+# Swipe Games Public API
