@@ -91,6 +91,52 @@ paths:
             application/json:
               schema:
                 $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+  /free-rounds/cancel:
+    post:
+      description: Cancel existing free rounds campaign
+      parameters:
+        - name: X-REQUEST-SIGN
+          in: header
+          required: true
+          description: Request signature (read more in the Authentication section)
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelFreeRoundsRequest"
+
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancelFreeRoundsResponse"
+
+        401:
+          description: Wrong signature or API key
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+
+        404:
+          description: Free rounds campaign not found
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+
+        500:
+          description: Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
 
 components:
   schemas:
@@ -234,4 +280,40 @@ components:
 
         extID:
           description: Free rounds ID (external). This is provided in the request.
+          type: string
+
+    CancelFreeRoundsRequest:
+      type: object
+      required:
+        - cid
+      properties:
+        id:
+          description: |
+            Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.
+          type: string
+          format: uuid
+
+        extID:
+          description: |
+            Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.
+          type: string
+
+        cid:
+          description: Client's ID (internal)
+          type: string
+          format: uuid
+
+    CancelFreeRoundsResponse:
+      type: object
+      required:
+        - id
+        - extID
+      properties:
+        id:
+          description: Free rounds ID (internal).
+          type: string
+          format: uuid
+
+        extID:
+          description: Free rounds ID (external). It always provided on create request.
           type: string

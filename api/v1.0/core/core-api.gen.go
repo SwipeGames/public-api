@@ -30,6 +30,27 @@ const (
 	Mobile  CreateNewGameRequestPlatform = "mobile"
 )
 
+// CancelFreeRoundsRequest defines model for CancelFreeRoundsRequest.
+type CancelFreeRoundsRequest struct {
+	// Cid Client's ID (internal)
+	Cid openapi_types.UUID `json:"cid"`
+
+	// ExtID Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.
+	ExtID *string `json:"extID,omitempty"`
+
+	// Id Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.
+	Id *openapi_types.UUID `json:"id,omitempty"`
+}
+
+// CancelFreeRoundsResponse defines model for CancelFreeRoundsResponse.
+type CancelFreeRoundsResponse struct {
+	// ExtID Free rounds ID (external). It always provided on create request.
+	ExtID string `json:"extID"`
+
+	// Id Free rounds ID (internal).
+	Id openapi_types.UUID `json:"id"`
+}
+
 // CreateFreeRoundsRequest defines model for CreateFreeRoundsRequest.
 type CreateFreeRoundsRequest struct {
 	// BetLine Number of bet line configured for this game/provider.
@@ -127,11 +148,20 @@ type PostFreeRoundsParams struct {
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 
+// PostFreeRoundsCancelParams defines parameters for PostFreeRoundsCancel.
+type PostFreeRoundsCancelParams struct {
+	// XREQUESTSIGN Request signature (read more in the Authentication section)
+	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
+}
+
 // PostCreateNewGameJSONRequestBody defines body for PostCreateNewGame for application/json ContentType.
 type PostCreateNewGameJSONRequestBody = CreateNewGameRequest
 
 // PostFreeRoundsJSONRequestBody defines body for PostFreeRounds for application/json ContentType.
 type PostFreeRoundsJSONRequestBody = CreateFreeRoundsRequest
+
+// PostFreeRoundsCancelJSONRequestBody defines body for PostFreeRoundsCancel for application/json ContentType.
+type PostFreeRoundsCancelJSONRequestBody = CancelFreeRoundsRequest
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -215,6 +245,11 @@ type ClientInterface interface {
 	PostFreeRoundsWithBody(ctx context.Context, params *PostFreeRoundsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PostFreeRounds(ctx context.Context, params *PostFreeRoundsParams, body PostFreeRoundsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostFreeRoundsCancelWithBody request with any body
+	PostFreeRoundsCancelWithBody(ctx context.Context, params *PostFreeRoundsCancelParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostFreeRoundsCancel(ctx context.Context, params *PostFreeRoundsCancelParams, body PostFreeRoundsCancelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) PostCreateNewGameWithBody(ctx context.Context, params *PostCreateNewGameParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -255,6 +290,30 @@ func (c *Client) PostFreeRoundsWithBody(ctx context.Context, params *PostFreeRou
 
 func (c *Client) PostFreeRounds(ctx context.Context, params *PostFreeRoundsParams, body PostFreeRoundsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostFreeRoundsRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostFreeRoundsCancelWithBody(ctx context.Context, params *PostFreeRoundsCancelParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostFreeRoundsCancelRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostFreeRoundsCancel(ctx context.Context, params *PostFreeRoundsCancelParams, body PostFreeRoundsCancelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostFreeRoundsCancelRequest(c.Server, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -371,6 +430,59 @@ func NewPostFreeRoundsRequestWithBody(server string, params *PostFreeRoundsParam
 	return req, nil
 }
 
+// NewPostFreeRoundsCancelRequest calls the generic PostFreeRoundsCancel builder with application/json body
+func NewPostFreeRoundsCancelRequest(server string, params *PostFreeRoundsCancelParams, body PostFreeRoundsCancelJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostFreeRoundsCancelRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewPostFreeRoundsCancelRequestWithBody generates requests for PostFreeRoundsCancel with any type of body
+func NewPostFreeRoundsCancelRequestWithBody(server string, params *PostFreeRoundsCancelParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/free-rounds/cancel")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		var headerParam0 string
+
+		headerParam0, err = runtime.StyleParamWithLocation("simple", false, "X-REQUEST-SIGN", runtime.ParamLocationHeader, params.XREQUESTSIGN)
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Set("X-REQUEST-SIGN", headerParam0)
+
+	}
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -423,6 +535,11 @@ type ClientWithResponsesInterface interface {
 	PostFreeRoundsWithBodyWithResponse(ctx context.Context, params *PostFreeRoundsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostFreeRoundsResponse, error)
 
 	PostFreeRoundsWithResponse(ctx context.Context, params *PostFreeRoundsParams, body PostFreeRoundsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostFreeRoundsResponse, error)
+
+	// PostFreeRoundsCancelWithBodyWithResponse request with any body
+	PostFreeRoundsCancelWithBodyWithResponse(ctx context.Context, params *PostFreeRoundsCancelParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostFreeRoundsCancelResponse, error)
+
+	PostFreeRoundsCancelWithResponse(ctx context.Context, params *PostFreeRoundsCancelParams, body PostFreeRoundsCancelJSONRequestBody, reqEditors ...RequestEditorFn) (*PostFreeRoundsCancelResponse, error)
 }
 
 type PostCreateNewGameResponse struct {
@@ -474,6 +591,31 @@ func (r PostFreeRoundsResponse) StatusCode() int {
 	return 0
 }
 
+type PostFreeRoundsCancelResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CancelFreeRoundsResponse
+	JSON401      *externalRef0.ErrorResponse
+	JSON404      *externalRef0.ErrorResponse
+	JSON500      *externalRef0.ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostFreeRoundsCancelResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostFreeRoundsCancelResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // PostCreateNewGameWithBodyWithResponse request with arbitrary body returning *PostCreateNewGameResponse
 func (c *ClientWithResponses) PostCreateNewGameWithBodyWithResponse(ctx context.Context, params *PostCreateNewGameParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostCreateNewGameResponse, error) {
 	rsp, err := c.PostCreateNewGameWithBody(ctx, params, contentType, body, reqEditors...)
@@ -506,6 +648,23 @@ func (c *ClientWithResponses) PostFreeRoundsWithResponse(ctx context.Context, pa
 		return nil, err
 	}
 	return ParsePostFreeRoundsResponse(rsp)
+}
+
+// PostFreeRoundsCancelWithBodyWithResponse request with arbitrary body returning *PostFreeRoundsCancelResponse
+func (c *ClientWithResponses) PostFreeRoundsCancelWithBodyWithResponse(ctx context.Context, params *PostFreeRoundsCancelParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostFreeRoundsCancelResponse, error) {
+	rsp, err := c.PostFreeRoundsCancelWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostFreeRoundsCancelResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostFreeRoundsCancelWithResponse(ctx context.Context, params *PostFreeRoundsCancelParams, body PostFreeRoundsCancelJSONRequestBody, reqEditors ...RequestEditorFn) (*PostFreeRoundsCancelResponse, error) {
+	rsp, err := c.PostFreeRoundsCancel(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostFreeRoundsCancelResponse(rsp)
 }
 
 // ParsePostCreateNewGameResponse parses an HTTP response from a PostCreateNewGameWithResponse call
@@ -595,6 +754,53 @@ func ParsePostFreeRoundsResponse(rsp *http.Response) (*PostFreeRoundsResponse, e
 	return response, nil
 }
 
+// ParsePostFreeRoundsCancelResponse parses an HTTP response from a PostFreeRoundsCancelWithResponse call
+func ParsePostFreeRoundsCancelResponse(rsp *http.Response) (*PostFreeRoundsCancelResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostFreeRoundsCancelResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CancelFreeRoundsResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest externalRef0.ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest externalRef0.ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest externalRef0.ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
@@ -603,6 +809,9 @@ type ServerInterface interface {
 
 	// (POST /free-rounds)
 	PostFreeRounds(ctx echo.Context, params PostFreeRoundsParams) error
+	// Cancel Free Rounds
+	// (POST /free-rounds/cancel)
+	PostFreeRoundsCancel(ctx echo.Context, params PostFreeRoundsCancelParams) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -672,6 +881,37 @@ func (w *ServerInterfaceWrapper) PostFreeRounds(ctx echo.Context) error {
 	return err
 }
 
+// PostFreeRoundsCancel converts echo context to params.
+func (w *ServerInterfaceWrapper) PostFreeRoundsCancel(ctx echo.Context) error {
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params PostFreeRoundsCancelParams
+
+	headers := ctx.Request().Header
+	// ------------- Required header parameter "X-REQUEST-SIGN" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-REQUEST-SIGN")]; found {
+		var XREQUESTSIGN string
+		n := len(valueList)
+		if n != 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for X-REQUEST-SIGN, got %d", n))
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-REQUEST-SIGN", valueList[0], &XREQUESTSIGN, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter X-REQUEST-SIGN: %s", err))
+		}
+
+		params.XREQUESTSIGN = XREQUESTSIGN
+	} else {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter X-REQUEST-SIGN is required, but not found"))
+	}
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.PostFreeRoundsCancel(ctx, params)
+	return err
+}
+
 // This is a simple interface which specifies echo.Route addition functions which
 // are present on both echo.Echo and echo.Group, since we want to allow using
 // either of them for path registration
@@ -702,44 +942,47 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 
 	router.POST(baseURL+"/create-new-game", wrapper.PostCreateNewGame)
 	router.POST(baseURL+"/free-rounds", wrapper.PostFreeRounds)
+	router.POST(baseURL+"/free-rounds/cancel", wrapper.PostFreeRoundsCancel)
 
 }
 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"AA==",
+	"H4sIAAAAAAAC/+xZbW/bOBL+KwPtAUkAvyRNrovmWzcvhYEgzcUN9g5N0dDSSOaGIlW+xDGK/vfDkJIt",
+	"RXTabrO7LdBPrUVq5uHMM/MMlY9JqspKSZTWJIcfE5POsWT+v0dMpihONeKlcjIzl/jBobG0VGlVobYc",
+	"/caUZ/RPhibVvLJcyeQwORIcpd0yMDmGbS4tasnETjJIcqVLZpPDxDmeJYPELitMDhNjNZdF8mmQ4L2d",
+	"HPcNEhDQHom3ife1zRFcGcyAGeAZlpWyKNMl3OJyBK8lgsqBZ6A0eLtQOmNhhlBpdcczzEbXMgYidqSH",
+	"CFanegoEnwnLp0Gi8YPjGrPk8K0P+bvVJjX7A1NLsPs5M5WSBvtJ+/ooTywwsWBLs0IOSkKqkVkEHcgx",
+	"+vZYfnUs/JZwnGhIPMAvoPEM7RmX2Md67soZakrjDC0ILhFSJXNeOI0Z5EqDnXMDBStxXIdGd47Bpd1/",
+	"lgySkt3z0pXJ4YsXg6TkMvzYW4GmIBSoCfUT11TqtCZSRmzWK5CqDIFLmExfHzzb+3VDZR7FSHNSkwQ6",
+	"ACkewIpCY8Gs0lQAKTNcqp2/uOqn5HhyDCmTVGeO9lnVMDVvWVRSLEHJFDd0ATpCDNUrVqI/ZeylD45J",
+	"y+3yMSK1QHwrU5xBPTk2fW9n3FjyVQm2RA2TY9MJH89BOiHAzlFCysqK8UICN8DuGBdsJtBTmwlRW/BI",
+	"ucXS++odu37AtGZL+n3HBM9OtSr7yKaWaQsZZWNB3tspmWGqiDcNiE546JWh5SXG4u4dXknLRYShMnvc",
+	"n5Nrj3CknMiIOgatq0Awi/pBl34ESaRVN/ReldCKWq3SbDFnsGpG7Th+WXd7uob/hroab7V7Lokt332v",
+	"P8cFFejmeSUWh1brIqnbah17toTpglcIZNUAkxlFxdXtZ6mcph4kLc95jydP15Cj4c6wVH0Tx1gqKFWG",
+	"I5jkYLXDgU+c78gLLgRxWzAn03nIata8ANslMmlAKkiZEDOW3prVGzllgTTfH9nwDAfXkqKx8E0W6Km3",
+	"NGOC5pBaGoPfHY8lZ8J8DoxGJgL6dlOeKSWQya+XodT/GFeCWcrK+IEsjX0r1V2F6hwyVgm5VmUrDJ4T",
+	"Nmy6lnO1oLWGFMuwMeAwI/g9RItbOiy113WkraK9IzhXFhra+yj6sBJyMwDDKbYLhEzJLettrS10N/9Z",
+	"WVufuEX8rTDitLkOU0SfTFFrjXFVpbTFLPinE968CnJsbsBgSp42oBJMFo4VkQHsrF5Zl8Tk5M0p/HZ0",
+	"AQe/wvZk+hqe77/YiVZIk/e+1Yt6xVtdn7gZF1bZo/M1Vkg/NK75y82KuuQdJcn0W3J0a1VFQq5mXGCr",
+	"Wa2RabROy6vLsz60S78EV5dnsJjzdE7ZTr0oUbatAo0Z15haj4QmAGC5Rd0BlnPJzRyzMd5zi5mvP6Jl",
+	"oE1N5cDaq8uzAQQ8MHPWKtn0+k6VZtyQQGYjuBDIDELJbhGM0+gNPzQZxNYZLosWYAWqwrXxASg7R73g",
+	"BptJJWVSKhtLpkFjuJIx7k7D0nryjNX1zqjJsi/J9TtNVV7Lf7AsKY90sH9pzJPD5Jfx+mo+ru/lY1bx",
+	"93d7o933qSpLJYfrLe+v6PXe9NEdNryLzswhVMo6BN2oppsGCzI+bSfms+JHb1xpERkjH6BvNg4eOImh",
+	"fSQyJ1or3T7AA8X1LwDSLtD1Np+ytuxfuJngKby8mFCld0OQoWVcRGbwN5jOJU+ZgHrLShO9t9ao6dtO",
+	"oMnMFQWXxQDM3K9K5b8XmLlaSOJiU/PRfleiMdEm+hJmmmMOrafUsVdYiPYnshDczNsT8Bc4fZC0BsFg",
+	"FZavTNdVXQcPpjblpNWxgSksBHEgLdjfe/58uAdMVHM2fBaNUs61seesxOhVJjbEEqit7ojs0+WnldDI",
+	"mrm2W+1xWRLsEf+Sp7cbFvvzcD+4tInL3A+GlltBaxEmHymNRGe6Y6A24Zh7o93RLmGgJs0qnhwm+6Pd",
+	"0T5Rntm5z8Q43KSHEhfDooZZqTBp94IW1KC+MrSu4QwkLnyA/JcljQU3FrXxj28oejfUt28ovjdBhlRQ",
+	"DYP6jgRPZrVkGf/4LOiwJuW5lu3RcwT/U85/DejLpmd2LVdWgfE3U9IhEq2VAJKGkGgFceCnmqxey0tk",
+	"GZQURjZTznYgNAL6tv3w3fYvgjn6NXRa7HQHIiI7o5+TjKYTZWynAfsMkGOKUnL4tj8zhBAbXkhmSZO3",
+	"9QpfDealo9u+5an307jfoXs9mZgjy7w+SJ/V5L/Dy5P/XJ1M3wynk1fnSZt6/lJRfy2O0fRd2IzG/qay",
+	"ZahfaVF6krCqEjWG8R+G0H9smXpM/qIXvE/dqiBo/kFo5J6yz3Z3/yoMtap4EN2MqFsqpIPdvSdz/cUa",
+	"F0Hzu1ayaLFDaSp+uEX/tebfTxigb0E5DcUdFEmlflDJaOOnQTLONeIwfEjY3HNCenwbaX/nab5wRQtt",
+	"/f3kZ5WtGN7/ZP6PFFrk29YPXmsHuy++C5SnkfIAJojPS8B7bqz5EVvDOPV/BHukQ/j1cEKS+T/RJoKJ",
+	"n82CqnTDn4n/7max6S+fP3yzOPh+mwXdTHN69iP0iUFiXFkyukI2LcAfaiX8lhVUxUn76TvqL/8PAAD/",
+	"/96ay84lIQAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
