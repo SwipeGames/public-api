@@ -45,6 +45,98 @@ paths:
             application/json:
               schema:
                 $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+  /free-rounds:
+    post:
+      description: Create new free rounds campaign
+      parameters:
+        - name: X-REQUEST-SIGN
+          in: header
+          required: true
+          description: Request signature (read more in the Authentication section)
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFreeRoundsRequest"
+
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateFreeRoundsResponse"
+
+        401:
+          description: Wrong signature or API key
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+
+        409:
+          description: Free rounds campaign already exists
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+
+        500:
+          description: Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+  /free-rounds/cancel:
+    post:
+      description: Cancel existing free rounds campaign
+      parameters:
+        - name: X-REQUEST-SIGN
+          in: header
+          required: true
+          description: Request signature (read more in the Authentication section)
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelFreeRoundsRequest"
+
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancelFreeRoundsResponse"
+
+        401:
+          description: Wrong signature or API key
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+
+        404:
+          description: Free rounds campaign not found
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+
+        500:
+          description: Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
 
 components:
   schemas:
@@ -59,7 +151,7 @@ components:
       properties:
         cID:
           description: |
-            Client's ID. It's provided by Swipe Games and is used as your idintifier.
+            Client's ID. It's provided by Swipe Games and is used as your identifier.
           type: string
           format: uuid
         extCID:
@@ -69,7 +161,7 @@ components:
           type: string
         gameID:
           description: |
-            Game's ID. This is Swipe Games's game idintifier. See the list of supported games in `Game IDs` section.
+            Game's ID. This is Swipe Games's game identifier. See the list of supported games in `Game IDs` section.
           type: string
         sessionID:
           description: |
@@ -106,11 +198,122 @@ components:
     CreateNewGameResponse:
       type: object
       required:
-        - game_url
-        - game_session_id
+        - gameUrl
+        - gameSessionID
       properties:
-        game_url:
+        gameUrl:
           type: string
-        game_session_id:
+        gameSessionID:
           type: string
           format: uuid
+    CreateFreeRoundsRequest:
+      type: object
+      required:
+        - cid
+        - extID
+        - extCID
+        - gameID
+        - currency
+        - quantity
+        - betLine
+        - validFrom
+      properties:
+        extID:
+          description: |
+            Free rounds ID (external). Used as idempotency key. Same ID can be used to create free rounds only once.
+          type: string
+        cid:
+          description: Client's ID (internal)
+          type: string
+          format: uuid
+        extCID:
+          description: External Client's ID (game aggregator or casino)
+          type: string
+        gameID:
+          description: Game's ID
+          type: string
+        userIDs:
+          description: List of player IDs (external). if null then campaign is available for all players.
+          type: array
+          items:
+            type: string
+
+        currency:
+          description: Currency code in ISO4217
+          type: string
+
+        quantity:
+          description: Number of free rounds.
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 99
+
+        betLine:
+          description: Number of bet line configured for this game/provider.
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 99
+
+        validFrom:
+          description: Start date when free rounds become available.
+          type: string
+          format: date-time
+
+        validUntil:
+          description: |
+            End date when free rounds become unavailable. Could be setup later.
+          type: string
+          format: date-time
+
+    CreateFreeRoundsResponse:
+      type: object
+      required:
+        - id
+        - extID
+      properties:
+        id:
+          description: Free rounds ID (internal).
+          type: string
+          format: uuid
+
+        extID:
+          description: Free rounds ID (external). This is provided in the request.
+          type: string
+
+    CancelFreeRoundsRequest:
+      type: object
+      required:
+        - cid
+      properties:
+        id:
+          description: |
+            Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.
+          type: string
+          format: uuid
+
+        extID:
+          description: |
+            Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.
+          type: string
+
+        cid:
+          description: Client's ID (internal)
+          type: string
+          format: uuid
+
+    CancelFreeRoundsResponse:
+      type: object
+      required:
+        - id
+        - extID
+      properties:
+        id:
+          description: Free rounds ID (internal).
+          type: string
+          format: uuid
+
+        extID:
+          description: Free rounds ID (external). It always provided on create request.
+          type: string
