@@ -91,9 +91,12 @@ paths:
             application/json:
               schema:
                 $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
-  /free-rounds/cancel:
-    post:
-      description: Cancel existing free rounds campaign
+
+    delete:
+      description: |
+        Cancel/Delete existing free rounds campaign. You can cancel free rounds campaing during the campaign period, in this case
+        all `in-progress` free rounds will be continued, but no new free rounds will be started.
+
       parameters:
         - name: X-REQUEST-SIGN
           in: header
@@ -107,7 +110,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CancelFreeRoundsRequest"
+              $ref: "#/components/schemas/DeleteFreeRoundsRequest"
 
       responses:
         200:
@@ -115,7 +118,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CancelFreeRoundsResponse"
+                $ref: "#/components/schemas/DeleteFreeRoundsResponse"
 
         401:
           description: Wrong signature or API key
@@ -282,7 +285,7 @@ components:
           description: Free rounds ID (external). This is provided in the request.
           type: string
 
-    CancelFreeRoundsRequest:
+    DeleteFreeRoundsRequest:
       type: object
       required:
         - cid
@@ -303,7 +306,7 @@ components:
           type: string
           format: uuid
 
-    CancelFreeRoundsResponse:
+    DeleteFreeRoundsResponse:
       type: object
       required:
         - id
