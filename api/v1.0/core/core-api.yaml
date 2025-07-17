@@ -179,8 +179,8 @@ components:
         currency:
           description: Currency code in ISO4217.
           type: string
-        language:
-          description: Language code in IIETF BCP 47 (ISO 639).
+        locale:
+          description: Locale code in IIETF BCP 47 (ISO 639).
           type: string
         platform:
           description: Platform code. This is used to identify the platform where the game is launched.
