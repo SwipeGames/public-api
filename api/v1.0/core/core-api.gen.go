@@ -102,8 +102,8 @@ type CreateNewGameRequest struct {
 
 	// SessionID Session ID (game integrator or casino).This is your Session ID. We use
 	// it in all callbacks to you. Not required for demo games, since we don't use callbacks for demo games.
-	SessionID *string           `json:"sessionID,omitempty"`
-	User      externalRef0.User `json:"user"`
+	SessionID *string            `json:"sessionID,omitempty"`
+	User      *externalRef0.User `json:"user,omitempty"`
 }
 
 // CreateNewGameRequestPlatform Platform code. This is used to identify the platform where the game is launched.
@@ -968,22 +968,22 @@ var swaggerSpec = []string{
 	"cT0VEjtEtYrMoKuNurw43Qztwr+Cy4tTmM9ENqNKZ34gUaWdBoNcGMycj4SmP7DcoekFlgsl7Az5CO+E",
 	"Q+57jyAZINPAOCD28uI0hRAPTGvntGp5vtehXFgajnwI5xKZRSjZDYKtDXrD6ybDoK2tUEUnYA26wpXx",
 	"FLSboZkLi61KyZhS2sWKadFaoVUMt5PwaqU6Yz29M2yr7NtxtaftyCv1F7Yk1ZEO9n8G8+Qg+WW0us+M",
-	"msvMiFXiy+3ecPdLpstSq8FqyZdL2r6hPPpCw7toRkZPdjSN94iBuk1bkI9Jtz7fnX+049LIiJJcO0S7",
-	"MF1zEov2CCU+6qr3zLerZ7y7fFBIPCo4AdfbhbK2jjqwHT5bEPQ05fUMETxNuVHKH1cz+xzadeyAyTlb",
-	"dGa2Vu0V8McVsA+0+LEx2nRbcA29fgMgrQLTLPPc09Wu5/VUigzenY8p9H6SOTomZOQi+RGzmRIZk9As",
-	"WQo7761zX/LzM/DdtC4KoYoU7My/VdpDyM70XBGptsMrWoQSrWVF5JTvYGoE5tB5SmBdxkL8fawKKeys",
-	"e417hNO1OrURpMu0PLFclw2hrxGPrpUzMdUfXgSVQ6Lm9d6bN4M9YLKascGraJZyYaw7YyVG7+MxIFNQ",
-	"L/q94svlJXeYyC22+2Mrrq8ke8C/EtnNlpebPbGZXFokVO5vN044EoZJBMmH2iDBmS7KaGw45t5wd7hL",
-	"MZDaYJVIDpLXw93ha4I8czNfiVHggoHC+aBowqx0GBYbSQuypqGNzrckBgrnPkGecQwWwjo01j++puxd",
-	"E4teU36vg57SQf5YNLek3BRvtJf1j0+DoDQkoa5U9/40hH/p2n/S2tR/HtmN7nIarP+8QoKK1NdSyZEY",
-	"IvUVVI44MWT1Sl0g41BSGtlU164XQqsEP3Uffn75i2Q1/RrURu70VT2BndHPMSeZra3rSQhfAXJMWUoO",
-	"Pm2K35BiKwrFHInLl2YZXxPMu9rNSJ5n3k/rnga1IBMzZNwLHeWrmvxzcHH8j8vjycfBZPz+LOlCz9+M",
-	"m2/FMZh+DovRut80X4T+VQ6VBwmrKtnEMPrDUvTfOqYe0nHRrxT3/a6g0PyDQOQesq92d/9bMTRTxQfR",
-	"r4i+oUba3917NtePnnGRaH43WhUddGhDzU/ChaL8/2dM0J+JchKaO0wknXmpzWnhfZqMcoM4CGIicA3p",
-	"n8hAYCpDOQryCPBOWEfd3P102X60XVFD5jdFFqkCeG1aOlh+7a3QCM3T0FmCFtM1iC5A10INKqMLg9Ze",
-	"9wy2F0LKslA18pSujaC0J73YSs9HrWrsE8S6+vubH5gdbbvG/I8pIqbMf3KC2N/d/yGiPIl0sVfIOT37",
-	"Kags3aKWwmDZ4IL2lFGJ8Hf/R2bzX97/W/+19NOTwNsflwSYJDwvwsC3P4eoub//dwAAAP//abZxJn8h",
-	"AAA=",
+	"msvMiFXiy+3ecPdLpstSq8FqyZdL2r6hPPpCw8+Knt5oOu4Rk3SbqCDjk25hvjv4aMelkREJuRZ9uzBd",
+	"cxKL9gglPuqO98zXqme8tHxQSAQqOCHW24Wyto5ar506W6DzNMn1DBE8TbJRyh9XM/sconXsgMk5W3SG",
+	"tVbt3e/HVa4P9PaxMdp0W3ANvX4DIK0C0yzzpNMVref1VIoM3p2PKfR+kjk6JmTkBvkRs5kSGZPQLFkq",
+	"Ou+tc1HygzMQ3bQuCqGKFOzMv1XaQ8jO9FwRm7ZTK1qEEq1lReSU72BqBObQeUpgXcZCxH2sCinsrHt/",
+	"e4TTtTq1EaTLtDyxXJcNk68Rj66VMzG5H14EeUNq5vXemzeDPWCymrHBq2iWcmGsO2MlRi/iMSBTUC/6",
+	"veLL5bV2GMUttvvzKi6sJHvAvxLZzZaXmz2xmVxaJFTurzVOOFKESQTJh9ogwZluyGhsOObecHe4SzGQ",
+	"zGCVSA6S18Pd4WuCPHMzX4lR4IKBwvmgaMKsdBgWG0kLeqahjc5HJAYK5z5BnnEMFsI6NNY/vqbsXROL",
+	"XlN+r4OQ0kH3WDS3JNkUb0SX9Y9Pg5I0pJ2uVPfiNIR/6dp/y9oUfh7ZjeByGqz/rkJKimTXUsKRCiLZ",
+	"FeSNODFk9UpdIONQUhrZVNeuF0IrAT91H35++YtkNf0a1Ebu9OU8gZ3RzzEnfa2t60kIXwFyTFlKDj5t",
+	"qt6QYisKxRypypdmGV8TzLvazUiXZ95P654GtSATM2QcTZImylc1+efg4vgfl8eTj4PJ+P1Z0oWevxI3",
+	"H4ljMP0cFqN1v2m+CP2rHCoPElZVsolh9Iel6L91TD0k4KKfJ+77XUGh+QeByD1kX+3u/rdiaKaKD6Jf",
+	"EX1DjbS/u/dsrh894yLR/G60Kjro0Iaan4QLRfn/z5igPxPlJDR3mEg681Kb08L7NBnlBnEQxETgGtI/",
+	"kYHAVIZyFOQR4J2wjrq5+82y/Vq7oobMb4osUgXw2rR0sPzMW6ERmqehswQtpvsP3XyuhRpURhcGrb3u",
+	"GWxvgpRloWrkKd0XQWlPerGVno9a1dgniHX19zc/MDvado35H1NETJn/5ASxv7v/Q0R5Eulir5BzevZT",
+	"UFm6RS2FwbLBBe0poxLh7/6PzOa/vP+3/k/ppyeBtz8uCTBJeF6EgW9/DlFzf//vAAAA///4ux6veCEA",
+	"AA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

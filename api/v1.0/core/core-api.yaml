@@ -148,7 +148,6 @@ components:
       required:
         - cID
         - gameID
-        - user
         - demo
         - currency
         - locale
@@ -195,7 +194,8 @@ components:
             and we use our demo balance for the game). If false, the game will be launched in real mode.
           type: boolean
         user:
-          description: User information we show in the game.
+          description: |
+            User information we show in the game. User should be provided for real game.
           x-go-type: User
           $ref: "../common-components.yaml#/components/schemas/User"
 
