@@ -150,6 +150,7 @@ components:
         - extCID
         - gameID
         - demo
+        - returnURL
         - currency
         - locale
       properties:

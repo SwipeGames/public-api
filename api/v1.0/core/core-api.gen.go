@@ -98,7 +98,7 @@ type CreateNewGameRequest struct {
 	Platform *CreateNewGameRequestPlatform `json:"platform,omitempty"`
 
 	// ReturnURL Return URL which we could use to redirect the user after the game is finished/exited. If you don't provide this URL, return button in the game will be disabled. Please make sure you provide this URL when using redirect to open the game, otherwise player cannot
-	ReturnURL *string `json:"returnURL,omitempty"`
+	ReturnURL string `json:"returnURL"`
 
 	// SessionID Session ID (game integrator or casino).This is your Session ID. We use
 	// it in all callbacks to you. Not required for demo games, since we don't use callbacks for demo games.
@@ -968,21 +968,22 @@ var swaggerSpec = []string{
 	"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",
-	"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",
+	"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",
+	"AA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
