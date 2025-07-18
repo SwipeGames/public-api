@@ -118,7 +118,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DeleteFreeRoundsResponse"
+                $ref: "#/components/schemas/DeleteFreeRoundsRes"
 
         401:
           description: Wrong signature or API key
@@ -306,7 +306,7 @@ components:
           type: string
           format: uuid
 
-    DeleteFreeRoundsResponse:
+    DeleteFreeRoundsRes:
       type: object
       required:
         - id
