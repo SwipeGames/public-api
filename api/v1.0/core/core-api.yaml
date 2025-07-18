@@ -149,6 +149,7 @@ components:
         - cID
         - gameID
         - user
+        - demo
         - currency
         - locale
       properties:

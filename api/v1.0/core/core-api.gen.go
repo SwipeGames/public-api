@@ -82,7 +82,7 @@ type CreateNewGameRequest struct {
 
 	// Demo Demo mode. If true, the game will be launched in demo mode (means no callbacks will be fired on your side,
 	// and we use our demo balance for the game). If false, the game will be launched in real mode.
-	Demo *bool `json:"demo,omitempty"`
+	Demo bool `json:"demo"`
 
 	// ExtCID External Client's ID (client/platform/game aggregator/integrator or casino on your side). This is provided from your side, and this is
 	// how you identify your clients. We use it in all callbacks to you. Not required for demo games, since we don't use callbacks for demo games.
@@ -968,21 +968,22 @@ var swaggerSpec = []string{
 	"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",
-	"msvMiFXiy+3ecPdLpstSq8FqyZdL2r6hPPpCw7vo6Y2m4x4xSbeJCjI+6Rbmu4OPdlwaGZGQa9G3C9M1",
-	"J7Foj1Dio+54z3ytesZLyweFRKCCE2K9XShr66j12qmzBTpPk1zPEMHTJBul/HE1s88hWscOmJyzRWdY",
-	"a9Xe/X5c5fpAbx8bo023BdfQ6zcA0iowzTJPOl3Rel5Ppcjg3fmYQu8nmaNjQkZukB8xmymRMQnNkqWi",
-	"8946FyU/OAPRTeuiEKpIwc78W6U9hOxMzxWxaTu1okUo0VpWRE75DqZGYA6dpwTWZSxE3MeqkMLOuve3",
-	"Rzhdq1MbQbpMyxPLddkw+Rrx6Fo5E5P74UWQN6RmXu+9eTPYAyarGRu8imYpF8a6M1Zi9CIeAzIF9aLf",
-	"K75cXmuHUdxiuz+v4sJKsgf8K5HdbHm52RObyaVFQuX+WuOEI0WYRJB8qA0SnOmGjMaGY+4Nd4e7FAPJ",
-	"DFaJ5CB5PdwdvibIMzfzlRgFLhgonA+KJsxKh2GxkbSgZxra6HxEYqBw7hPkGcdgIaxDY/3ja8reNbHo",
-	"NeX3OggpHXSPRXNLkk3xRnRZ//g0KElD2ulKdS9OQ/iXrv23rE3h55HdCC6nwfrvKqSkSHYtJRypIJJd",
-	"Qd6IE0NWr9QFMg4lpZFNde16IbQS8FP34eeXv0hW069BbeROX84T2Bn9HHPS19q6noTwFSDHlKXk4NOm",
-	"6g0ptqJQzJGqfGmW8TXBvKvdjHR55v207mlQCzIxQ8a9wlG+qsk/BxfH/7g8nnwcTMbvz5Iu9PyVuPlI",
-	"HIPp57AYrftN80XoX+VQeZCwqpJNDKM/LEX/rWPqIQEX/Txx3+8KCs0/CETuIftqd/e/FUMzVXwQ/Yro",
-	"G2qk/d29Z3P96BkXieZ3o1XRQYc21PwkXCjK/3/GBP2ZKCehucNE0pmX2pwW3qfJKDeIgyAmAteQ/okM",
-	"BKYylKMgjwDvhHXUzd1vlu3X2hU1ZH5TZJEqgNempYPlZ94KjdA8DZ0laDHdf+jmcy3UoDK6MGjtdc9g",
-	"exOkLAtVI0/pvghKe9KLrfR81KrGPkGsq7+/+YHZ0bZrzP+YImLK/CcniP3d/R8iypNIF3uFnNOzn4LK",
-	"0i1qKQyWDS5oTxmVCH/3f2Q2/+X9v/V/Sj89Cbz9cUmAScLzIgx8+3OImvv7fwcAAP//kIO3FnghAAA=",
+	"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",
+	"AAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
