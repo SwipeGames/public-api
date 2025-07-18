@@ -147,6 +147,7 @@ components:
       type: object
       required:
         - cID
+        - extCID
         - gameID
         - demo
         - currency
@@ -160,7 +161,7 @@ components:
         extCID:
           description: |
             External Client's ID (client/platform/game aggregator/integrator or casino on your side). This is provided from your side, and this is
-            how you identify your clients. We use it in all callbacks to you. Not required for demo games, since we don't use callbacks for demo games.
+            how you identify your clients. We use it in all callbacks to you.
           type: string
         gameID:
           description: |
