@@ -202,10 +202,10 @@ components:
     CreateNewGameResponse:
       type: object
       required:
-        - gameUrl
+        - gameURL
         - gameSessionID
       properties:
-        gameUrl:
+        gameURL:
           type: string
         gameSessionID:
           type: string
