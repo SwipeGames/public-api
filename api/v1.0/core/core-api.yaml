@@ -151,6 +151,7 @@ components:
         - gameID
         - demo
         - returnURL
+        - platform
         - currency
         - locale
       properties:
