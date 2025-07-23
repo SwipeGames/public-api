@@ -12,7 +12,7 @@ Swipe Games is game provider that supplies games through this Public API.
 
 ### Integrator
 
-An integrator is a company or individual that integrates Swipe Games into their platform, allowing users to access and play games provided by Swipe Games.  
+An integrator is a company or individual that integrates Swipe Games into their platform, allowing players to access and play games provided by Swipe Games.  
 Integrators are responsible for implementing the API and ensuring that it functions correctly within their systems.
 
 ### Client ID (CID)
