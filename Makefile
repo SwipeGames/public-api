@@ -30,3 +30,7 @@ gen-api-v10:
 .PHONY: gen-docs
 gen-docs:
 	yarn docusaurus gen-api-docs all
+
+.PHONY: build
+build:
+	yarn build
