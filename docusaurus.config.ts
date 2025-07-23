@@ -44,26 +44,19 @@ const config: Config = {
       },
     },
     navbar: {
-      title: "My Site",
+      title: "Swipe Games",
       logo: {
         alt: "My Site Logo",
         src: "img/logo.svg",
       },
       items: [
         {
-          type: "doc",
-          docId: "intro",
+          label: "Public API",
           position: "left",
-          label: "Tutorial",
-        },
-        { to: "/blog", label: "Blog", position: "left" },
-        {
-          label: "Petstore API",
-          position: "left",
-          to: "/docs/category/petstore-api",
+          to: "/docs/category/core",
         },
         {
-          href: "https://github.com/facebook/docusaurus",
+          href: "https://github.com/swipegames/public-api",
           label: "GitHub",
           position: "right",
         },
@@ -71,48 +64,8 @@ const config: Config = {
     },
     footer: {
       style: "dark",
-      links: [
-        {
-          title: "Docs",
-          items: [
-            {
-              label: "Tutorial",
-              to: "/docs/intro",
-            },
-          ],
-        },
-        {
-          title: "Community",
-          items: [
-            {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
-            },
-            {
-              label: "Discord",
-              href: "https://discordapp.com/invite/docusaurus",
-            },
-            {
-              label: "Twitter",
-              href: "https://twitter.com/docusaurus",
-            },
-          ],
-        },
-        {
-          title: "More",
-          items: [
-            {
-              label: "Blog",
-              to: "/blog",
-            },
-            {
-              label: "GitHub",
-              href: "https://github.com/facebook/docusaurus",
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      links: [],
+      copyright: `Copyright © ${new Date().getFullYear()} Swipe Games.`,
     },
     prism: {
       additionalLanguages: ["ruby", "csharp", "php", "java", "powershell", "json", "bash", "dart", "objectivec", "r"],
@@ -222,7 +175,7 @@ const config: Config = {
           corev10: {
             specPath: "api/v1.0/core/core-api.yaml",
             outputDir: "docs/v1.0/core",
-            downloadUrl: "https://raw.githubusercontent.com/swipegames/public-api/main/api/v1.0/core/core.yaml",
+            downloadUrl: "https://raw.githubusercontent.com/swipegames/public-api/main/api/v1.0/core/core-api.yaml",
             sidebarOptions: {
               groupPathsBy: "tag",
               categoryLinkSource: "tag",
