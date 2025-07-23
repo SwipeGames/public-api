@@ -1,1 +1,0 @@
-(self.webpackChunkswipegames_public_api=self.webpackChunkswipegames_public_api||[]).push([[473],{20217:()=>{},28202:()=>{},42634:()=>{},49730:()=>{},50477:()=>{},96452:()=>{}}]);

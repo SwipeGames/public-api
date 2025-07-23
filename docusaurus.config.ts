@@ -7,10 +7,10 @@ import type * as Plugin from "@docusaurus/types/src/plugin";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 
 const config: Config = {
-  title: "My Site",
-  tagline: "Dinosaurs are cool",
-  url: "https://your-docusaurus-test-site.com",
-  baseUrl: "/",
+  title: "Swipe Games",
+  tagline: "Swipe Games Public API",
+  url: "https://swipegames.github.io",
+  baseUrl: "/public-api/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",

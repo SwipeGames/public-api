@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkswipegames_public_api=self.webpackChunkswipegames_public_api||[]).push([[647],{18122:(e,s,a)=>{a.r(s),a.d(s,{default:()=>n});a(96540);var p=a(34164),r=a(204),u=a(59144),c=a(22831),i=a(36668),l=a(74848);function n(e){return(0,l.jsx)(u.e3,{className:(0,p.A)(r.G.wrapper.docsPages),children:(0,l.jsx)(i.A,{children:(0,c.v)(e.route.routes)})})}}}]);

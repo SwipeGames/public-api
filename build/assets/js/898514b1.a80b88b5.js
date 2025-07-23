@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkswipegames_public_api=self.webpackChunkswipegames_public_api||[]).push([[67],{19187:s=>{s.exports=JSON.parse('{"tags":[{"label":"test","permalink":"/docs/tags/test","count":2}]}')}}]);
