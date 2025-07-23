@@ -22,3 +22,7 @@ A Client ID (CID) is a unique identifier assigned to each integrator. It is used
 ### External Client ID (ExtCID)
 
 An External Client ID (ExtCID) is a unique identifier for clients of integrators. In simple words, it's integrator's clients. It is used to identify clients in the context of the integrator's platform. We support configurations and settings per ExtCID, allowing integrators to manage their clients effectively.
+
+### Game ID
+
+A Game ID is a unique identifier for each game provided by Swipe Games. It is used to reference specific games in API requests and responses.
