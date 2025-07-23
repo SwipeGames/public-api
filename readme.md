@@ -39,8 +39,6 @@ Run the following command to generate the API documentation:
 make gen-docs
 ```
 
-'
-
 ### Start locally
 
 Run the following command to generate the API documentation:
