@@ -231,7 +231,6 @@ components:
         - cid
         - extID
         - extCID
-        - gameID
         - currency
         - quantity
         - betLine
@@ -248,11 +247,13 @@ components:
         extCID:
           description: External Client's ID (game aggregator or casino)
           type: string
-        gameID:
-          description: Game's ID
-          type: string
-        userIDs:
-          description: List of player IDs (external). if null then campaign is available for all players.
+        gameIDs:
+          description: List of game IDs. If not provided, free rounds will be available for all games.
+          type: array
+          items:
+            type: string
+        playerIDs:
+          description: List of player IDs (external). If not provided, free rounds will be available for all players.
           type: array
           items:
             type: string
@@ -282,7 +283,7 @@ components:
 
         validUntil:
           description: |
-            End date when free rounds become unavailable. Could be setup later.
+            End date when free rounds become unavailable. If not provided then this campaign never ends.
           type: string
           format: date-time
 
