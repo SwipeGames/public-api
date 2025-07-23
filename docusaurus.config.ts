@@ -10,7 +10,7 @@ const config: Config = {
   title: "Swipe Games",
   tagline: "Swipe Games Public API",
   url: "https://swipegames.github.io",
-  baseUrl: "/public-api/",
+  baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
