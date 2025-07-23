@@ -6,10 +6,12 @@ info:
 paths:
   /create-new-game:
     post:
+      summary: Create new game
       description: |
         Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
         for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
         Read more about Launcher URL in the [Launcher URL](#laucher-url) section.
+
       parameters:
         - name: X-REQUEST-SIGN
           in: header
@@ -47,6 +49,7 @@ paths:
                 $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
   /free-rounds:
     post:
+      summary: Create new free rounds campaign
       description: Create new free rounds campaign
       parameters:
         - name: X-REQUEST-SIGN
@@ -93,6 +96,7 @@ paths:
                 $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
 
     delete:
+      summary: Cancel/Delete free rounds campaign
       description: |
         Cancel/Delete existing free rounds campaign. You can cancel free rounds campaing during the campaign period, in this case
         all `in-progress` free rounds will be continued, but no new free rounds will be started.
