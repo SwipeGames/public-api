@@ -10,7 +10,7 @@ const config: Config = {
   title: "Swipe Games",
   tagline: "Swipe Games Public API",
   url: "https://swipegames.github.io",
-  baseUrl: "/",
+  baseUrl: "/public-api/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
@@ -27,8 +27,6 @@ const config: Config = {
         docs: {
           routeBasePath: "/",
           sidebarPath: require.resolve("./sidebars.ts"),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           docItemComponent: "@theme/ApiItem", // Derived from docusaurus-theme-openapi
         },
         blog: false,
