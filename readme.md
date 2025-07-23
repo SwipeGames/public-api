@@ -1,5 +1,7 @@
 # Swipe Games Public API
 
+Based on [docusaurus-openapi-docs](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs)
+
 ## Requirements
 
 -   node
