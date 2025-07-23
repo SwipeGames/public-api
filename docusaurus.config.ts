@@ -53,11 +53,6 @@ const config: Config = {
       },
       items: [
         {
-          label: "Core",
-          position: "left",
-          to: "/core",
-        },
-        {
           href: "https://github.com/swipegames/public-api",
           label: "GitHub",
           position: "right",

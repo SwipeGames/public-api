@@ -2,6 +2,7 @@
 id: changes-log
 title: Changes Log
 slug: /changes-log
+sidebar_position: 999
 ---
 
 # Changes Log
