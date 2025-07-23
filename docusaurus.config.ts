@@ -25,11 +25,13 @@ const config: Config = {
       "classic",
       {
         docs: {
+          routeBasePath: "/",
           sidebarPath: require.resolve("./sidebars.ts"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           docItemComponent: "@theme/ApiItem", // Derived from docusaurus-theme-openapi
         },
+        blog: false,
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -44,16 +46,16 @@ const config: Config = {
       },
     },
     navbar: {
-      title: "Swipe Games",
+      title: "Swipe Games Public API",
       logo: {
         alt: "My Site Logo",
         src: "img/logo.svg",
       },
       items: [
         {
-          label: "Public API",
+          label: "Core",
           position: "left",
-          to: "/docs/category/core",
+          to: "/core",
         },
         {
           href: "https://github.com/swipegames/public-api",

@@ -8,7 +8,7 @@ const sidebar: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "UNTAGGED",
+      label: "Launch Game",
       items: [
         {
           type: "doc",
@@ -16,6 +16,12 @@ const sidebar: SidebarsConfig = {
           label: "Create new game",
           className: "api-method post",
         },
+      ],
+    },
+    {
+      type: "category",
+      label: "Free Rounds",
+      items: [
         {
           type: "doc",
           id: "v1.0/core/create-new-free-rounds-campaign",
