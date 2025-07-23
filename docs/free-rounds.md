@@ -16,4 +16,4 @@ Free rounds are promotional game opportunities offered to players in games. Unli
 ## How to setup Free Rounds
 
 You can use Free Rounds endpoints in our [Core API](/core) to configure the free rounds for all games.  
-You can setup free rounds and also cancel them at any time. Please notice, if you cancel free rounds campain all user who already started free rounds, will have free rounds still available.
+You can set up free rounds and also cancel them at any time. Please note that if you cancel a free rounds campaign, all users who have already started free rounds will still have them available.
