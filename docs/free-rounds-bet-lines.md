@@ -15,7 +15,7 @@ The `bet lines` are configured prior the free rounds integration. Integrator mus
 
 | Game ID            | Currency           | Bet lines                     |
 | ------------------ | ------------------ | ----------------------------- |
-| `string` or `null` | `string` on `null` | `array` of `bet line` objects |
+| `string` or `null` | `string` or `null` | `array` of `bet line` objects |
 
 `null` value in `Game ID` or `Currency` columns means that `Bet lines` are wildcarded for all games/currencies.
 `Bet lines` configuration is games specific, but overall structure is the following:
