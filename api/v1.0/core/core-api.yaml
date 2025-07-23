@@ -252,7 +252,7 @@ components:
           type: array
           items:
             type: string
-        playerIDs:
+        userIDs:
           description: List of player IDs (external). If not provided, free rounds will be available for all players.
           type: array
           items:
