@@ -13,11 +13,12 @@ Each `bet line` specifies the settings for a particular game available for playe
 
 The `bet lines` are configured prior the free rounds integration. Integrator must fill up the following table and provide it to the Game Provider (Swipe Games):
 
-| Game ID            | Currency           | Bet lines                     |
-| ------------------ | ------------------ | ----------------------------- |
-| `string` or `null` | `string` or `null` | `array` of `bet line` objects |
+| Game ID            | Currency | Bet lines                     |
+| ------------------ | -------- | ----------------------------- |
+| `string` or `null` | `string` | `array` of `bet line` objects |
 
-`null` value in `Game ID` or `Currency` columns means that `Bet lines` are wildcarded for all games/currencies.
+`null` value in `Game ID` column means that `bet lines` are wildcarded for all games. All supported currencies must be listed in the configuration.
+
 `Bet lines` configuration is games specific, but overall structure is the following:
 
 ```
