@@ -27,3 +27,13 @@ gen-api-v10:
 # 	$(API_GEN_RUN) $(V12_API_GEN_IMPORT_COMMON) -package coreapiv1 -generate server,types,skip-prune,spec,client $(V12_API_PATH)/core/core-api.yaml > $(V12_API_PATH)/core/core-api.gen.go
 # 	$(API_GEN_RUN) $(V12_API_GEN_IMPORT_COMMON) -package playhubintegrationapiv1 -generate types,skip-prune,spec,client $(V12_API_PATH)/playhubintegration/playhub-integration-api.yaml > $(V11_API_PATH)/playhubintegration/playhub-integration-api.gen.go
 
+.PHONY: gen-docs
+gen-docs:
+	yarn docusaurus clean-api-docs all
+	yarn docusaurus gen-api-docs all
+
+.PHONY: up
+up:
+	yarn start
+
+

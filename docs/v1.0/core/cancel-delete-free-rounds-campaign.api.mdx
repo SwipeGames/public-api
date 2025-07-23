@@ -1,0 +1,73 @@
+---
+id: cancel-delete-free-rounds-campaign
+title: "Cancel/Delete free rounds campaign"
+description: "Cancel/Delete existing free rounds campaign. You can cancel free rounds campaing during the campaign period, in this case"
+sidebar_label: "Cancel/Delete free rounds campaign"
+hide_title: true
+hide_table_of_contents: true
+api: eJztV1tv2zYU/isEX5YAtuPc3C1vWeIWAYatdRxsQxqgtHRks5VIjZe4geH/vu9Iiu3YQtqh60vQwJEt8ly/c+HhQgY19fLsVr52RGJko0m9vOvIlHzidBm0NfJMXiiTUH5wSTkFEvRZ+6DNVGTM4yoekaiiVHpqeuJvG/Fm+B9MLUTgTKPjrzCjFaMoyWmbdoQ2WNdM7Om9UXkuPmjTLZ2dOvL+wxOBc43tCYRYA4sigX0SgzBWGJq3UvqgXKC0997IjiyVUwVccgzBQhq8wNu/uqPhu5vh9bh7ffXmd5BpxmBGKiWHN0f/RO0olWfBRdqGaoRd8kF4uKRCdCT2HDhFYfGzco3EecQTBieKmYSnhL/3IdsnMyqUPFvI8FCyLT4wUHK5vKsVQ/SvNn1gim07GANI5S1Vlnkj/eCjZ7sWu6Lt5CMUP3HoViY65fADbYQjaPLMgDU8n/r5egPbq0uxp6HcIVr7PXHjKRXKC51SUVrYlDyIT/TQE38YEjbDurAOWRTAV0RghbBA4T3om7g8db4jM+sKBc9kjLBl2ZEV85eNAtn3MgpGJG24XOQaQfhpC5Qv+wR5QYecSeoyY1/qemxSCjRMhSIorfF1ZI76/V0T7Cf5P2UDDHvE+huT4vsE9SoIlc/Vg1+FSqCeEhQc2lRTLruqn8faNzif9A93bfnTWbStdW0jZc7fXnEi/RfItzLGFgWsJucg7TG6AuiI67kuSbxBV/LibZxAImvbcKg1aKD2akqSO1NQOve7sXsk2bHlXEycpkxsrHJxcNOq7UMHG5pprv2sJy5szNOqp87sHJ3NVnTRk2vBfG3NjtIxJTMDtHLRkFTOr3RuKIpcxLyZ0iROpxDcYeW8a2z4WlM2wj9kBaMG81XgT55PwtWJxTozXvsR/JcS/NO2hnpN7p5cA4JNkugY7R8xfxExxyZGwJkFlDCTT4NqMAwzvB/wBNmtyx6rHNjReggbfkYjyOnxMJTHmfr5NBucdE9fHb7qnpwOjrqT4yzpHiW/DI6zwUBlarA6TzcOwuTruZc8jGa2Orcbj1py5oJnTSSO3B5OxzxX41PN3Q3Rc4nHB2xzsnpBJi0tTnTPaDdnLE/ZU+bqiEIZZFjrnQC7ytQjcD1KoZp8bdFhr9/rs1ul9QEi2LNmDH966WiTu+3fYl2RL/bK0qR2QBYdlDksY/Ciy9n7Omtv5WbWohXMAC0vLxYT2Hfj8uWSl5HHDheJW/y8V06rCafT7R3ENVcdvhKl2vMGEjRTud++7WwCvjdqWtK++LY7UKuHPGG13MzuVR6ZGCSLhuaitqg7ZjFrip0GveY4TxIqw7O0dxtN4nL423A8BPmkuYgVNmUup+bcmPGEPR1pK4yq7letLWSuzDRWXVjWUvnvX6PvXSY=
+sidebar_class_name: "delete api-method"
+info_path: v1.0/core/swipe-games-public-core-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Cancel/Delete free rounds campaign"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/free-rounds"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Cancel/Delete existing free rounds campaign. You can cancel free rounds campaing during the campaign period, in this case
+all `in-progress` free rounds will be continued, but no new free rounds will be started.
+
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"X-REQUEST-SIGN","in":"header","required":true,"description":"Request signature (read more in the Authentication section)","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["cid"],"properties":{"id":{"description":"Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.\n","type":"string","format":"uuid"},"extID":{"description":"Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.\n","type":"string"},"cid":{"description":"Client's ID (internal)","type":"string","format":"uuid"}},"title":"DeleteFreeRoundsRequest"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"ok","content":{"application/json":{"schema":{"type":"object","required":["id","extID"],"properties":{"id":{"description":"Free rounds ID (internal).","type":"string","format":"uuid"},"extID":{"description":"Free rounds ID (external). It always provided on create request.","type":"string"}},"title":"DeleteFreeRoundsRes"}}}},"401":{"description":"Wrong signature or API key","content":{"application/json":{"schema":{"description":"Common error response for Swipe Games Public API.","type":"object","required":["message","details"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the user.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the user.","type":"string"}},"title":"ErrorResponse"}}}},"404":{"description":"Free rounds campaign not found","content":{"application/json":{"schema":{"description":"Common error response for Swipe Games Public API.","type":"object","required":["message","details"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the user.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the user.","type":"string"}},"title":"ErrorResponse"}}}},"500":{"description":"Server error occurred","content":{"application/json":{"schema":{"description":"Common error response for Swipe Games Public API.","type":"object","required":["message","details"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the user.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the user.","type":"string"}},"title":"ErrorResponse"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
