@@ -228,7 +228,7 @@ components:
     CreateFreeRoundsRequest:
       type: object
       required:
-        - cid
+        - cID
         - extID
         - extCID
         - currency
@@ -305,7 +305,7 @@ components:
     DeleteFreeRoundsRequest:
       type: object
       required:
-        - cid
+        - cID
       properties:
         id:
           description: |
