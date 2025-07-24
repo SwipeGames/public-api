@@ -127,10 +127,6 @@ paths:
       responses:
         200:
           description: ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DeleteFreeRoundsRes"
 
         401:
           description: Wrong signature or API key
@@ -306,6 +302,7 @@ components:
       type: object
       required:
         - cID
+        - extCID
       properties:
         id:
           description: |
@@ -323,17 +320,7 @@ components:
           type: string
           format: uuid
 
-    DeleteFreeRoundsRes:
-      type: object
-      required:
-        - id
-        - extID
-      properties:
-        id:
-          description: Free rounds ID (internal).
+        extCID:
+          description: External Client's ID (external)
           type: string
           format: uuid
-
-        extID:
-          description: Free rounds ID (external). It always provided on create request.
-          type: string
