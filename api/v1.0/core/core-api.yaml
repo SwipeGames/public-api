@@ -323,4 +323,3 @@ components:
         extCID:
           description: External Client's ID (external)
           type: string
-          format: uuid
