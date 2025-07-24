@@ -240,7 +240,7 @@ components:
           description: |
             Free rounds ID (external). Used as idempotency key. Same ID can be used to create free rounds only once.
           type: string
-        cid:
+        cID:
           description: Client's ID (internal)
           type: string
           format: uuid
@@ -318,7 +318,7 @@ components:
             Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.
           type: string
 
-        cid:
+        cID:
           description: Client's ID (internal)
           type: string
           format: uuid
