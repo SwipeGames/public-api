@@ -127,10 +127,6 @@ paths:
       responses:
         200:
           description: ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DeleteFreeRoundsRes"
 
         401:
           description: Wrong signature or API key
@@ -228,10 +224,9 @@ components:
     CreateFreeRoundsRequest:
       type: object
       required:
-        - cid
+        - cID
         - extID
         - extCID
-        - gameID
         - currency
         - quantity
         - betLine
@@ -241,18 +236,20 @@ components:
           description: |
             Free rounds ID (external). Used as idempotency key. Same ID can be used to create free rounds only once.
           type: string
-        cid:
+        cID:
           description: Client's ID (internal)
           type: string
           format: uuid
         extCID:
           description: External Client's ID (game aggregator or casino)
           type: string
-        gameID:
-          description: Game's ID
-          type: string
+        gameIDs:
+          description: List of game IDs. If not provided, free rounds will be available for all games.
+          type: array
+          items:
+            type: string
         userIDs:
-          description: List of player IDs (external). if null then campaign is available for all players.
+          description: List of player IDs (external). If not provided, free rounds will be available for all players.
           type: array
           items:
             type: string
@@ -282,7 +279,7 @@ components:
 
         validUntil:
           description: |
-            End date when free rounds become unavailable. Could be setup later.
+            End date when free rounds become unavailable. If not provided then this campaign never ends.
           type: string
           format: date-time
 
@@ -304,7 +301,8 @@ components:
     DeleteFreeRoundsRequest:
       type: object
       required:
-        - cid
+        - cID
+        - extCID
       properties:
         id:
           description: |
@@ -317,22 +315,11 @@ components:
             Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.
           type: string
 
-        cid:
+        cID:
           description: Client's ID (internal)
           type: string
           format: uuid
 
-    DeleteFreeRoundsRes:
-      type: object
-      required:
-        - id
-        - extID
-      properties:
-        id:
-          description: Free rounds ID (internal).
-          type: string
-          format: uuid
-
-        extID:
-          description: Free rounds ID (external). It always provided on create request.
+        extCID:
+          description: External Client's ID (external)
           type: string

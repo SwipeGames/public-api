@@ -8,4 +8,4 @@ slug: /changes-log
 
 ## 1.0.0
 
-### Initial release of the Swipe Games Public API documentation.
+-   Initial release of the Swipe Games Public API documentation.

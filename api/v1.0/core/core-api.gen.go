@@ -35,8 +35,8 @@ type CreateFreeRoundsRequest struct {
 	// BetLine Number of bet line configured for this game/provider.
 	BetLine int32 `json:"betLine"`
 
-	// Cid Client's ID (internal)
-	Cid openapi_types.UUID `json:"cid"`
+	// CID Client's ID (internal)
+	CID openapi_types.UUID `json:"cID"`
 
 	// Currency Currency code in ISO4217
 	Currency string `json:"currency"`
@@ -47,19 +47,19 @@ type CreateFreeRoundsRequest struct {
 	// ExtID Free rounds ID (external). Used as idempotency key. Same ID can be used to create free rounds only once.
 	ExtID string `json:"extID"`
 
-	// GameID Game's ID
-	GameID string `json:"gameID"`
+	// GameIDs List of game IDs. If not provided, free rounds will be available for all games.
+	GameIDs *[]string `json:"gameIDs,omitempty"`
 
 	// Quantity Number of free rounds.
 	Quantity int32 `json:"quantity"`
 
-	// UserIDs List of player IDs (external). if null then campaign is available for all players.
+	// UserIDs List of player IDs (external). If not provided, free rounds will be available for all players.
 	UserIDs *[]string `json:"userIDs,omitempty"`
 
 	// ValidFrom Start date when free rounds become available.
 	ValidFrom time.Time `json:"validFrom"`
 
-	// ValidUntil End date when free rounds become unavailable. Could be setup later.
+	// ValidUntil End date when free rounds become unavailable. If not provided then this campaign never ends.
 	ValidUntil *time.Time `json:"validUntil,omitempty"`
 }
 
@@ -117,23 +117,17 @@ type CreateNewGameResponse struct {
 
 // DeleteFreeRoundsRequest defines model for DeleteFreeRoundsRequest.
 type DeleteFreeRoundsRequest struct {
-	// Cid Client's ID (internal)
-	Cid openapi_types.UUID `json:"cid"`
+	// CID Client's ID (internal)
+	CID openapi_types.UUID `json:"cID"`
+
+	// ExtCID External Client's ID (external)
+	ExtCID string `json:"extCID"`
 
 	// ExtID Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.
 	ExtID *string `json:"extID,omitempty"`
 
 	// Id Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.
 	Id *openapi_types.UUID `json:"id,omitempty"`
-}
-
-// DeleteFreeRoundsRes defines model for DeleteFreeRoundsRes.
-type DeleteFreeRoundsRes struct {
-	// ExtID Free rounds ID (external). It always provided on create request.
-	ExtID string `json:"extID"`
-
-	// Id Free rounds ID (internal).
-	Id openapi_types.UUID `json:"id"`
 }
 
 // PostCreateNewGameParams defines parameters for PostCreateNewGame.
@@ -569,7 +563,6 @@ func (r PostCreateNewGameResponse) StatusCode() int {
 type DeleteFreeRoundsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *DeleteFreeRoundsRes
 	JSON401      *externalRef0.ErrorResponse
 	JSON404      *externalRef0.ErrorResponse
 	JSON500      *externalRef0.ErrorResponse
@@ -721,13 +714,6 @@ func ParseDeleteFreeRoundsResponse(rsp *http.Response) (*DeleteFreeRoundsRespons
 	}
 
 	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest DeleteFreeRoundsRes
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
 		var dest externalRef0.ErrorResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -949,42 +935,42 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"5P7+/t8BAAD//4JxQ2igIgAA",
+	"H4sIAAAAAAAC/+xYbW/bOBL+KwPtAZsA8kuaXBfNt25eCgNBmosb7B2aoKGlscwNRaokFcco8t8PQ0qy",
+	"ZNNOck2B7WG/2RI183BennnIb1Gi8kJJlNZEh98ik8wwZ+7nkUZm8VQjXqpSpuYSv5ZoLL0qtCpQW45u",
+	"4QTtGZdIP1M0ieaF5UpGh9F5mU9Qg5rCBC0ILhESJac8KzWmMFUa7IwbyFiOg0Kre56i7kdxNFU6ZzY6",
+	"jLi0+2+iOMrZA8/LPDp89y6Oci79n704sosC/TrMUEePcZSMjteBHAmO0v5qYHQMO7RYSyZ2257KkqdR",
+	"Y89YzWXmzJVao0wWAZvVG0hUisAljMYfD97s/Raygg/2KITr5MFDgQ5AigewLNOYMas0KA0JM1yq3Q22",
+	"Q6Ypb6Bd4pxRrFzt9uHKYArMAE8xL5R1m7jDRR/G5Hh0DAmTMEEoaZ1VkLhCgGnLopJiAUom2L+WIVC0",
+	"hdGxWYd1xo2lgsi8K9OH0RSkslDlP407fuZcCILC7hkXbCLQVQ0TwhkwVCzcYu4crYGoHjCt2YL+fy2Z",
+	"tNwuthVqy/n3VmJpUG+NQSHYAjVFoZOe/zEg3toLQ3LPBE9PtcrXUY4t0xZSyvx8hrKDYoKJylsgOqGi",
+	"T3qW5xgqDOfwSlouAt0g0+3+Srn0uBomsPSR45OE5QXjmQSJ96gBKZeuTJ8D8TGONH4tucY0Ovzs6KTu",
+	"saaPW7TQqqq4IcJ2XG8aD2ryJyaWgrDOrKZQ0uA6tb68uT9RBLhZxoVTVBC0Z+9+KCk8fdpFw5r9p2lz",
+	"JYZuid/J5mic4/wDy3HjkHmK1/swoh/NticLGM95gUBWDTCZUlTKivoWqtTEf9LyKUe9Uh6vNwyC4U4x",
+	"V+smjjFXkKvUl7bVJcYucY4p67YXrJTJzGc1rT+AnRyZNCAVJEyICUvulkQxpSyAkn7LhqcYX0uKxtwR",
+	"PNBTZ2nCBJMJVmPZ+/VsNGXCPAVGIxMefXsgTJQSyOTLR2Di/gwKwSxlZbAyEgeOZnV3OnY2GeqEqVZ5",
+	"KwyuJqxfdC1nak7v6qJY+IUeh+nDHz5a3NJmiW6XkbaK1m4dhOvbpqqs6rbG2SrXX70oalcojBFdCkQ1",
+	"PUxZFEpbTP0oJFy3H6qpegsGE/K0AZVQCRMBwXbmni+LeHTy6RR+P7qAg99gZzT+CG/33+0Ga7rO1LrN",
+	"i+qNs7rcbS0umnjT3morNAE0LiuOm6bYyDtKGrqfydGdVQWNZTXhAlv0skSm0ZZaXl2erUO7dK/g6vIM",
+	"5jOezKgnElWK1OXaKtCYco2JdUhongObWtQdYFMuuZlhOsAHbjF1HUOFlCr5azOefJ1dXZ7F4PHApLRW",
+	"yZqdO32VckMjLu3DhUBmEHJ2h2BKjc7wqkk/LkvDZdYCrEAVuDQeg7Iz1HNusNYdCZNS2VAyDRrDlQzV",
+	"7di/WurUUCfu9ussuyZaflP30bXc0khwrizU88PRkeMnV+UxGE4kNccqvpSopYXu4g3FT3mkjf1D4zQ6",
+	"jH4ZLE9Ag+r4M2AF/3K/1x9+SVSeK9lbLvlyRZ9vlAleHlRdX1F9uwZbndJREVVHPmM+bpIK5HPcTtyT",
+	"44y+qPpi+wCvF8YrTkJoj1Hgs06Nr3xQe9l8aQTTDz5RfZRIXM1Tag5nF/LSWOryeixtqNKXabJXQPAy",
+	"Tdcp+FAdbOmgE62VbhfySg24DwBpFehqmWvttqC7KCeCJ/D+YkQToVtaKVrGReDk9QmTmeQJE1AtadSO",
+	"89aHI8f+9dnX08mkzDIusxjMzL2lU8cE6d9cEmfVsyE4F3M0hmWBXb6HieY4hdZTylODhejxRGaCm1kL",
+	"1nOcrmSqRhA3YXlhuq4qvlxpX1VKq0NS2L/wIoI0w/7e27e9PWCimLHem2CUplwbe85yDB5aQ61AoFZ6",
+	"2aXL6VA/8Oru6E6FsHwRbIt/yZO7DS/XTzrrwaVFXE4Dkr+ekpTMRGmkat5W6DBqBIWhY22huLSmdUUj",
+	"cV7PyZxJlnUvbepzsfHSN1e6VuvckhqMAm6PKlh0pkVtPO69/rA/pMiQxGAFjw6j/f6wv0+NyOzM1cfA",
+	"Q+pJnPeyKniF8oNgLZVey1RH1NZ+WLMjt3eNGTcWtXGPbymnt0Rrt5T1Wy+ilNc8BjWd/Wmffvj6KJ95",
+	"FalJN13L9lGnD/9Rpbv5Whd9rt8qsWUVGHczQiqKJFcj30gBkeTy0oafarJ6LS+R+VgDm6jSdiDU8u9z",
+	"++HNzi+ClfSvV2qx25Xy1IKM/o5S0tbK2I48cBkgxxSl6PDzuuL1ITY8k8ySotzRDb4KzPvSzkiTJ85P",
+	"7Z4mJScTM2Qp6iiOpMtq9O/e5cm/rk7Gn3rj0YfzqN0Q7hBbXSmHmufGL0Zjf1fpwrOKtChdkbCiEBWG",
+	"wZ+G0H9rmdom3oIXCo/dXiVo7oEfL65k3wyHPwpDNesciG5G1B010sFw79VcP3vyBtD8oZXMWtWhtOOk",
+	"O3S3hf98xQB9D8qxb24/J1XiZHTqyNiUec5oKlWqueEPYjmWUUtEvtcczUU39NGASLLnSdLTE0nYwGRj",
+	"MkEx8AoX8IEbSwQQotglmyTuo8AimUFa6ppBmjvLAjVXaeyb0V1m0nGJDkq3XPYKrTKNxtwGL4UpMVyW",
+	"mMZ0vASp3PZDKx2F1cqvyymrAv5vSmFmsOlU83xW+Xm7/mB48JdAeRroMyfGp/Tsp+OnDpmEOKRFWW7r",
+	"VTvePMYbhFSL8jbYW1cPf/d5YGx/T5//IBj/HwLiYPjur0slTFA9L/xgNz+x3nkRmTw+Pv43AAD//1b2",
+	"7MwEIgAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
