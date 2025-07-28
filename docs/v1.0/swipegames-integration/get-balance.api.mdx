@@ -1,0 +1,72 @@
+---
+id: get-balance
+title: "Get balance"
+description: "This endpoint is used to get the balance of the user."
+sidebar_label: "Get balance"
+hide_title: true
+hide_table_of_contents: true
+api: eJztWNtu20YQ/ZUBX2IXsiIH6Yvf3MQ19JK4viAFYgNekiNqY3KX3V1aFgT/e84sSV0sNU0b9CkyDEncnZ3rmbPSLJKgCp+cfE7OOdBvqlQm4+RukOTsM6froK1JTpLrqfbEJq+tNoHwufGcU7BU4FSYMqXtSbKT+IhtN7w1ySCplVMVB3ZiZJEYPEDfn0eXZ3/cnF1dH12Nzz9ATIuVKaucHZ4c/9Vox3lyElzDL525xC77QF4XRoXGMR04nKTK4qM20YHTBq8m6EzJIfKcyfshdPtsypVKThZJmNfiiw9OmyJ5fh4s3fPsPcTH73vPYNDN/9Gxq/YYjd/TAT8hZqPKwyHF5OF/bhtHK5khfYqJIh3Ea1WWlOElVdmDl9RCfPhNf+/EH19bA3dl/81oJG+bPtkH6MisCciG7Kq6LrusvP7iRWSxbcKmX5CwjXg/J+kKHLWzNbugW7v9xpbt6w4Jr/wSH1pqUUI54JM1zrHJ5lQpLDdGB08HxgY+IbxSBo890veuF1seTOexxlmpIUJ5I/mQlVtz/w5ICEwfeEbnqOV9TGnMtG/q2rpAbyjnTFeqpLpUGXuaWBeTP9Eq9D4hsiH9bl2E8GbeBwk/qaouZel4NBoejwQ6SdAhLnUtdNkVBnuy+3Z0vJ2eT87C7yWK/02dNhWdOYcYeizEgK5muuaYAk9jKC1c2winuaoBTLpoUqin04vxEPuk8lzLPrIC5MXk2qqCPG+oHtyiSCReomKeFA7GvkLuuAQfTJHB1rUUdkVND6C+WJ38QWYbHEhBGJUOhy1VoAgfJ5ElNsN7t8uVrSjXIlrVbCeQIe1VIfnOGYGUfhvSvchWqk8pdZontLbac17rH5B8ZopS+ymQ2wfpp3Zm+sxGbtyC1fPKm+0+4mxqAIaSOpEY/NLmmqFIy7KZc9oUBRQPxLjsSkt9pytrcI7QWoF5sE0Rm4lr67sdwuVOHKDuv9B9V5sjxxNUd3pPR9FL4Iu6JUqbEOzSbTTuHI7TRXxHi5vIF4ClNg3TTAeEHPrDHTlQAZhQjarCKsnfOLyKF9mkKWmG22Il1fE/8VMNxzx12Y57IHKxph5RCJWWjC6Yy80zpI9CcGJAZDrjnA86a0sFMw2ySaU1Sov7LoeCfC0sCWcVi6whgO4SqXQxDdH8zLqH1ukiol+BtV4F4irlHDo7m91lmCmvjR1IFkWQUDADu3LpkAFTBpVKiDNtcjsDYHRk6tB66ljEV+6rAr0/3E2MpqmkwV4UNLl7jpfVTkx9QrFOW9D0VPl2Gz43AGqsK/xAHjaKhNtWMjKxjcn3HLrn0D2H7jn0J+fQX3f9Erhi94jUtC1ms/hNd0+Ye8LcE+aeMH9uwgT0Kkb50KhJwRFfKkzx8LofbcgYaGLjhKTT9/1cl+wcpumWqnYdxZlvEc2tGW+M4Cr1IHUFt3uO4444PdIrxR5HLkpWMmqSwUUlvRC/R4slGI6DKa9zloP9nORvrSMesdXGcjwcDUfCI7X1oVKxCbshmgwUV/nbSMFiden8wGixQ0Lgp/AakNVG/GhcKfrbAm4MrabwUJYWixSpuHHl87Mst6O9eAFoL70FFExU6V9O99Z9PuiZ5ZD+l5nfzsgeeP5iNPmoykbkEgH6o3Ja3Ecod5DuZqn/Oa4fG7J+I4Ct0e8qChB9K3OaZVyHtb2tLyYS8bJnz8+u0cdfAY1F/VU=
+sidebar_class_name: "get api-method"
+info_path: v1.0/swipegames-integration/swipe-games-integration-adapter-public-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Get balance"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/balance"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+This endpoint is used to get the balance of the user.
+
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"X-REQUEST-SIGN","in":"header","required":true,"description":"Request signature (read more in the Authentication section)","schema":{"type":"string"}},{"name":"sessionID","in":"query","required":true,"description":"Session ID (external). This is your Session ID. We use it in all callbacks to you.","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"ok","content":{"application/json":{"schema":{"type":"object","required":["balance"],"properties":{"balance":{"description":"The user's balance in selected currency main units (note: not cents). Currency selected by the client during the\n`Create New Game` call. We support 2 decimal places for all fiat currencies. For\n","type":"string","example":"100.10"}},"title":"BalanceResponse"}}}},"401":{"description":"Wrong signature","content":{"application/json":{"schema":{"description":"Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,\nit contains an action field that describes the required client action (could be omit).\n","allOf":[{"description":"Common error response for Swipe Games Public API.","type":"object","required":["message","details"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the user.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the user.","type":"string"}},"title":"ErrorResponse"},{"type":"object","properties":{"action":{"description":"Required client action.\n* `require-refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.\n     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,\n     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded\n     in the casino, but are opened in a new tab or window, since it will reopen the game again.\n","type":"string","enum":["require-refresh"]}}}],"title":"ErrorResponseWithAction"}}}},"404":{"description":"User with this game session ID not found","content":{"application/json":{"schema":{"description":"Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,\nit contains an action field that describes the required client action (could be omit).\n","allOf":[{"description":"Common error response for Swipe Games Public API.","type":"object","required":["message","details"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the user.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the user.","type":"string"}},"title":"ErrorResponse"},{"type":"object","properties":{"action":{"description":"Required client action.\n* `require-refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.\n     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,\n     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded\n     in the casino, but are opened in a new tab or window, since it will reopen the game again.\n","type":"string","enum":["require-refresh"]}}}],"title":"ErrorResponseWithAction"}}}},"500":{"description":"Server error occurred","content":{"application/json":{"schema":{"description":"Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,\nit contains an action field that describes the required client action (could be omit).\n","allOf":[{"description":"Common error response for Swipe Games Public API.","type":"object","required":["message","details"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the user.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the user.","type":"string"}},"title":"ErrorResponse"},{"type":"object","properties":{"action":{"description":"Required client action.\n* `require-refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.\n     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,\n     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded\n     in the casino, but are opened in a new tab or window, since it will reopen the game again.\n","type":"string","enum":["require-refresh"]}}}],"title":"ErrorResponseWithAction"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

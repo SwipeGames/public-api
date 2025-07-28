@@ -13,6 +13,26 @@ components:
         details:
           description: Technical details for the error. Could be used for debugging, should not be shown to the user.
           type: string
+
+    ErrorResponseWithAction:
+      description: |
+        Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,
+        it contains an action field that describes the required client action (could be omit).
+      allOf:
+        - $ref: "#/components/schemas/ErrorResponse"
+        - type: object
+          properties:
+            action:
+              description: |
+                Required client action.
+                * `require-refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
+                     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,
+                     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded
+                     in the casino, but are opened in a new tab or window, since it will reopen the game again.
+              type: string
+              enum:
+                - "require-refresh"
+
     User:
       type: object
       required:

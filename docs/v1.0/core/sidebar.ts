@@ -4,7 +4,7 @@ const sidebar: SidebarsConfig = {
   apisidebar: [
     {
       type: "doc",
-      id: "v1.0/core/swipe-games-public-core-api",
+      id: "v1.0/core/swipe-games-core-public-api",
     },
     {
       type: "category",

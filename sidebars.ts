@@ -42,6 +42,17 @@ const sidebars: SidebarsConfig = {
       },
       items: require("./docs/v1.0/core/sidebar.ts"),
     },
+    {
+      type: "category",
+      label: "Swipe Games Integration Adapter API",
+      link: {
+        type: "generated-index",
+        title: "Swipe Games Integration Adapter API",
+        description: "Swipe Games Integration Adapter API",
+        slug: "/swipegames-integration",
+      },
+      items: require("./docs/v1.0/swipegames-integration/sidebar.ts"),
+    },
     "changes-log",
   ],
 };

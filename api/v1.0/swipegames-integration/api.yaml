@@ -1,0 +1,74 @@
+openapi: 3.0.3
+info:
+  title: Swipe Games Integration Adapter Public API
+  description: |
+    This is the Integration Adapter API for Swipe Games Public API.
+    It is used to make reverse calls to integrations.
+    Please implement this API on your side to support Swipe Games Public API.
+  version: 1.0.0
+
+paths:
+  /balance:
+    get:
+      summary: Get balance
+      tags:
+        - Get Balance
+      description: |
+        This endpoint is used to get the balance of the user.
+
+      parameters:
+        - name: X-REQUEST-SIGN
+          in: header
+          required: true
+          description: Request signature (read more in the Authentication section)
+          schema:
+            type: string
+        - name: sessionID
+          in: query
+          required: true
+          description: Session ID (external). This is your Session ID. We use it in all callbacks to you.
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BalanceResponse"
+
+        401:
+          description: Wrong signature
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponseWithAction"
+
+        404:
+          description: User with this game session ID not found
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponseWithAction"
+
+        500:
+          description: Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponseWithAction"
+
+components:
+  schemas:
+    BalanceResponse:
+      type: object
+      required:
+        - balance
+      properties:
+        balance:
+          description: |
+            The user's balance in selected currency main units (note: not cents). Currency selected by the client during the
+            `Create New Game` call. We support 2 decimal places for all fiat currencies. For
+          type: string
+          example: "100.10"
