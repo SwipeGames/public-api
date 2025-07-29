@@ -365,7 +365,7 @@ components:
     RefundRequest:
       type: object
       required:
-        - sessionId
+        - sessionID
         - txID
       properties:
         sessionID:
