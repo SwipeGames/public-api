@@ -22,6 +22,8 @@ gen-api-v10:
 gen-docs:
 	yarn docusaurus clean-api-docs all
 	yarn docusaurus gen-api-docs all
+	find docs -name "*info.mdx" -delete
+
 
 .PHONY: up
 up:
