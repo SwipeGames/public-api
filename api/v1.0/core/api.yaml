@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Swipe Games Public Core API
+  title: Swipe Games Core Public API
   description: |
-    This is the core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
+    This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
   version: 1.0.0
 
 paths:

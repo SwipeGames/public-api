@@ -168,12 +168,22 @@ const config: Config = {
         docsPluginId: "classic",
         config: {
           corev10: {
-            specPath: "api/v1.0/core/core-api.yaml",
+            specPath: "api/v1.0/core/api.yaml",
             outputDir: "docs/v1.0/core",
-            downloadUrl: "https://raw.githubusercontent.com/swipegames/public-api/main/api/v1.0/core/core-api.yaml",
+            downloadUrl: "https://raw.githubusercontent.com/swipegames/public-api/main/api/v1.0/core/api.yaml",
             sidebarOptions: {
               groupPathsBy: "tag",
-              categoryLinkSource: "tag",
+              categoryLinkSource: "info",
+            },
+          } satisfies OpenApiPlugin.Options,
+          swipegamesintegrationv10: {
+            specPath: "api/v1.0/swipegames-integration/api.yaml",
+            outputDir: "docs/v1.0/swipegames-integration",
+            downloadUrl:
+              "https://raw.githubusercontent.com/swipegames/public-api/main/api/v1.0/swipegames-integration/api.yaml",
+            sidebarOptions: {
+              groupPathsBy: "tag",
+              categoryLinkSource: "info",
             },
           } satisfies OpenApiPlugin.Options,
         } satisfies Plugin.PluginOptions,

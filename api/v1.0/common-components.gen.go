@@ -15,6 +15,11 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 )
 
+// Defines values for ErrorResponseWithActionAction.
+const (
+	RequireRefresh ErrorResponseWithActionAction = "require-refresh"
+)
+
 // ErrorResponse Common error response for Swipe Games Public API.
 type ErrorResponse struct {
 	// Details Technical details for the error. Could be used for debugging, should not be shown to the user.
@@ -23,6 +28,29 @@ type ErrorResponse struct {
 	// Message A brief description of the error in English. Could be shown to the user.
 	Message string `json:"message"`
 }
+
+// ErrorResponseWithAction defines model for ErrorResponseWithAction.
+type ErrorResponseWithAction struct {
+	// Action Required client action.
+	// * `require-refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
+	//      It's useful when the game session expires or the game is not available anymore. Once page is refreshed,
+	//      the game will be reloaded and the player can continue playing. This might not work when games aren't embedded
+	//      in the casino, but are opened in a new tab or window, since it will reopen the game again.
+	Action *ErrorResponseWithActionAction `json:"action,omitempty"`
+
+	// Details Technical details for the error. Could be used for debugging, should not be shown to the user.
+	Details string `json:"details"`
+
+	// Message A brief description of the error in English. Could be shown to the user.
+	Message string `json:"message"`
+}
+
+// ErrorResponseWithActionAction Required client action.
+//   - `require-refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
+//     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,
+//     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded
+//     in the casino, but are opened in a new tab or window, since it will reopen the game again.
+type ErrorResponseWithActionAction string
 
 // User defines model for User.
 type User struct {
@@ -39,13 +67,19 @@ type User struct {
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/4ySQW/UMBCF/8rIF0BKKxWkHnKrSoX2AhWFE+LgdSbJgD1jZhyVqtr/juytloUNqLdo",
-	"3vO8L89+dEFSFkYu5vpHZ2HG5NvnjaroR7QsbFgHA1pQyoWEXe+uJSVhwOoCfbLBKAp395QR3vmEBrfL",
-	"NlKAq9vNuetcVsmohdD2+4qnaKerP2GYmYKP8GRpa8uM+7RzuJYlDrBFWAyHJg64XaaJeOrA5qaylOqw",
-	"We4ZirTji6FWjvKQ0fXOihJPbte5hGZ+WvnLK9gq4QhHU5DxNwsQww1PkWw+wnpO6K5zij8WUhxc/+VA",
-	"0B1q+Xo4IttvGErl/GyoFfLPIoMsXPRh7Y6aAEEGhM3dB3hzcXl5dgE+5tmfvV6tYiS18t6nVsaJSsNp",
-	"SoV6YbB5Cy/xZ0FlH9udKPoIk0/YAfHRfMAkbf5qFSD6/+Qzhe//EP8qlIaVBquJeBTX8xJj5yQj+0yu",
-	"d/V1+jLbXtn9CgAA///VIlNwGAMAAA==",
+	"H4sIAAAAAAAC/4xV32/bRgz+V4jbgLSD4qAb0Ae/BV0w+GUJ2g57aAqUuqMkrieedjxNDQz/78OdFP+K",
+	"V8wvNkge+ZHfR3prbOiHICRJzXpr1HbUY/l5F2OI70mHIErZ4Eht5CFxELM270LfBwHKURCXMGhChA8T",
+	"DwS/YU8KD2Pt2cLtw2ZlKjPEMFBMTDrnS8heX6b+SLYTtuhhCSlpU0dztRW8C6N3UBOMSq44HdVj27K0",
+	"FWhXvBJSjtAuTAIplOejUsw40tNAZm00RZbW7CrTkyq2F7q8hToyNXBkhdAcsAAL3EnrWbsjWP+n6K4y",
+	"kf4eOZIz6097BNV+LJ/3T0L9F9mUcZ5w8ien7tbOQLcGvb9vzPrT1vwYqTFr88PNgdqbhdebU1J31faM",
+	"E9znO53D+wUqWM8kCea41aP8BF+WNq4jNZG0+wLXZQAKCIsJ6jGlsJ/I4PGJ4goeyjdYlEyWDZJYRoKJ",
+	"UxfG9PyYpS2vWuwJBmxp9SiQP5t0pXm6zehh6kgOUUqqmSn6NnAkhUU9xcdapIH/IHusPQHKUx8ireBe",
+	"7FwgxyzFyVVLtX2Cib3PJEfyAR05QHFHbeV2Dr1kG0u7go8dK/TcdqmUn0L8OoNuy55gJLlKQH1NzpFb",
+	"avLck0VlCVWeYg6EMJCQy14EoQkS1rnFicWFqQLl3AinGWmkHH6Ajy1yJs5UhmTss/bOCDxS3pFYz7T4",
+	"uTpTyN33D8FGErURywLdOhwSxePjABsBdI6zH/2zUOylG1M9Cs9qQRYFlEWM0DD5zASmZV1r0pImXhQv",
+	"vLLP+xp6Tq/zTHaV+UMpZv2f7oUNo6T4dOkMFgfY4Ag2H+7hlzdv316/AfRDh9c/X7w2DUdNv2Nf7s0L",
+	"L7uXVTKoK4XNr/CKviWKeUZNmQn6QmsFLEd2R30o9tcXAXj8Tn1h+/U/nGc3i92FI5WDWJpg1jJ6X5ms",
+	"PhzYrE3+A8DU6ezZ/RsAAP//t/lx4HsGAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

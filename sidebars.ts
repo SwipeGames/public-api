@@ -3,8 +3,6 @@ import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 const sidebars: SidebarsConfig = {
   main: [
-    "intro",
-    "terms",
     {
       type: "category",
       label: "Getting Started",
@@ -12,15 +10,13 @@ const sidebars: SidebarsConfig = {
         type: "doc",
         id: "getting-started",
       },
-      items: [],
+      items: ["terms", "game-session"],
     },
 
     "games",
-    "game-session",
     "currencies",
     "languages",
     "authn",
-    "game-launch-url",
 
     {
       type: "category",
@@ -35,12 +31,19 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Core API",
       link: {
-        type: "generated-index",
-        title: "Core API",
-        description: "Core API",
-        slug: "/core",
+        type: "doc",
+        id: "core",
       },
-      items: require("./docs/v1.0/core/sidebar.ts"),
+      items: ["game-launch-url", require("./docs/v1.0/core/sidebar.ts")],
+    },
+    {
+      type: "category",
+      label: "Integration Adapter API",
+      link: {
+        type: "doc",
+        id: "swipegames-integration",
+      },
+      items: [require("./docs/v1.0/swipegames-integration/sidebar.ts")],
     },
     "changes-log",
   ],
