@@ -19,14 +19,118 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/labstack/echo/v4"
 	"github.com/oapi-codegen/runtime"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 	externalRef0 "github.com/swipegames/public-api/api/v1.0"
+)
+
+// Defines values for BetRequestType.
+const (
+	BetRequestTypeFree    BetRequestType = "free"
+	BetRequestTypeRegular BetRequestType = "regular"
+)
+
+// Defines values for WinRequestType.
+const (
+	WinRequestTypeFree    WinRequestType = "free"
+	WinRequestTypeRegular WinRequestType = "regular"
 )
 
 // BalanceResponse defines model for BalanceResponse.
 type BalanceResponse struct {
 	// Balance The user's balance in selected currency main units (note: not cents). Currency selected by the client during the
-	// `Create New Game` call. We support 2 decimal places for all fiat currencies. For
+	// `Create New Game` call. We support 2 decimal places for all fiat currencies.
 	Balance string `json:"balance"`
+}
+
+// BetRequest defines model for BetRequest.
+type BetRequest struct {
+	// Amount The amount of the bet in currency main units (note: not cents). Currency selected by the client during the
+	// `Create New Game` call. We support 2 decimal places for all fiat currencies.
+	Amount string `json:"amount"`
+
+	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
+	SessionID string `json:"sessionID"`
+
+	// TxID Unique ID for the bet (internal) on Swipe Games' side.
+	// Could be used as idempotency key.
+	TxID openapi_types.UUID `json:"txID"`
+
+	// Type The type of the bet.
+	// ** 'Regular' ** type means regular bet,
+	// ** 'Free' ** type means free bet (see Free Rounds section).
+	Type BetRequestType `json:"type"`
+}
+
+// BetRequestType The type of the bet.
+// ** 'Regular' ** type means regular bet,
+// ** 'Free' ** type means free bet (see Free Rounds section).
+type BetRequestType string
+
+// BetResponse defines model for BetResponse.
+type BetResponse struct {
+	// Balance The user's balance in selected currency main units (note: not cents) after the bet is applied.
+	// Currency selected by the client during the `Create New Game` call.
+	// We support 2 decimal places for all fiat currencies.
+	Balance string `json:"balance"`
+
+	// TxID Unique ID for the bet on your side. This is required for further tracking/debugging pusposes.
+	TxID string `json:"txID"`
+}
+
+// RefundRequest defines model for RefundRequest.
+type RefundRequest struct {
+	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
+	SessionID *string `json:"sessionID,omitempty"`
+
+	// TxID Unique ID for the refund (internal) on Swipe Games' side.
+	// Could be used as idempotency key.
+	TxID openapi_types.UUID `json:"txID"`
+}
+
+// RefundResponse defines model for RefundResponse.
+type RefundResponse struct {
+	// Balance The user's balance in selected currency main units (note: not cents) after the refund is applied.
+	// Currency selected by the client during the `Create New Game` call.
+	// We support 2 decimal places for all fiat currencies.
+	Balance string `json:"balance"`
+
+	// TxID Unique ID for the refund on your side. This is required for further tracking/debugging pusposes.
+	TxID string `json:"txID"`
+}
+
+// WinRequest defines model for WinRequest.
+type WinRequest struct {
+	// Amount The amount of the bet in currency main units (note: not cents). Currency selected by the client during the
+	// `Create New Game` call. We support 2 decimal places for all fiat currencies.
+	Amount string `json:"amount"`
+
+	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
+	SessionID string `json:"sessionID"`
+
+	// TxID Unique ID for the win (internal) on Swipe Games' side.
+	// Could be used as idempotency key.
+	TxID openapi_types.UUID `json:"txID"`
+
+	// Type The type of the win.
+	// ** 'Regular' ** type means regular bet,
+	// ** 'Free' ** type means free bet (see Free Rounds section).
+	Type WinRequestType `json:"type"`
+}
+
+// WinRequestType The type of the win.
+// ** 'Regular' ** type means regular bet,
+// ** 'Free' ** type means free bet (see Free Rounds section).
+type WinRequestType string
+
+// WinResponse defines model for WinResponse.
+type WinResponse struct {
+	// Balance The user's balance in selected currency main units (note: not cents) after the win is applied.
+	// Currency selected by the client during the `Create New Game` call.
+	// We support 2 decimal places for all fiat currencies.
+	Balance string `json:"balance"`
+
+	// TxID Unique ID for the win on your side. This is required for further tracking/debugging pusposes.
+	TxID string `json:"txID"`
 }
 
 // GetBalanceParams defines parameters for GetBalance.
@@ -37,6 +141,33 @@ type GetBalanceParams struct {
 	// XREQUESTSIGN Request signature (read more in the Authentication section)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
+
+// PostBetParams defines parameters for PostBet.
+type PostBetParams struct {
+	// XREQUESTSIGN Request signature (read more in the Authentication section)
+	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
+}
+
+// PostRefundParams defines parameters for PostRefund.
+type PostRefundParams struct {
+	// XREQUESTSIGN Request signature (read more in the Authentication section)
+	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
+}
+
+// PostWinParams defines parameters for PostWin.
+type PostWinParams struct {
+	// XREQUESTSIGN Request signature (read more in the Authentication section)
+	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
+}
+
+// PostBetJSONRequestBody defines body for PostBet for application/json ContentType.
+type PostBetJSONRequestBody = BetRequest
+
+// PostRefundJSONRequestBody defines body for PostRefund for application/json ContentType.
+type PostRefundJSONRequestBody = RefundRequest
+
+// PostWinJSONRequestBody defines body for PostWin for application/json ContentType.
+type PostWinJSONRequestBody = WinRequest
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -113,10 +244,97 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 type ClientInterface interface {
 	// GetBalance request
 	GetBalance(ctx context.Context, params *GetBalanceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostBetWithBody request with any body
+	PostBetWithBody(ctx context.Context, params *PostBetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostBet(ctx context.Context, params *PostBetParams, body PostBetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostRefundWithBody request with any body
+	PostRefundWithBody(ctx context.Context, params *PostRefundParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostRefund(ctx context.Context, params *PostRefundParams, body PostRefundJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostWinWithBody request with any body
+	PostWinWithBody(ctx context.Context, params *PostWinParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostWin(ctx context.Context, params *PostWinParams, body PostWinJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetBalance(ctx context.Context, params *GetBalanceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetBalanceRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostBetWithBody(ctx context.Context, params *PostBetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostBetRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostBet(ctx context.Context, params *PostBetParams, body PostBetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostBetRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostRefundWithBody(ctx context.Context, params *PostRefundParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostRefundRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostRefund(ctx context.Context, params *PostRefundParams, body PostRefundJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostRefundRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostWinWithBody(ctx context.Context, params *PostWinParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostWinRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostWin(ctx context.Context, params *PostWinParams, body PostWinJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostWinRequest(c.Server, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -185,6 +403,165 @@ func NewGetBalanceRequest(server string, params *GetBalanceParams) (*http.Reques
 	return req, nil
 }
 
+// NewPostBetRequest calls the generic PostBet builder with application/json body
+func NewPostBetRequest(server string, params *PostBetParams, body PostBetJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostBetRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewPostBetRequestWithBody generates requests for PostBet with any type of body
+func NewPostBetRequestWithBody(server string, params *PostBetParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/bet")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		var headerParam0 string
+
+		headerParam0, err = runtime.StyleParamWithLocation("simple", false, "X-REQUEST-SIGN", runtime.ParamLocationHeader, params.XREQUESTSIGN)
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Set("X-REQUEST-SIGN", headerParam0)
+
+	}
+
+	return req, nil
+}
+
+// NewPostRefundRequest calls the generic PostRefund builder with application/json body
+func NewPostRefundRequest(server string, params *PostRefundParams, body PostRefundJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostRefundRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewPostRefundRequestWithBody generates requests for PostRefund with any type of body
+func NewPostRefundRequestWithBody(server string, params *PostRefundParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/refund")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		var headerParam0 string
+
+		headerParam0, err = runtime.StyleParamWithLocation("simple", false, "X-REQUEST-SIGN", runtime.ParamLocationHeader, params.XREQUESTSIGN)
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Set("X-REQUEST-SIGN", headerParam0)
+
+	}
+
+	return req, nil
+}
+
+// NewPostWinRequest calls the generic PostWin builder with application/json body
+func NewPostWinRequest(server string, params *PostWinParams, body PostWinJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostWinRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewPostWinRequestWithBody generates requests for PostWin with any type of body
+func NewPostWinRequestWithBody(server string, params *PostWinParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/win")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		var headerParam0 string
+
+		headerParam0, err = runtime.StyleParamWithLocation("simple", false, "X-REQUEST-SIGN", runtime.ParamLocationHeader, params.XREQUESTSIGN)
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Set("X-REQUEST-SIGN", headerParam0)
+
+	}
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -230,6 +607,21 @@ func WithBaseURL(baseURL string) ClientOption {
 type ClientWithResponsesInterface interface {
 	// GetBalanceWithResponse request
 	GetBalanceWithResponse(ctx context.Context, params *GetBalanceParams, reqEditors ...RequestEditorFn) (*GetBalanceResponse, error)
+
+	// PostBetWithBodyWithResponse request with any body
+	PostBetWithBodyWithResponse(ctx context.Context, params *PostBetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostBetResponse, error)
+
+	PostBetWithResponse(ctx context.Context, params *PostBetParams, body PostBetJSONRequestBody, reqEditors ...RequestEditorFn) (*PostBetResponse, error)
+
+	// PostRefundWithBodyWithResponse request with any body
+	PostRefundWithBodyWithResponse(ctx context.Context, params *PostRefundParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostRefundResponse, error)
+
+	PostRefundWithResponse(ctx context.Context, params *PostRefundParams, body PostRefundJSONRequestBody, reqEditors ...RequestEditorFn) (*PostRefundResponse, error)
+
+	// PostWinWithBodyWithResponse request with any body
+	PostWinWithBodyWithResponse(ctx context.Context, params *PostWinParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostWinResponse, error)
+
+	PostWinWithResponse(ctx context.Context, params *PostWinParams, body PostWinJSONRequestBody, reqEditors ...RequestEditorFn) (*PostWinResponse, error)
 }
 
 type GetBalanceResponse struct {
@@ -257,6 +649,84 @@ func (r GetBalanceResponse) StatusCode() int {
 	return 0
 }
 
+type PostBetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BetResponse
+	JSON400      *externalRef0.ErrorResponseWithAction
+	JSON401      *externalRef0.ErrorResponseWithAction
+	JSON404      *externalRef0.ErrorResponseWithAction
+	JSON500      *externalRef0.ErrorResponseWithAction
+}
+
+// Status returns HTTPResponse.Status
+func (r PostBetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostBetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostRefundResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *RefundResponse
+	JSON400      *externalRef0.ErrorResponseWithAction
+	JSON401      *externalRef0.ErrorResponseWithAction
+	JSON404      *externalRef0.ErrorResponseWithAction
+	JSON500      *externalRef0.ErrorResponseWithAction
+}
+
+// Status returns HTTPResponse.Status
+func (r PostRefundResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostRefundResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostWinResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *WinResponse
+	JSON400      *externalRef0.ErrorResponseWithAction
+	JSON401      *externalRef0.ErrorResponseWithAction
+	JSON404      *externalRef0.ErrorResponseWithAction
+	JSON500      *externalRef0.ErrorResponseWithAction
+}
+
+// Status returns HTTPResponse.Status
+func (r PostWinResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostWinResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // GetBalanceWithResponse request returning *GetBalanceResponse
 func (c *ClientWithResponses) GetBalanceWithResponse(ctx context.Context, params *GetBalanceParams, reqEditors ...RequestEditorFn) (*GetBalanceResponse, error) {
 	rsp, err := c.GetBalance(ctx, params, reqEditors...)
@@ -264,6 +734,57 @@ func (c *ClientWithResponses) GetBalanceWithResponse(ctx context.Context, params
 		return nil, err
 	}
 	return ParseGetBalanceResponse(rsp)
+}
+
+// PostBetWithBodyWithResponse request with arbitrary body returning *PostBetResponse
+func (c *ClientWithResponses) PostBetWithBodyWithResponse(ctx context.Context, params *PostBetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostBetResponse, error) {
+	rsp, err := c.PostBetWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostBetResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostBetWithResponse(ctx context.Context, params *PostBetParams, body PostBetJSONRequestBody, reqEditors ...RequestEditorFn) (*PostBetResponse, error) {
+	rsp, err := c.PostBet(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostBetResponse(rsp)
+}
+
+// PostRefundWithBodyWithResponse request with arbitrary body returning *PostRefundResponse
+func (c *ClientWithResponses) PostRefundWithBodyWithResponse(ctx context.Context, params *PostRefundParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostRefundResponse, error) {
+	rsp, err := c.PostRefundWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostRefundResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostRefundWithResponse(ctx context.Context, params *PostRefundParams, body PostRefundJSONRequestBody, reqEditors ...RequestEditorFn) (*PostRefundResponse, error) {
+	rsp, err := c.PostRefund(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostRefundResponse(rsp)
+}
+
+// PostWinWithBodyWithResponse request with arbitrary body returning *PostWinResponse
+func (c *ClientWithResponses) PostWinWithBodyWithResponse(ctx context.Context, params *PostWinParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostWinResponse, error) {
+	rsp, err := c.PostWinWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostWinResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostWinWithResponse(ctx context.Context, params *PostWinParams, body PostWinJSONRequestBody, reqEditors ...RequestEditorFn) (*PostWinResponse, error) {
+	rsp, err := c.PostWin(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostWinResponse(rsp)
 }
 
 // ParseGetBalanceResponse parses an HTTP response from a GetBalanceWithResponse call
@@ -313,11 +834,182 @@ func ParseGetBalanceResponse(rsp *http.Response) (*GetBalanceResponse, error) {
 	return response, nil
 }
 
+// ParsePostBetResponse parses an HTTP response from a PostBetWithResponse call
+func ParsePostBetResponse(rsp *http.Response) (*PostBetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostBetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BetResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostRefundResponse parses an HTTP response from a PostRefundWithResponse call
+func ParsePostRefundResponse(rsp *http.Response) (*PostRefundResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostRefundResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RefundResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostWinResponse parses an HTTP response from a PostWinWithResponse call
+func ParsePostWinResponse(rsp *http.Response) (*PostWinResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostWinResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest WinResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest externalRef0.ErrorResponseWithAction
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// Get balance
 	// (GET /balance)
 	GetBalance(ctx echo.Context, params GetBalanceParams) error
+	// Bet
+	// (POST /bet)
+	PostBet(ctx echo.Context, params PostBetParams) error
+	// Refund
+	// (POST /refund)
+	PostRefund(ctx echo.Context, params PostRefundParams) error
+	// Win
+	// (POST /win)
+	PostWin(ctx echo.Context, params PostWinParams) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -362,6 +1054,99 @@ func (w *ServerInterfaceWrapper) GetBalance(ctx echo.Context) error {
 	return err
 }
 
+// PostBet converts echo context to params.
+func (w *ServerInterfaceWrapper) PostBet(ctx echo.Context) error {
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params PostBetParams
+
+	headers := ctx.Request().Header
+	// ------------- Required header parameter "X-REQUEST-SIGN" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-REQUEST-SIGN")]; found {
+		var XREQUESTSIGN string
+		n := len(valueList)
+		if n != 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for X-REQUEST-SIGN, got %d", n))
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-REQUEST-SIGN", valueList[0], &XREQUESTSIGN, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter X-REQUEST-SIGN: %s", err))
+		}
+
+		params.XREQUESTSIGN = XREQUESTSIGN
+	} else {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter X-REQUEST-SIGN is required, but not found"))
+	}
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.PostBet(ctx, params)
+	return err
+}
+
+// PostRefund converts echo context to params.
+func (w *ServerInterfaceWrapper) PostRefund(ctx echo.Context) error {
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params PostRefundParams
+
+	headers := ctx.Request().Header
+	// ------------- Required header parameter "X-REQUEST-SIGN" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-REQUEST-SIGN")]; found {
+		var XREQUESTSIGN string
+		n := len(valueList)
+		if n != 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for X-REQUEST-SIGN, got %d", n))
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-REQUEST-SIGN", valueList[0], &XREQUESTSIGN, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter X-REQUEST-SIGN: %s", err))
+		}
+
+		params.XREQUESTSIGN = XREQUESTSIGN
+	} else {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter X-REQUEST-SIGN is required, but not found"))
+	}
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.PostRefund(ctx, params)
+	return err
+}
+
+// PostWin converts echo context to params.
+func (w *ServerInterfaceWrapper) PostWin(ctx echo.Context) error {
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params PostWinParams
+
+	headers := ctx.Request().Header
+	// ------------- Required header parameter "X-REQUEST-SIGN" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-REQUEST-SIGN")]; found {
+		var XREQUESTSIGN string
+		n := len(valueList)
+		if n != 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for X-REQUEST-SIGN, got %d", n))
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-REQUEST-SIGN", valueList[0], &XREQUESTSIGN, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter X-REQUEST-SIGN: %s", err))
+		}
+
+		params.XREQUESTSIGN = XREQUESTSIGN
+	} else {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter X-REQUEST-SIGN is required, but not found"))
+	}
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.PostWin(ctx, params)
+	return err
+}
+
 // This is a simple interface which specifies echo.Route addition functions which
 // are present on both echo.Echo and echo.Group, since we want to allow using
 // either of them for path registration
@@ -391,33 +1176,50 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	}
 
 	router.GET(baseURL+"/balance", wrapper.GetBalance)
+	router.POST(baseURL+"/bet", wrapper.PostBet)
+	router.POST(baseURL+"/refund", wrapper.PostRefund)
+	router.POST(baseURL+"/win", wrapper.PostWin)
 
 }
 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/8xW0W/buA/+Vwj9fsDag+um2+4lb72uN+Rl660bdsBSrLTF2FplypPkZkGR//1A2U7S",
-	"LBt2d3u4vCSRKPEj+fGjHlTpmtYxcQxq+qBCWVOD6edvaJFLekOhdRxIllrvWvLRUDIoegP5qSmU3rTR",
-	"OFZT9bYm6AL5JwEGGzAMgSyVkTSUnffE5QoaNAwdmxjgiF2kKbCLUAqW4xwuRrPNwWIFsSYorSGOoDtv",
-	"uJKVOd9eeMJI8IqW8BIbuoUSrc3hPUHo2tb5CE9BU2katNBaLCnAwnlAa2FhMI6YDIUcfnd+zipT9AWb",
-	"1pKaqrPJJD+bqEzFVSv/QxTXar3OlKfPnfGk1fTDJiE3G0NXfKIyqnWmsDUf78/yycfSNY3jk23aP156",
-	"7/xumh9n8yIdABIr8INZQn+9NC2leANcdYU1JZxfzXKV7RVKU0Rjw4FCUVmzKdHCYJKulRwnbzlcuM5q",
-	"KFI5ddrUVHRVZbjKINRpV2pWkPxbMkSXjkv186/zlamGQsDqQJTnUHhDC9hZBbfYYhEGXXJlTah3YP2I",
-	"070ijQiyTVr+Tbnem1ifl30MDwqtfb1Q0w8P6v+eFmqq/ne6PXg69NbpD1Nhne23HG5cPc7emyHAsTd6",
-	"u3zOv8DtEPyJp4WnUN/CSUpbAIRhCYouRrfJY2txRT6Hq/QNJXJqS8fRcEewNLF2XRwPDz0IFTYELVaU",
-	"zxnkM4tPgtRk0VlY1sRbq0AhSH3pS2s8BRg4l/ZMSITCezQWC0uAvGqcpxxei46IA7EZnJPOBm+bC5bG",
-	"WqGGJ+tQkwZkvROWhLONRdYMVzm8rU2AxlR1TO6Xzt/1oKvUXeiJn0SgpiCtSQ8+TR9TicGwyySLYgiu",
-	"JSYtuwhMS4hYSIhLw9otMwgmCWLskXoS8y18rNBI4UR/uGuEsXsF3OHrDsX3GHyT7THk8vvyMeNIlcfU",
-	"duca20h+V1JgxoBaG9lHOxKlPKRM2ZxNzxY0HAB5ICMsDFmpBMahyQsK6Rp/kLxwVI5d7hoTjyUna4nU",
-	"8MIdmjkmCDHkwkPBnF/NvqeZc55FOZ50Ljpo8E6A3ZMPlGZJkFWzvTjkc76yhIHAyJRoBHkUEOLJMaxc",
-	"5yEYTXJwHELf9C6yZWIaNj9eFpUpAdgn4Cyf5BORLuETtkZN1bN8kj+TaYCxTvJxujOyK4rfyCKxbp3h",
-	"R/moKKbUjvN8kOYkuQm9qFTCOdNqql5SHJ4Pyb3HhiL5kKTxa+WiECGYijF2nuDIE2qQnh8b7LyLNXE0",
-	"ZZ+IQIkgx0q4oKaqJtTkVaYYG0ngnydvLv94d3n99uR69vKV2pX/6DvKhkeORP9VH+3Dux6kavYCjuhL",
-	"JM9ojwe5MKEv8tYmPTi6kLpb2t/axJ0Cy7vEn5Xr8hH15478agt60MTZi7+F90aM+75LBX46mciXdB9x",
-	"qi+2rR0Sd/op9LNje9/3xtT++y813+PsuDsh3PPJ2U9z+g/m7gFc773jakupHuTz/xjId4F8Gqa9bDya",
-	"jLMXaQwtXMda0P/6E+v6c9Bfk78nP2i/K9P7WadJFLqmQb/qVWAUDNE3rEQA0uooDjfr9Xr9VwAAAP//",
-	"Pi4UaoQMAAA=",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

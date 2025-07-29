@@ -3,7 +3,7 @@ info:
   title: Swipe Games Integration Adapter Public API
   description: |
     This is the Integration Adapter API for Swipe Games Public API.
-    It is used to make reverse calls to integrations.
+    It is used to make reverse calls to integrations working through Public API.
     Please implement this API on your side to support Swipe Games Public API.
 
   version: 1.0.0
@@ -15,7 +15,9 @@ paths:
       tags:
         - Get Balance
       description: |
-        This endpoint is used to get the balance of the user.
+        This endpoint is used to get the player's balance.
+        Please make sure that this endpoint responds as quickly as possible,
+        so player's experience is not affected.
 
       parameters:
         - name: X-REQUEST-SIGN
@@ -27,7 +29,9 @@ paths:
         - name: sessionID
           in: query
           required: true
-          description: Session ID (external). This is your Session ID. We use it in all callbacks to you.
+          description: |
+            Session ID (external). Provided by client via `Create New Game` call.
+            This is your Session ID. We use it in all reverse calls to you.
           schema:
             type: string
 
@@ -66,13 +70,12 @@ paths:
       summary: Bet
       description: |
         This endpoint is used to place a bet in the game.
-        Every time player places a bet,
-        we send a request to this endpoint and wait for the answer (note: sync request).
+        Every time player places a bet, we send a request to this endpoint and wait for the answer (**sync request**).
 
         Please make sure that this endpoint responds as quickly as possible,
-          so player's experience is not affected.
+        so player's experience is not affected.
 
-        In case we receive not 200 (OK) response or 5 seconds timeout we will send following refund request.
+        In case we receive not 200 (OK) response or 5 seconds timeout we will send following `refund request.
       parameters:
         - name: X-REQUEST-SIGN
           in: header
@@ -157,25 +160,82 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponseWithAction"
         401:
           description: Wrong signature
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponseWithAction"
         404:
-          description: Requested user/session ID not found
+          description: User with this game session ID not found
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponseWithAction"
         500:
           description: Server error
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponseWithAction"
+
+  /refund:
+    post:
+      tags:
+        - Refund
+      summary: Refund
+      description: |
+        This endpoint is used to place a refund for bet or win action.
+        We send refund to the client side in case of Bet 500 error or timeout, also
+        in case when player cancels the game.
+
+        After timeout or any error this request will be retrying until we receive 200(OK) response.
+      parameters:
+        - name: X-REQUEST-SIGN
+          in: header
+          required: true
+          description: Request signature (read more in the Authentication section)
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefundRequest"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RefundResponse"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponseWithAction"
+        401:
+          description: Wrong signature
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponseWithAction"
+        404:
+          description: User with this game session ID not found
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponseWithAction"
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponseWithAction"
 
 components:
   schemas:
@@ -186,8 +246,9 @@ components:
       properties:
         balance:
           description: |
-            The user's balance in selected currency main units (note: not cents). Currency selected by the client during the
-            `Create New Game` call. We support 2 decimal places for all fiat currencies.
+            The player's balance in selected currency **main** units (**not cents**).
+            Currency selected by the client during the `Create New Game` call.
+            We support 2 decimal places for all fiat currencies.
           type: string
           example: "100.10"
     BetRequest:
@@ -201,8 +262,8 @@ components:
         type:
           description: |
             The type of the bet.
-            ** 'Regular' ** type means regular bet,
-            ** 'Free' ** type means free bet (see Free Rounds section).
+            - `regular` type means regular bet,
+            - `free` type means free bet (see Free Rounds section).
           type: string
           enum:
             - regular
@@ -215,8 +276,9 @@ components:
           example: some_external_session_id
         amount:
           description: |
-            The amount of the bet in currency main units (note: not cents). Currency selected by the client during the
-            `Create New Game` call. We support 2 decimal places for all fiat currencies.
+            The amount of the bet in currency **main** units (**not cents**).
+            Currency selected by the client during the `Create New Game` call.
+            We support 2 decimal places for all fiat currencies.
           type: string
           example: "100.10"
         txID:
@@ -235,7 +297,7 @@ components:
       properties:
         balance:
           description: |
-            The user's balance in selected currency main units (note: not cents) after the bet is applied.
+            The player's balance in selected currency **main** units (note: not cents) after the bet is applied.
             Currency selected by the client during the `Create New Game` call.
             We support 2 decimal places for all fiat currencies.
           type: string
@@ -256,26 +318,28 @@ components:
         type:
           description: |
             The type of the win.
-            ** 'Regular' ** type means regular bet,
-            ** 'Free' ** type means free bet (see Free Rounds section).
+            - `regular` type means regular bet,
+            - `free` type means free bet (see Free Rounds section).
           type: string
           enum:
             - regular
             - free
           example: regular
-        sessionId:
+        sessionID:
           type: string
           description: |
-            The Game Session's ID (external). Provided by client via Create New Game request.
+            The Game Session's ID (external). Provided by client via `Create New Game` call.
           example: some_external_session_id
         amount:
-          description: The amount of the bet in currency units.
-          type: string
-          example: "100.00"
-        tx_id:
           description: |
-            Unique ID for the win (internal) on Playhub side.
-            Could be used as idempotency key (within a single round).
+            The amount of the bet in currency **main** units (note: not cents). Currency selected by the client during the
+            `Create New Game` call. We support 2 decimal places for all fiat currencies.
+          type: string
+          example: "100.10"
+        txID:
+          description: |
+            Unique ID for the win (internal) on Swipe Games' side.
+            Could be used as idempotency key.
           type: string
           format: uuid
           example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
@@ -288,12 +352,49 @@ components:
       properties:
         balance:
           description: |
-            The user's balance in selected currency main units (note: not cents) after the win is applied.
+            The player's balance in selected currency **main** units (note: not cents) after the win is applied.
             Currency selected by the client during the `Create New Game` call.
             We support 2 decimal places for all fiat currencies.
           type: string
           example: "100.10"
         txID:
-          description: Unique ID for the bet on your side. This is required for further tracking/debugging pusposes.
+          description: Unique ID for the win on your side. This is required for further tracking/debugging pusposes.
+          type: string
+          example: "some_external_bet_tx_id"
+
+    RefundRequest:
+      type: object
+      required:
+        - sessionId
+        - txID
+      properties:
+        sessionID:
+          type: string
+          description: |
+            The Game Session's ID (external). Provided by client via `Create New Game` call.
+          example: some_external_session_id
+        txID:
+          description: |
+            Unique ID for the refund (internal) on Swipe Games' side.
+            Could be used as idempotency key.
+          type: string
+          format: uuid
+          example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
+
+    RefundResponse:
+      type: object
+      required:
+        - balance
+        - txID
+      properties:
+        balance:
+          description: |
+            The user's balance in selected currency **main** units (note: not cents) after the refund is applied.
+            Currency selected by the client during the `Create New Game` call.
+            We support 2 decimal places for all fiat currencies.
+          type: string
+          example: "100.10"
+        txID:
+          description: Unique ID for the refund on your side. This is required for further tracking/debugging pusposes.
           type: string
           example: "some_external_bet_tx_id"

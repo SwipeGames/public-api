@@ -18,6 +18,42 @@ const sidebar: SidebarsConfig = {
         },
       ],
     },
+    {
+      type: "category",
+      label: "Bet",
+      items: [
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/bet",
+          label: "Bet",
+          className: "api-method post",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Win",
+      items: [
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/win",
+          label: "Win",
+          className: "api-method post",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Refund",
+      items: [
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/refund",
+          label: "Refund",
+          className: "api-method post",
+        },
+      ],
+    },
   ],
 };
 
