@@ -250,6 +250,7 @@ components:
             Currency selected by the client during the `Create New Game` call.
             We support 2 decimal places for all fiat currencies.
           type: string
+          pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
     BetRequest:
       type: object
@@ -280,6 +281,7 @@ components:
             Currency selected by the client during the `Create New Game` call.
             We support 2 decimal places for all fiat currencies.
           type: string
+          pattern: '^([1-9]\d*)(\.\d+)?$'
           example: "100.10"
         txID:
           description: |
@@ -301,6 +303,7 @@ components:
             Currency selected by the client during the `Create New Game` call.
             We support 2 decimal places for all fiat currencies.
           type: string
+          pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
         txID:
           description: Unique ID for the bet on your side. This is required for further tracking/debugging pusposes.
@@ -335,6 +338,7 @@ components:
             The amount of the bet in currency **main** units (note: not cents). Currency selected by the client during the
             `Create New Game` call. We support 2 decimal places for all fiat currencies.
           type: string
+          pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
         txID:
           description: |
@@ -356,6 +360,7 @@ components:
             Currency selected by the client during the `Create New Game` call.
             We support 2 decimal places for all fiat currencies.
           type: string
+          pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
         txID:
           description: Unique ID for the win on your side. This is required for further tracking/debugging pusposes.
@@ -393,6 +398,7 @@ components:
             Currency selected by the client during the `Create New Game` call.
             We support 2 decimal places for all fiat currencies.
           type: string
+          pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
         txID:
           description: Unique ID for the refund on your side. This is required for further tracking/debugging pusposes.
