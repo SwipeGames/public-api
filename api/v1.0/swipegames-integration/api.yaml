@@ -13,7 +13,7 @@ paths:
     get:
       summary: Get balance
       tags:
-        - Get Balance
+        - Reverse Calls
       description: |
         This endpoint is used to get the player's balance.
         Please make sure that this endpoint responds as quickly as possible,
@@ -66,7 +66,7 @@ paths:
   /bet:
     post:
       tags:
-        - Bet
+        - Reverse Calls
       summary: Bet
       description: |
         This endpoint is used to place a bet in the game.
@@ -125,7 +125,7 @@ paths:
   /win:
     post:
       tags:
-        - Win
+        - Reverse Calls
       summary: Win
       description: |
         This endpoint is used to place a win in the game.
@@ -183,7 +183,7 @@ paths:
   /refund:
     post:
       tags:
-        - Refund
+        - Reverse Calls
       summary: Refund
       description: |
         This endpoint is used to place a refund for bet or win action.

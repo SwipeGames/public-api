@@ -173,7 +173,7 @@ const config: Config = {
             downloadUrl: "https://raw.githubusercontent.com/swipegames/public-api/main/api/v1.0/core/api.yaml",
             sidebarOptions: {
               groupPathsBy: "tag",
-              categoryLinkSource: "tag",
+              categoryLinkSource: "info",
             },
           } satisfies OpenApiPlugin.Options,
           swipegamesintegrationv10: {
@@ -183,7 +183,7 @@ const config: Config = {
               "https://raw.githubusercontent.com/swipegames/public-api/main/api/v1.0/swipegames-integration/api.yaml",
             sidebarOptions: {
               groupPathsBy: "tag",
-              categoryLinkSource: "tag",
+              categoryLinkSource: "info",
             },
           } satisfies OpenApiPlugin.Options,
         } satisfies Plugin.PluginOptions,
