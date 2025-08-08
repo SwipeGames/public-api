@@ -259,6 +259,7 @@ components:
         - sessionID
         - amount
         - txID
+        - roundID
       properties:
         type:
           description: |
@@ -290,6 +291,19 @@ components:
           type: string
           format: uuid
           example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
+        roundID:
+          description: |
+            Non unique ID for the round (internal) on Swipe Games' side.
+            Could be the same for different games.
+          type: string
+          format: uuid
+          example: "b78e42f8-2041-482d-9c4b-f2ca79fc75e3"
+        frID:
+          description: |
+            Free Rounds ID (external).
+            This field is provided only for free rounds (where `type` is `free`).
+          type: string
+          example: "some_external_free_rounds_id"
 
     BetResponse:
       type: object
@@ -317,6 +331,7 @@ components:
         - sessionID
         - amount
         - txID
+        - roundID
       properties:
         type:
           description: |
@@ -347,6 +362,19 @@ components:
           type: string
           format: uuid
           example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
+        roundID:
+          description: |
+            Non unique ID for the round (internal) on Swipe Games' side.
+            Could be the same for different games.
+          type: string
+          format: uuid
+          example: "b78e42f8-2041-482d-9c4b-f2ca79fc75e3"
+        frID:
+          description: |
+            Free Rounds ID (external).
+            This field is provided only for free rounds (where `type` is `free`).
+          type: string
+          example: "some_external_free_rounds_id"
 
     WinResponse:
       type: object
@@ -372,6 +400,8 @@ components:
       required:
         - sessionID
         - txID
+        - origTxID
+        - amount
       properties:
         sessionID:
           type: string
@@ -385,6 +415,22 @@ components:
           type: string
           format: uuid
           example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
+        origTxID:
+          description: |
+            Original transaction ID (external).
+            This is the ID of the transaction on your side that should be refunded.
+          type: string
+          format: uuid
+          example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
+        amount:
+          description: |
+            The amount of the refund in currency **main** units (note: not cents).
+            Currency selected by the client during the `Create New Game` call.
+            We support 2 decimal places for all fiat currencies.
+            Refunds are always done for the whole bet amount.
+          type: string
+          pattern: '^(0|[1-9]\d*)(\.\d+)?$'
+          example: "100.10"
 
     RefundResponse:
       type: object
