@@ -25,13 +25,18 @@ components:
             action:
               description: |
                 Required client action.
-                - `require-refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
+                - `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
                      It's useful when the game session expires or the game is not available anymore. Once page is refreshed,
                      the game will be reloaded and the player can continue playing. This might not work when games aren't embedded
                      in the casino, but are opened in a new tab or window, since it will reopen the game again.
               type: string
               enum:
-                - "require-refresh"
+                - "refresh"
+            actionData:
+              description: |
+                Client action related data.
+                You can pass additional data to the client action. Not all actions require this field.
+              type: string
 
     User:
       type: object

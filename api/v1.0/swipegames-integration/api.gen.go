@@ -37,15 +37,17 @@ const (
 
 // BalanceResponse defines model for BalanceResponse.
 type BalanceResponse struct {
-	// Balance The user's balance in selected currency main units (note: not cents). Currency selected by the client during the
-	// `Create New Game` call. We support 2 decimal places for all fiat currencies.
+	// Balance The player's balance in selected currency **main** units (**not cents**).
+	// Currency selected by the client during the `Create New Game` call.
+	// We support 2 decimal places for all fiat currencies.
 	Balance string `json:"balance"`
 }
 
 // BetRequest defines model for BetRequest.
 type BetRequest struct {
-	// Amount The amount of the bet in currency main units (note: not cents). Currency selected by the client during the
-	// `Create New Game` call. We support 2 decimal places for all fiat currencies.
+	// Amount The amount of the bet in currency **main** units (**not cents**).
+	// Currency selected by the client during the `Create New Game` call.
+	// We support 2 decimal places for all fiat currencies.
 	Amount string `json:"amount"`
 
 	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
@@ -56,19 +58,19 @@ type BetRequest struct {
 	TxID openapi_types.UUID `json:"txID"`
 
 	// Type The type of the bet.
-	// ** 'Regular' ** type means regular bet,
-	// ** 'Free' ** type means free bet (see Free Rounds section).
+	// - `regular` type means regular bet,
+	// - `free` type means free bet (see Free Rounds section).
 	Type BetRequestType `json:"type"`
 }
 
 // BetRequestType The type of the bet.
-// ** 'Regular' ** type means regular bet,
-// ** 'Free' ** type means free bet (see Free Rounds section).
+// - `regular` type means regular bet,
+// - `free` type means free bet (see Free Rounds section).
 type BetRequestType string
 
 // BetResponse defines model for BetResponse.
 type BetResponse struct {
-	// Balance The user's balance in selected currency main units (note: not cents) after the bet is applied.
+	// Balance The player's balance in selected currency **main** units (note: not cents) after the bet is applied.
 	// Currency selected by the client during the `Create New Game` call.
 	// We support 2 decimal places for all fiat currencies.
 	Balance string `json:"balance"`
@@ -80,7 +82,7 @@ type BetResponse struct {
 // RefundRequest defines model for RefundRequest.
 type RefundRequest struct {
 	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
-	SessionID *string `json:"sessionID,omitempty"`
+	SessionID string `json:"sessionID"`
 
 	// TxID Unique ID for the refund (internal) on Swipe Games' side.
 	// Could be used as idempotency key.
@@ -89,7 +91,7 @@ type RefundRequest struct {
 
 // RefundResponse defines model for RefundResponse.
 type RefundResponse struct {
-	// Balance The user's balance in selected currency main units (note: not cents) after the refund is applied.
+	// Balance The user's balance in selected currency **main** units (note: not cents) after the refund is applied.
 	// Currency selected by the client during the `Create New Game` call.
 	// We support 2 decimal places for all fiat currencies.
 	Balance string `json:"balance"`
@@ -100,7 +102,7 @@ type RefundResponse struct {
 
 // WinRequest defines model for WinRequest.
 type WinRequest struct {
-	// Amount The amount of the bet in currency main units (note: not cents). Currency selected by the client during the
+	// Amount The amount of the bet in currency **main** units (note: not cents). Currency selected by the client during the
 	// `Create New Game` call. We support 2 decimal places for all fiat currencies.
 	Amount string `json:"amount"`
 
@@ -112,19 +114,19 @@ type WinRequest struct {
 	TxID openapi_types.UUID `json:"txID"`
 
 	// Type The type of the win.
-	// ** 'Regular' ** type means regular bet,
-	// ** 'Free' ** type means free bet (see Free Rounds section).
+	// - `regular` type means regular bet,
+	// - `free` type means free bet (see Free Rounds section).
 	Type WinRequestType `json:"type"`
 }
 
 // WinRequestType The type of the win.
-// ** 'Regular' ** type means regular bet,
-// ** 'Free' ** type means free bet (see Free Rounds section).
+// - `regular` type means regular bet,
+// - `free` type means free bet (see Free Rounds section).
 type WinRequestType string
 
 // WinResponse defines model for WinResponse.
 type WinResponse struct {
-	// Balance The user's balance in selected currency main units (note: not cents) after the win is applied.
+	// Balance The player's balance in selected currency **main** units (note: not cents) after the win is applied.
 	// Currency selected by the client during the `Create New Game` call.
 	// We support 2 decimal places for all fiat currencies.
 	Balance string `json:"balance"`
@@ -135,7 +137,8 @@ type WinResponse struct {
 
 // GetBalanceParams defines parameters for GetBalance.
 type GetBalanceParams struct {
-	// SessionID Session ID (external). This is your Session ID. We use it in all callbacks to you.
+	// SessionID Session ID (external). Provided by client via `Create New Game` call.
+	// This is your Session ID. We use it in all reverse calls to you.
 	SessionID string `form:"sessionID" json:"sessionID"`
 
 	// XREQUESTSIGN Request signature (read more in the Authentication section)
@@ -1185,41 +1188,43 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"Bf/19X8CAAD//w+j233jLwAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
