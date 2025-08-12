@@ -417,8 +417,9 @@ components:
           example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
         origTxID:
           description: |
-            Original transaction ID (external).
-            This is the ID of the transaction on your side that should be refunded.
+            Original transaction ID (internal) on Swipe Games' side.
+            This is the ID of the transaction that should be refunded.
+            In some cases this original transaction ID might be not recorded on your side (timeout, server side error, etc).
           type: string
           format: uuid
           example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
