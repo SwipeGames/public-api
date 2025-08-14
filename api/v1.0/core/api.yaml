@@ -179,8 +179,8 @@ components:
           type: string
         sessionID:
           description: |
-            Session ID (game integrator or casino).This is your Session ID. We use
-            it in all callbacks to you. Not required for demo games, since we don't use callbacks for demo games.
+            Session ID (external).This is your Session ID. We use it in all callbacks to you.
+            Not required for demo games, since we don't use callbacks for demo games.
           type: string
         returnURL:
           description: Return URL which we could use to redirect the user after the game is finished/exited.
@@ -214,11 +214,11 @@ components:
       type: object
       required:
         - gameURL
-        - gameSessionID
+        - gsID
       properties:
         gameURL:
           type: string
-        gameSessionID:
+        gsID:
           type: string
           format: uuid
     CreateFreeRoundsRequest:
