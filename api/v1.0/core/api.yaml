@@ -214,11 +214,11 @@ components:
       type: object
       required:
         - gameURL
-        - gameSessionID
+        - gsID
       properties:
         gameURL:
           type: string
-        gameSessionID:
+        gsID:
           type: string
           format: uuid
     CreateFreeRoundsRequest:
