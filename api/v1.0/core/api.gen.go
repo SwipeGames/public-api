@@ -100,8 +100,8 @@ type CreateNewGameRequest struct {
 	// ReturnURL Return URL which we could use to redirect the user after the game is finished/exited. If you don't provide this URL, return button in the game will be disabled. Please make sure you provide this URL when using redirect to open the game, otherwise player cannot
 	ReturnURL string `json:"returnURL"`
 
-	// SessionID Session ID (game integrator or casino).This is your Session ID. We use
-	// it in all callbacks to you. Not required for demo games, since we don't use callbacks for demo games.
+	// SessionID Session ID (external).This is your Session ID. We use it in all callbacks to you.
+	// Not required for demo games, since we don't use callbacks for demo games.
 	SessionID *string            `json:"sessionID,omitempty"`
 	User      *externalRef0.User `json:"user,omitempty"`
 }
@@ -953,24 +953,23 @@ var swaggerSpec = []string{
 	"vvFWl7utxEUdb95bZYUngMFlxUlbFxt7R+Kh+4kd3Tqd81jWE6mwQS9LZAZdYejy4nQd2oV/BZcXpzCf",
 	"yXjGPRHrQiU+106DwUQajJ1HwvMcxNShaQGbSpJ2hskQ76XDxHcMF1Ki6VU9nkKdXV6c9iDggUnhnKaK",
 	"nVt9lUjLIy4ZwLlCYREycYtgC4Pe8KrJMC4LKyltANagc1wa74F2MzRzabHSHbEg0q4rmRatlZq66nYc",
-	"Xi11alcnbg+qLPsmWn5T9dEVPdJIcKYdVPPD05HnJ1/lPbCSSWqOZXw5UUsL7cUbip/zyBv7h8FpdBD9",
-	"NlyegIbl8Wcocvn5bnew8znWWaapv1zy+ZI/3ygTgjwou76k+mYNNjqlpSLKjnzCfNwkFdhnWeXrLGRD",
-	"Lp83tyuL5fdd2I5Q4ZPOiC98LHveNKnl0Q8+P30gZGaWCbeCtwtZYR33dDWENtTk8xTYCyB4XiW0yrur",
-	"Dh7pl2NjtGmW7UoN+A8AeRWYcplv5KZ8Oy8mSsbw7nzE/N8urQSdkKrjnPUR4xnJWCgol9TaxnsbwKHn",
-	"+uqkG8hjUqSppLQHdubf8hljgvxvTsxQ5ZhahJuKtURmaK1IO/b5DiZG4hQaTzlTNRqmw2NKlbSzBrCn",
-	"uV3JVoWhV4fmmSm7LBlypYV1Qc50id/wIsgGVgl7u2/e9HdBqHwm+q874zSVxrozkWEnX3W1A4Na6Wef",
-	"Mq88w4irOqQ9B7oFixKP+CcZ3254uX62WQ8uL5I07RD51VzkdB5qg1zRjxU7jGoJYfkgm2tJzjYuZQjn",
-	"1WTMBIm0fU1TnYRtELuZNpU+l471X9R06/EsffMpFo0NuHcHO4MdjgyLCpHL6CDaG+wM9rgZhZv5+hgG",
-	"SH3CeT8tg5frMAzWUhnUS3kobexH1DvyezeYSuvQWP/4hnN6w9R2w1m/CbJJB5Vj0fBpn/cZxm2I8mnQ",
-	"jYaV0hU1DzcD+I8u/F3XuszzHVfKK6fB+rsQ7j8WWbVgY83DIiuIGXli2OoVXaAIsQYx0YVrQagE36fm",
-	"w+ut35Qo+F+/MGq7Ld65BQX/HSWsprV1LUHgM8COOUrRwad1jRtCbGVKwrGG3DI1vhLMu8LNWIXH3k/l",
-	"nqelZBMzFAmaqBeRz2r07/7F8b8uj8cf++PR+7Oo2RD+2FpeInc1z3VYjNb9oZNFYBVySL5IRJ6rEsPw",
-	"L8vovzZMPSbXOq8QHtq9ytD8gzBifMm+3tn5URjKeedBtDOib7mR9nd2X8z1k6dvB5o/jaa0UR3aeE66",
-	"RX8/+M8XDND3oByH5g6TUsdeOCeejG2RZYKnUqmTa/5glhMpt0QUes3TXHTNHw2ZJPuBJAM9sYztmGyC",
-	"YlTDoHIB76V1TABdFLtkk9h/1LGIUkgKUzFIfUuZo5E66YVm9NeXfEDio9GNpH5udGrQ2pvOa2BOjKQC",
-	"kx4fKIG0337XSk9hlfprc8qqiP9FKcION51sns4qP2/X7+/s/y1QnnT0mRfkU3720/FTi0y6OKRBWX7r",
-	"ZTteP/Q2CKkG5W2wt64efvV5x9j+nj7/QTD+PwTE/s7bvy+VCMX1vAiD3f7EeudZZPLw8PDfAAAA//8n",
-	"PZEU9iEAAA==",
+	"Xq1MnSqpvmeWS57WNmfaQTUuPPt4OvJF3QMrmZPmWIaTjS1NtBdvqHVOG+/jHwan0UH023B54BmWp52h",
+	"yOXnu93BzudYZ5mm/nLJ50v+fKMqCGqgbPKS2Zsl12iMlmgoG/AJ43CTMmCfZVGvk44NqXvemK4slt93",
+	"YTtChU86Er7wKex5w6Ouyx98XPpAyEQsE55B3i5khXXcwtXM2VCTzxNcL4DgeZXQKu+uOnikX46N0aZZ",
+	"tis14D8A5FVgymW+kZtq7byYKBnDu/MR0327tBJ0QqqOY9VHjGckY6GgXFJLGe9tAIee2quDbSCPSZGm",
+	"ktIe2Jl/y0eKCfK/OTFFlVNpES4m1hKZobUi7djnO5gYiVNoPOVM1WiYD48pVdLOGsCe5nYlWxWGXh2a",
+	"Z6bssmTIlRbWBTnTpXXDi6ASWBTs7b55098FofKZ6L/ujNNUGuvORIadfNXVDgzq1cbTzfJtU/R1ulbi",
+	"Ec8k49sNL9cPMeth5UWSph1qvgLKiTzUBrmWHytzGNVawfKJNdeSnG3cvhDOq5mYCRJp+z6mOvLaoGoz",
+	"bSohLh0Lvajp1uNZ+ubjKhobcO8OdgY7HBlWDyKX0UG0N9gZ7HEbCjfzlTEMkPqE835aBi/XYQysJTHI",
+	"lPL02diPqHfk924wldahsf7xDQ/SGya1Gz5Y3AR9pIOcsWj4WM/7DIM2RPk0CETDkuiKmqeYAfxHF/5S",
+	"a13P+V4rdZTTYP2lB3ceq6lamfExg9VU0DHyxLDVK7pAEWINYqIL14JQKbtPzYfXW78pUfC/fmHUdlul",
+	"c/MJ/jtKWDZr61pSwGeAHXOUooNP62I2hNjKlIRjsbhlanwlmHeFm7Hcjr2fyj3PSckmZigSNFEvIp/V",
+	"6N/9i+N/XR6PP/bHo/dnUbMh/Pm0vC3uap7rsBit+0Mni8An5JB8kYg8VyWG4V+W0X9tmHpMqHXeFTy0",
+	"e5Wh+QdhuPiSfb2z86MwlJPOg2hnRN9yI+3v7L6Y6yfP3Q40fxpNaaM6tPGcdIv+IvCfLxig70E5Ds0d",
+	"ZqSOvWROPBnbIssEz6NSIdf8wSwnUm6JKPSap7nomj8aMkn2A0kGemIB2zHTBMWohkHfAt5L65gAuih2",
+	"ySax/6hjEaWQFKZikPo6MkcjddILzejvKS1eEZ+KbiT1c6NTg9bedN73cmIkFZj0+OQIpP32u1Z6Cqt0",
+	"X5tTVuX7L0oRdrjpTPN0Vvl5u35/Z/9vgfKko8+8FJ/ys5+On1pk0sUhDcryWy/b8fqht0FINShvg711",
+	"9fCrzzvG9vf0+Q+C8f8hIPZ33v59qUQorudFGOz2J9Y7zyKTh4eH/wYAAP//JGqZtt8hAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

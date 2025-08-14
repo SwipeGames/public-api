@@ -44,7 +44,7 @@ components:
         - id
       properties:
         id:
-          description: User's ID (external for real game, internal for demo game).
+          description: User's ID (external). This is User's ID on your side.
           type: string
         firstName:
           type: string
