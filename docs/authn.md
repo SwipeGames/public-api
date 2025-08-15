@@ -23,7 +23,7 @@ The canonical JSON format requires that:
 -   All string values are enclosed in double quotes.
 -   No whitespace is allowed between keys and values.
 
-### Payload sign (POST requestss) example in `Go`
+### Payload sign (POST requests) example in `Go`
 
 ```go
 // Sign calculates signature for the payload using the token. Payload here is your stringified canonical JSON.
