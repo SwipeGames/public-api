@@ -23,6 +23,8 @@ All settings are done against every `ExtCID`. So if you have multiple clients (c
 
 #### Staging environment
 
+-   18.185.156.20
+
 #### Production environment
 
 ### Rounds, transactions and idempotency
