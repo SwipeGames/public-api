@@ -16,6 +16,4 @@ Please consult with [Game Launch URL](game-launch-url.md) documentation for more
 We have two stable environments you can use for integration and testing:
 
 -   **Staging** - this is a testing environment that is used for integration and testing purposes. It is not intended for production use.  
-    https://staging.0.swipegames.io/api/v1
--   **Production** - this is the production environment that is used for live games and real players.  
-    https://prod.0.swipegames.io/api/v1
+    https://staging.platform.0.swipegames.io/api/v1
