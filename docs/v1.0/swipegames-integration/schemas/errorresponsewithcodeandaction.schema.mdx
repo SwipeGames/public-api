@@ -1,0 +1,39 @@
+---
+id: errorresponsewithcodeandaction
+title: "ErrorResponseWithCodeAndAction"
+description: "Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,"
+sidebar_label: "ErrorResponseWithCodeAndAction"
+hide_title: true
+hide_table_of_contents: true
+schema: true
+sample: {"message":"string","details":"string","code":"game_not_found","action":"refresh","actionData":"string"}
+custom_edit_url: null
+---
+
+import Schema from "@theme/Schema";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"ErrorResponseWithCodeAndAction"}
+>
+</Heading>
+
+
+
+Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,
+it contains an action field that describes the required client action (could be omit). If error code is provided in additional
+client will handle it accordingly and with priority over action.
+You can provide either message or message and code. Code always has
+priority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,
+related to the code. If you provide only message, the client will show it to the player as is.
+
+
+<Schema
+  schema={{"description":"Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,\nit contains an action field that describes the required client action (could be omit). If error code is provided in additional\nclient will handle it accordingly and with priority over action.\nYou can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","allOf":[{"description":"General error response for Swipe Games Public API. Usually used for Public API responses.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"},{"type":"object","properties":{"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]},"action":{"description":"Required client action.\n- `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.\n     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,\n     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded\n     in the casino, but are opened in a new tab or window, since it will reopen the game again.\n","type":"string","enum":["refresh"]},"actionData":{"description":"Client action related data.\nYou can pass additional data to the client action. Not all actions require this field.\n","type":"string"}}}],"title":"ErrorResponseWithCodeAndAction"}}
+  schemaType={"response"}
+>
+  
+</Schema>
+            

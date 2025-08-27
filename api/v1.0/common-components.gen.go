@@ -15,46 +15,14 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 )
 
-// Defines values for ErrorResponseWithActionAction.
-const (
-	Refresh ErrorResponseWithActionAction = "refresh"
-)
-
-// ErrorResponse Common error response for Swipe Games Public API.
+// ErrorResponse General error response for Swipe Games Public API. Usually used for Public API responses.
 type ErrorResponse struct {
 	// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
-	Details string `json:"details"`
+	Details *string `json:"details,omitempty"`
 
 	// Message A brief description of the error in English. Could be shown to the player.
 	Message string `json:"message"`
 }
-
-// ErrorResponseWithAction defines model for ErrorResponseWithAction.
-type ErrorResponseWithAction struct {
-	// Action Required client action.
-	// - `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
-	//      It's useful when the game session expires or the game is not available anymore. Once page is refreshed,
-	//      the game will be reloaded and the player can continue playing. This might not work when games aren't embedded
-	//      in the casino, but are opened in a new tab or window, since it will reopen the game again.
-	Action *ErrorResponseWithActionAction `json:"action,omitempty"`
-
-	// ActionData Client action related data.
-	// You can pass additional data to the client action. Not all actions require this field.
-	ActionData *string `json:"actionData,omitempty"`
-
-	// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
-	Details string `json:"details"`
-
-	// Message A brief description of the error in English. Could be shown to the player.
-	Message string `json:"message"`
-}
-
-// ErrorResponseWithActionAction Required client action.
-//   - `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
-//     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,
-//     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded
-//     in the casino, but are opened in a new tab or window, since it will reopen the game again.
-type ErrorResponseWithActionAction string
 
 // User defines model for User.
 type User struct {
@@ -71,20 +39,13 @@ type User struct {
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/4xV32/bRgz+V4jbgLSA4qAb0Ae/BW0w+KUJ2g7D0BQopaMkrieedkdNNQz/78Od5N9e",
-	"sLzEPn53/D5+JL0xle96LyQazXJjYtVSh/njQwg+fKTYe4mUDizFKnCv7MUszTvfdV6AEgrCDIPaB/g0",
-	"ck/wG3YU4WkoHVdw/7RamML0wfcUlClO7ymyi5dPf6aqFa7QwQzJz2pLU7YFvPODs1ASDJFsDloqh6Zh",
-	"aQqIbY6K14SIrR8F1OfrvcM1hcRE1z2ZpYkaWBqzLUxHMWJzRec9lIGphqNT8PWBDbDAgzSOY3tE7P+l",
-	"3RYm0N8DB7Jm+WXPodiX5uv+ii//okoT0xNf/mBt76uJ6sagc4+1WX7ZmJ8D1WZpfro72Hs3e3t3auy2",
-	"2Jz5gvv3TivxcaYKlWMShQm3eJZb+BaoDhTbb3CbpUdAmI+gHFT9eS3gKf+HCiUZVXlRloFgZG39oLvL",
-	"LE2+1WBH0GNDi2eB9LfSm5jcrwcHY0tyQEWKMXlEP3oOFGHunBzjmNsC/0F2WDoClHXnAy3gUaopQcLM",
-	"yckWc7b9AyM7l+wN5DxasoBij2QlOQct6YylWcDnliN03LSa048+fJ9IN3lGMJDcKFBXkrVk55w8aaow",
-	"svgiVTEBwfckZFMUQWgExTJJHFmsHwuInISwTkwDJfiBPjbIyTBTGJKhSz03az3qtMNMTAa/R8Ur43/c",
-	"A6keqGTBouLiWf70Qy5FjzECWssJlMYZFXeNcNpE8CH54tz8PXmQmw001a5mcnbifTlBZwPytThj+vDy",
-	"hlqJUhMwy7i32CuF460FKzlWsCN/bfkVz8JTKyNLBJRddTJ90BZ13iIlxfxMuDpR8KrarRHfsb5OwreF",
-	"+T1SSD6cDmvlB9GwvrafcwAqbwlWnx7h1zdv396+AXR9i7e/XF2CNYeoH7DLa/AiyvYySyJ1E2H1Hl7R",
-	"D6Ug6F7PDc8RDlEvsPZDgMiWrqZ2+EJm4er7fwTPVijbKzszgVhqb5YyOFeYNBTYs1ma9JuE2sYpsv03",
-	"AAD//x5uNokOBwAA",
+	"H4sIAAAAAAAC/4ySQW/TQBCF/8poLoDkRipIPfhWlarKBSranoDDZj22B9Yzy8xaxary35GdKikkIG7W",
+	"vs/7Pj3tE0YdsgpJcayf0GNPQ1g+r83UPpFnFaf5oCGPxrmwCtZ4Q0IWEtCMgT1z0KrB3SNngpswkMPt",
+	"uEkc4fJ2vYIHH0NKE4xOzQIewv0FvvoiWGE2zWSFyXfNJXDyY4l7ir1wDAmekeXa0tNOawVXOqYGNnTo",
+	"bGgzdh1LV4H3SypaZsJ7fRQouvyeU5jIVlhhmTJhjV6MpcNthQO5h+7EIpewMaYWXpyCtgcbYIFr6RJ7",
+	"/0Ls/2q3FRr9GNmowfrz3uHrHtTNN4pl9ntwslnu9wmjjlJsOra+2gUQtSFY332Ed+cXF2fnEFLuw9nb",
+	"kxO0bF4+hGEZ4Sjl5rhllnrlsH4Pr+lnIZOQ3qzgvmcHdjikKjDpaODc0MnqFP7RLBy//yX8Y0BuTmw3",
+	"QyytYi1jShVqJgmZscb5RYbS+y7Z/goAAP//MZJSIDYDAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

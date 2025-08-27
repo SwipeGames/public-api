@@ -1,0 +1,33 @@
+---
+id: createfreeroundsrequest
+title: "CreateFreeRoundsRequest"
+description: ""
+sidebar_label: "CreateFreeRoundsRequest"
+hide_title: true
+hide_table_of_contents: true
+schema: true
+sample: {"extID":"string","cID":"3fa85f64-5717-4562-b3fc-2c963f66afa6","extCID":"string","gameIDs":["string"],"userIDs":["string"],"currency":"string","quantity":0,"betLine":0,"validFrom":"2024-07-29T15:51:28.071Z","validUntil":"2024-07-29T15:51:28.071Z"}
+custom_edit_url: null
+---
+
+import Schema from "@theme/Schema";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"CreateFreeRoundsRequest"}
+>
+</Heading>
+
+
+
+
+
+<Schema
+  schema={{"type":"object","required":["cID","extID","extCID","currency","quantity","betLine","validFrom"],"properties":{"extID":{"description":"Free rounds ID (external). Used as idempotency key. Same ID can be used to create free rounds only once.\n","type":"string"},"cID":{"description":"Client's ID (internal)","type":"string","format":"uuid"},"extCID":{"description":"External Client's ID (game aggregator or casino)","type":"string"},"gameIDs":{"description":"List of game IDs. If not provided, free rounds will be available for all games.","type":"array","items":{"type":"string"}},"userIDs":{"description":"List of player IDs (external). If not provided, free rounds will be available for all players.","type":"array","items":{"type":"string"}},"currency":{"description":"Currency code in ISO4217","type":"string"},"quantity":{"description":"Number of free rounds.","type":"integer","format":"int32","minimum":1,"maximum":99},"betLine":{"description":"Number of bet line configured for this game/provider.","type":"integer","format":"int32","minimum":1,"maximum":99},"validFrom":{"description":"Start date when free rounds become available.","type":"string","format":"date-time"},"validUntil":{"description":"End date when free rounds become unavailable. If not provided then this campaign never ends.\n","type":"string","format":"date-time"}},"title":"CreateFreeRoundsRequest"}}
+  schemaType={"response"}
+>
+  
+</Schema>
+            

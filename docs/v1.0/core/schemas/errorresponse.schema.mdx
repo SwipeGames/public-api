@@ -1,0 +1,34 @@
+---
+id: errorresponse
+title: "ErrorResponse"
+description: "General error response for Swipe Games Public API. Usually used for Public API responses."
+sidebar_label: "ErrorResponse"
+hide_title: true
+hide_table_of_contents: true
+schema: true
+sample: {"message":"string","details":"string"}
+custom_edit_url: null
+---
+
+import Schema from "@theme/Schema";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"ErrorResponse"}
+>
+</Heading>
+
+
+
+General error response for Swipe Games Public API. Usually used for Public API responses.
+
+
+<Schema
+  schema={{"description":"General error response for Swipe Games Public API. Usually used for Public API responses.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}
+  schemaType={"response"}
+>
+  
+</Schema>
+            

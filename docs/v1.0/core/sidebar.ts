@@ -32,6 +32,54 @@ const sidebar: SidebarsConfig = {
         },
       ],
     },
+    {
+      type: "category",
+      label: "Schemas",
+      items: [
+        {
+          type: "doc",
+          id: "v1.0/core/schemas/createnewgamerequest",
+          label: "CreateNewGameRequest",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/core/schemas/createnewgameresponse",
+          label: "CreateNewGameResponse",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/core/schemas/createfreeroundsrequest",
+          label: "CreateFreeRoundsRequest",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/core/schemas/createfreeroundsresponse",
+          label: "CreateFreeRoundsResponse",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/core/schemas/deletefreeroundsrequest",
+          label: "DeleteFreeRoundsRequest",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/core/schemas/user",
+          label: "User",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/core/schemas/errorresponse",
+          label: "ErrorResponse",
+          className: "schema",
+        },
+      ],
+    },
   ],
 };
 

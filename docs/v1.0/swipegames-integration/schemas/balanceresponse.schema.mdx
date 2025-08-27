@@ -1,0 +1,33 @@
+---
+id: balanceresponse
+title: "BalanceResponse"
+description: ""
+sidebar_label: "BalanceResponse"
+hide_title: true
+hide_table_of_contents: true
+schema: true
+sample: {"balance":"100.10"}
+custom_edit_url: null
+---
+
+import Schema from "@theme/Schema";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"BalanceResponse"}
+>
+</Heading>
+
+
+
+
+
+<Schema
+  schema={{"type":"object","required":["balance"],"properties":{"balance":{"description":"The player's balance in selected currency **main** units (**not cents**).\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n","type":"string","pattern":"^(0|[1-9]\\d*)(\\.\\d+)?$","example":"100.10"}},"title":"BalanceResponse"}}
+  schemaType={"response"}
+>
+  
+</Schema>
+            

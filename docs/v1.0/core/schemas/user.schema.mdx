@@ -1,0 +1,33 @@
+---
+id: user
+title: "User"
+description: ""
+sidebar_label: "User"
+hide_title: true
+hide_table_of_contents: true
+schema: true
+sample: {"id":"string","firstName":"string","lastName":"string","nickName":"string","country":"string"}
+custom_edit_url: null
+---
+
+import Schema from "@theme/Schema";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"User"}
+>
+</Heading>
+
+
+
+
+
+<Schema
+  schema={{"type":"object","required":["id"],"properties":{"id":{"description":"User's ID (external). This is User's ID on your side.","type":"string"},"firstName":{"type":"string"},"lastName":{"type":"string"},"nickName":{"type":"string"},"country":{"description":"Country code ISO 3166-1 alpha-2.","type":"string"}},"title":"User"}}
+  schemaType={"response"}
+>
+  
+</Schema>
+            

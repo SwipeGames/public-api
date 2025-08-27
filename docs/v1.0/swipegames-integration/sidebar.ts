@@ -32,6 +32,66 @@ const sidebar: SidebarsConfig = {
         },
       ],
     },
+    {
+      type: "category",
+      label: "Schemas",
+      items: [
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/schemas/errorresponsewithcodeandaction",
+          label: "ErrorResponseWithCodeAndAction",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/schemas/balanceresponse",
+          label: "BalanceResponse",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/schemas/betrequest",
+          label: "BetRequest",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/schemas/betresponse",
+          label: "BetResponse",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/schemas/winrequest",
+          label: "WinRequest",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/schemas/winresponse",
+          label: "WinResponse",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/schemas/refundrequest",
+          label: "RefundRequest",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/schemas/refundresponse",
+          label: "RefundResponse",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "v1.0/swipegames-integration/schemas/errorresponse",
+          label: "ErrorResponse",
+          className: "schema",
+        },
+      ],
+    },
   ],
 };
 

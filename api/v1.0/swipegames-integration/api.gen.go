@@ -29,6 +29,26 @@ const (
 	BetRequestTypeRegular BetRequestType = "regular"
 )
 
+// Defines values for ErrorResponseWithCodeAndActionAction.
+const (
+	Refresh ErrorResponseWithCodeAndActionAction = "refresh"
+)
+
+// Defines values for ErrorResponseWithCodeAndActionCode.
+const (
+	AccountBlocked        ErrorResponseWithCodeAndActionCode = "account_blocked"
+	BetLimit              ErrorResponseWithCodeAndActionCode = "bet_limit"
+	ClientConnectionError ErrorResponseWithCodeAndActionCode = "client_connection_error"
+	CurrencyNotSupported  ErrorResponseWithCodeAndActionCode = "currency_not_supported"
+	GameNotFound          ErrorResponseWithCodeAndActionCode = "game_not_found"
+	InsufficientFunds     ErrorResponseWithCodeAndActionCode = "insufficient_funds"
+	LocaleNotSupported    ErrorResponseWithCodeAndActionCode = "locale_not_supported"
+	LossLimit             ErrorResponseWithCodeAndActionCode = "loss_limit"
+	SessionExpired        ErrorResponseWithCodeAndActionCode = "session_expired"
+	SessionNotFound       ErrorResponseWithCodeAndActionCode = "session_not_found"
+	TimeLimit             ErrorResponseWithCodeAndActionCode = "time_limit"
+)
+
 // Defines values for WinRequestType.
 const (
 	WinRequestTypeFree    WinRequestType = "free"
@@ -86,6 +106,39 @@ type BetResponse struct {
 	// TxID Unique ID for the bet on your side. This is required for further tracking/debugging pusposes.
 	TxID string `json:"txID"`
 }
+
+// ErrorResponseWithCodeAndAction defines model for ErrorResponseWithCodeAndAction.
+type ErrorResponseWithCodeAndAction struct {
+	// Action Required client action.
+	// - `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
+	//      It's useful when the game session expires or the game is not available anymore. Once page is refreshed,
+	//      the game will be reloaded and the player can continue playing. This might not work when games aren't embedded
+	//      in the casino, but are opened in a new tab or window, since it will reopen the game again.
+	Action *ErrorResponseWithCodeAndActionAction `json:"action,omitempty"`
+
+	// ActionData Client action related data.
+	// You can pass additional data to the client action. Not all actions require this field.
+	ActionData *string `json:"actionData,omitempty"`
+
+	// Code Error code. Could be handled by client accordingly (with localized message and related action).
+	Code *ErrorResponseWithCodeAndActionCode `json:"code,omitempty"`
+
+	// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+	Details *string `json:"details,omitempty"`
+
+	// Message A brief description of the error in English. Could be shown to the player.
+	Message string `json:"message"`
+}
+
+// ErrorResponseWithCodeAndActionAction Required client action.
+//   - `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
+//     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,
+//     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded
+//     in the casino, but are opened in a new tab or window, since it will reopen the game again.
+type ErrorResponseWithCodeAndActionAction string
+
+// ErrorResponseWithCodeAndActionCode Error code. Could be handled by client accordingly (with localized message and related action).
+type ErrorResponseWithCodeAndActionCode string
 
 // RefundRequest defines model for RefundRequest.
 type RefundRequest struct {
@@ -658,9 +711,9 @@ type GetBalanceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *BalanceResponse
-	JSON401      *externalRef0.ErrorResponseWithAction
-	JSON404      *externalRef0.ErrorResponseWithAction
-	JSON500      *externalRef0.ErrorResponseWithAction
+	JSON401      *ErrorResponseWithCodeAndAction
+	JSON404      *ErrorResponseWithCodeAndAction
+	JSON500      *ErrorResponseWithCodeAndAction
 }
 
 // Status returns HTTPResponse.Status
@@ -683,10 +736,10 @@ type PostBetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *BetResponse
-	JSON400      *externalRef0.ErrorResponseWithAction
-	JSON401      *externalRef0.ErrorResponseWithAction
-	JSON404      *externalRef0.ErrorResponseWithAction
-	JSON500      *externalRef0.ErrorResponseWithAction
+	JSON400      *ErrorResponseWithCodeAndAction
+	JSON401      *ErrorResponseWithCodeAndAction
+	JSON404      *ErrorResponseWithCodeAndAction
+	JSON500      *ErrorResponseWithCodeAndAction
 }
 
 // Status returns HTTPResponse.Status
@@ -709,10 +762,10 @@ type PostRefundResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *RefundResponse
-	JSON400      *externalRef0.ErrorResponseWithAction
-	JSON401      *externalRef0.ErrorResponseWithAction
-	JSON404      *externalRef0.ErrorResponseWithAction
-	JSON500      *externalRef0.ErrorResponseWithAction
+	JSON400      *ErrorResponseWithCodeAndAction
+	JSON401      *ErrorResponseWithCodeAndAction
+	JSON404      *ErrorResponseWithCodeAndAction
+	JSON500      *ErrorResponseWithCodeAndAction
 }
 
 // Status returns HTTPResponse.Status
@@ -735,10 +788,10 @@ type PostWinResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *WinResponse
-	JSON400      *externalRef0.ErrorResponseWithAction
-	JSON401      *externalRef0.ErrorResponseWithAction
-	JSON404      *externalRef0.ErrorResponseWithAction
-	JSON500      *externalRef0.ErrorResponseWithAction
+	JSON400      *ErrorResponseWithCodeAndAction
+	JSON401      *ErrorResponseWithCodeAndAction
+	JSON404      *ErrorResponseWithCodeAndAction
+	JSON500      *ErrorResponseWithCodeAndAction
 }
 
 // Status returns HTTPResponse.Status
@@ -839,21 +892,21 @@ func ParseGetBalanceResponse(rsp *http.Response) (*GetBalanceResponse, error) {
 		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON401 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -886,28 +939,28 @@ func ParsePostBetResponse(rsp *http.Response) (*PostBetResponse, error) {
 		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON400 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON401 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -940,28 +993,28 @@ func ParsePostRefundResponse(rsp *http.Response) (*PostRefundResponse, error) {
 		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON400 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON401 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -994,28 +1047,28 @@ func ParsePostWinResponse(rsp *http.Response) (*PostWinResponse, error) {
 		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON400 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON401 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest externalRef0.ErrorResponseWithAction
+		var dest ErrorResponseWithCodeAndAction
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -1215,47 +1268,52 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
