@@ -6,10 +6,10 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://staging.0.swipegames.io/api/v1
+  - url: https://staging.platform.0.swipegames.io/api/v1
     description: Stage server
-  - url: https://prod.0.swipegames.io/api/v1
-    description: Production server
+  # - url: https://prod.0.swipegames.io/api/v1
+  #   description: Production server
 
 paths:
   /create-new-game:

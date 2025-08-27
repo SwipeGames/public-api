@@ -19,46 +19,32 @@ import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 
-<Heading
-  as={"h1"}
-  className={"openapi__heading"}
-  children={"Cancel/Delete free rounds campaign"}
->
-</Heading>
+<Heading as={"h1"} className={"openapi__heading"} children={"Cancel/Delete free rounds campaign"}></Heading>
 
 <MethodEndpoint
   method={"delete"}
   path={"/free-rounds"}
   context={"endpoint"}
 >
-  
+
 </MethodEndpoint>
-
-
 
 Cancel/Delete existing free rounds campaign. You can cancel free rounds campaing during the campaign period, in this case
 all `in-progress` free rounds will be continued, but no new free rounds will be started.
 
-
-<Heading
-  id={"request"}
-  as={"h2"}
-  className={"openapi-tabs__heading"}
-  children={"Request"}
->
-</Heading>
+<Heading id={"request"} as={"h2"} className={"openapi-tabs__heading"} children={"Request"}></Heading>
 
 <ParamsDetails
   parameters={[{"name":"X-REQUEST-SIGN","in":"header","required":true,"description":"Request signature (read more in the Authentication section)","schema":{"type":"string"}}]}
 >
-  
+
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["cID","extCID"],"properties":{"id":{"description":"Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.\n","type":"string","format":"uuid"},"extID":{"description":"Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.\n","type":"string"},"cID":{"description":"Client's ID (internal)","type":"string","format":"uuid"},"extCID":{"description":"External Client's ID (external)","type":"string"}},"title":"DeleteFreeRoundsRequest"}}}}}
 >
-  
+
 </RequestSchema>
 
 <StatusCodes
@@ -66,8 +52,5 @@ all `in-progress` free rounds will be continued, but no new free rounds will be 
   label={undefined}
   responses={{"200":{"description":"ok"},"401":{"description":"Wrong signature or API key","content":{"application/json":{"schema":{"description":"Common error response for Swipe Games Public API. You can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]}},"title":"ErrorResponse"}}}},"404":{"description":"Free rounds campaign not found","content":{"application/json":{"schema":{"description":"Common error response for Swipe Games Public API. You can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]}},"title":"ErrorResponse"}}}},"500":{"description":"Server error occurred","content":{"application/json":{"schema":{"description":"Common error response for Swipe Games Public API. You can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]}},"title":"ErrorResponse"}}}}}}
 >
-  
+
 </StatusCodes>
-
-
-      

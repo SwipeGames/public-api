@@ -19,44 +19,31 @@ import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 
-<Heading
-  as={"h1"}
-  className={"openapi__heading"}
-  children={"Create new free rounds campaign"}
->
-</Heading>
+<Heading as={"h1"} className={"openapi__heading"} children={"Create new free rounds campaign"}></Heading>
 
 <MethodEndpoint
   method={"post"}
   path={"/free-rounds"}
   context={"endpoint"}
 >
-  
+
 </MethodEndpoint>
-
-
 
 Create new free rounds campaign
 
-<Heading
-  id={"request"}
-  as={"h2"}
-  className={"openapi-tabs__heading"}
-  children={"Request"}
->
-</Heading>
+<Heading id={"request"} as={"h2"} className={"openapi-tabs__heading"} children={"Request"}></Heading>
 
 <ParamsDetails
   parameters={[{"name":"X-REQUEST-SIGN","in":"header","required":true,"description":"Request signature (read more in the Authentication section)","schema":{"type":"string"}}]}
 >
-  
+
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["cID","extID","extCID","currency","quantity","betLine","validFrom"],"properties":{"extID":{"description":"Free rounds ID (external). Used as idempotency key. Same ID can be used to create free rounds only once.\n","type":"string"},"cID":{"description":"Client's ID (internal)","type":"string","format":"uuid"},"extCID":{"description":"External Client's ID (game aggregator or casino)","type":"string"},"gameIDs":{"description":"List of game IDs. If not provided, free rounds will be available for all games.","type":"array","items":{"type":"string"}},"userIDs":{"description":"List of player IDs (external). If not provided, free rounds will be available for all players.","type":"array","items":{"type":"string"}},"currency":{"description":"Currency code in ISO4217","type":"string"},"quantity":{"description":"Number of free rounds.","type":"integer","format":"int32","minimum":1,"maximum":99},"betLine":{"description":"Number of bet line configured for this game/provider.","type":"integer","format":"int32","minimum":1,"maximum":99},"validFrom":{"description":"Start date when free rounds become available.","type":"string","format":"date-time"},"validUntil":{"description":"End date when free rounds become unavailable. If not provided then this campaign never ends.\n","type":"string","format":"date-time"}},"title":"CreateFreeRoundsRequest"}}}}}
 >
-  
+
 </RequestSchema>
 
 <StatusCodes
@@ -64,8 +51,5 @@ Create new free rounds campaign
   label={undefined}
   responses={{"200":{"description":"ok","content":{"application/json":{"schema":{"type":"object","required":["id","extID"],"properties":{"id":{"description":"Free rounds ID (internal).","type":"string","format":"uuid"},"extID":{"description":"Free rounds ID (external). This is provided in the request.","type":"string"}},"title":"CreateFreeRoundsResponse"}}}},"401":{"description":"Wrong signature or API key","content":{"application/json":{"schema":{"description":"Common error response for Swipe Games Public API. You can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]}},"title":"ErrorResponse"}}}},"409":{"description":"Free rounds campaign already exists","content":{"application/json":{"schema":{"description":"Common error response for Swipe Games Public API. You can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]}},"title":"ErrorResponse"}}}},"500":{"description":"Server error occurred","content":{"application/json":{"schema":{"description":"Common error response for Swipe Games Public API. You can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]}},"title":"ErrorResponse"}}}}}}
 >
-  
+
 </StatusCodes>
-
-
-      
