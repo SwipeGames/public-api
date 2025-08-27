@@ -15,90 +15,14 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 )
 
-// Defines values for ErrorResponseCode.
-const (
-	ErrorResponseCodeAccountBlocked        ErrorResponseCode = "account_blocked"
-	ErrorResponseCodeBetLimit              ErrorResponseCode = "bet_limit"
-	ErrorResponseCodeClientConnectionError ErrorResponseCode = "client_connection_error"
-	ErrorResponseCodeCurrencyNotSupported  ErrorResponseCode = "currency_not_supported"
-	ErrorResponseCodeGameNotFound          ErrorResponseCode = "game_not_found"
-	ErrorResponseCodeInsufficientFunds     ErrorResponseCode = "insufficient_funds"
-	ErrorResponseCodeLocaleNotSupported    ErrorResponseCode = "locale_not_supported"
-	ErrorResponseCodeLossLimit             ErrorResponseCode = "loss_limit"
-	ErrorResponseCodeSessionExpired        ErrorResponseCode = "session_expired"
-	ErrorResponseCodeSessionNotFound       ErrorResponseCode = "session_not_found"
-	ErrorResponseCodeTimeLimit             ErrorResponseCode = "time_limit"
-)
-
-// Defines values for ErrorResponseWithActionAction.
-const (
-	Refresh ErrorResponseWithActionAction = "refresh"
-)
-
-// Defines values for ErrorResponseWithActionCode.
-const (
-	ErrorResponseWithActionCodeAccountBlocked        ErrorResponseWithActionCode = "account_blocked"
-	ErrorResponseWithActionCodeBetLimit              ErrorResponseWithActionCode = "bet_limit"
-	ErrorResponseWithActionCodeClientConnectionError ErrorResponseWithActionCode = "client_connection_error"
-	ErrorResponseWithActionCodeCurrencyNotSupported  ErrorResponseWithActionCode = "currency_not_supported"
-	ErrorResponseWithActionCodeGameNotFound          ErrorResponseWithActionCode = "game_not_found"
-	ErrorResponseWithActionCodeInsufficientFunds     ErrorResponseWithActionCode = "insufficient_funds"
-	ErrorResponseWithActionCodeLocaleNotSupported    ErrorResponseWithActionCode = "locale_not_supported"
-	ErrorResponseWithActionCodeLossLimit             ErrorResponseWithActionCode = "loss_limit"
-	ErrorResponseWithActionCodeSessionExpired        ErrorResponseWithActionCode = "session_expired"
-	ErrorResponseWithActionCodeSessionNotFound       ErrorResponseWithActionCode = "session_not_found"
-	ErrorResponseWithActionCodeTimeLimit             ErrorResponseWithActionCode = "time_limit"
-)
-
-// ErrorResponse Common error response for Swipe Games Public API. You can provide either message or message and code. Code always has
-// priority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,
-// related to the code. If you provide only message, the client will show it to the player as is.
+// ErrorResponse General error response for Swipe Games Public API. Usually used for Public API responses.
 type ErrorResponse struct {
-	// Code Error code. Could be handled by client accordingly (with localized message and related action).
-	Code *ErrorResponseCode `json:"code,omitempty"`
-
 	// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
 	Details *string `json:"details,omitempty"`
 
 	// Message A brief description of the error in English. Could be shown to the player.
 	Message string `json:"message"`
 }
-
-// ErrorResponseCode Error code. Could be handled by client accordingly (with localized message and related action).
-type ErrorResponseCode string
-
-// ErrorResponseWithAction defines model for ErrorResponseWithAction.
-type ErrorResponseWithAction struct {
-	// Action Required client action.
-	// - `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
-	//      It's useful when the game session expires or the game is not available anymore. Once page is refreshed,
-	//      the game will be reloaded and the player can continue playing. This might not work when games aren't embedded
-	//      in the casino, but are opened in a new tab or window, since it will reopen the game again.
-	Action *ErrorResponseWithActionAction `json:"action,omitempty"`
-
-	// ActionData Client action related data.
-	// You can pass additional data to the client action. Not all actions require this field.
-	ActionData *string `json:"actionData,omitempty"`
-
-	// Code Error code. Could be handled by client accordingly (with localized message and related action).
-	Code *ErrorResponseWithActionCode `json:"code,omitempty"`
-
-	// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
-	Details *string `json:"details,omitempty"`
-
-	// Message A brief description of the error in English. Could be shown to the player.
-	Message string `json:"message"`
-}
-
-// ErrorResponseWithActionAction Required client action.
-//   - `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
-//     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,
-//     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded
-//     in the casino, but are opened in a new tab or window, since it will reopen the game again.
-type ErrorResponseWithActionAction string
-
-// ErrorResponseWithActionCode Error code. Could be handled by client accordingly (with localized message and related action).
-type ErrorResponseWithActionCode string
 
 // User defines model for User.
 type User struct {
@@ -115,24 +39,13 @@ type User struct {
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

@@ -38,6 +38,12 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
+          id: "v1.0/swipegames-integration/schemas/errorresponsewithcodeandaction",
+          label: "ErrorResponseWithCodeAndAction",
+          className: "schema",
+        },
+        {
+          type: "doc",
           id: "v1.0/swipegames-integration/schemas/balanceresponse",
           label: "BalanceResponse",
           className: "schema",
@@ -82,12 +88,6 @@ const sidebar: SidebarsConfig = {
           type: "doc",
           id: "v1.0/swipegames-integration/schemas/errorresponse",
           label: "ErrorResponse",
-          className: "schema",
-        },
-        {
-          type: "doc",
-          id: "v1.0/swipegames-integration/schemas/errorresponsewithaction",
-          label: "ErrorResponseWithAction",
           className: "schema",
         },
       ],
