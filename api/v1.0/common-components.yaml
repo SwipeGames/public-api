@@ -1,11 +1,13 @@
 components:
   schemas:
     ErrorResponse:
-      description: Common error response for Swipe Games Public API.
+      description: |
+        Common error response for Swipe Games Public API. You can provide either message or message and code. Code always has
+        priority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,
+        related to the code. If you provide only message, the client will show it to the player as is.
       type: object
       required:
         - message
-        - details
       properties:
         message:
           description: A brief description of the error in English. Could be shown to the player.
@@ -13,11 +15,27 @@ components:
         details:
           description: Technical details for the error. Could be used for debugging, should not be shown to the player.
           type: string
+        code:
+          description: Error code. Could be handled by client accordingly (with localized message and related action).
+          type: string
+          enum:
+            - game_not_found
+            - currency_not_supported
+            - locale_not_supported
+            - account_blocked
+            - bet_limit
+            - loss_limit
+            - time_limit
+            - insufficient_funds
+            - session_expired
+            - session_not_found
+            - client_connection_error
 
     ErrorResponseWithAction:
       description: |
         Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,
-        it contains an action field that describes the required client action (could be omit).
+        it contains an action field that describes the required client action (could be omit). If error code is provided in additional
+        client will handle it accordingly and with priority over action.
       allOf:
         - $ref: "#/components/schemas/ErrorResponse"
         - type: object
