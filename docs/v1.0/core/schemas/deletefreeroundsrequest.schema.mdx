@@ -1,0 +1,33 @@
+---
+id: deletefreeroundsrequest
+title: "DeleteFreeRoundsRequest"
+description: ""
+sidebar_label: "DeleteFreeRoundsRequest"
+hide_title: true
+hide_table_of_contents: true
+schema: true
+sample: {"id":"3fa85f64-5717-4562-b3fc-2c963f66afa6","extID":"string","cID":"3fa85f64-5717-4562-b3fc-2c963f66afa6","extCID":"string"}
+custom_edit_url: null
+---
+
+import Schema from "@theme/Schema";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"DeleteFreeRoundsRequest"}
+>
+</Heading>
+
+
+
+
+
+<Schema
+  schema={{"type":"object","required":["cID","extCID"],"properties":{"id":{"description":"Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.\n","type":"string","format":"uuid"},"extID":{"description":"Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.\n","type":"string"},"cID":{"description":"Client's ID (internal)","type":"string","format":"uuid"},"extCID":{"description":"External Client's ID (external)","type":"string"}},"title":"DeleteFreeRoundsRequest"}}
+  schemaType={"response"}
+>
+  
+</Schema>
+            

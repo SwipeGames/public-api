@@ -1,0 +1,36 @@
+---
+id: errorresponse
+title: "ErrorResponse"
+description: "Common error response for Swipe Games Public API. You can provide either message or message and code. Code always has"
+sidebar_label: "ErrorResponse"
+hide_title: true
+hide_table_of_contents: true
+schema: true
+sample: {"message":"string","details":"string","code":"game_not_found"}
+custom_edit_url: null
+---
+
+import Schema from "@theme/Schema";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"ErrorResponse"}
+>
+</Heading>
+
+
+
+Common error response for Swipe Games Public API. You can provide either message or message and code. Code always has
+priority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,
+related to the code. If you provide only message, the client will show it to the player as is.
+
+
+<Schema
+  schema={{"description":"Common error response for Swipe Games Public API. You can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]}},"title":"ErrorResponse"}}
+  schemaType={"response"}
+>
+  
+</Schema>
+            

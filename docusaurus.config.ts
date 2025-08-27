@@ -175,6 +175,7 @@ const config: Config = {
               groupPathsBy: "tag",
               categoryLinkSource: "info",
             },
+            showSchemas: true,
           } satisfies OpenApiPlugin.Options,
           swipegamesintegrationv10: {
             specPath: "api/v1.0/swipegames-integration/api.yaml",
@@ -185,6 +186,7 @@ const config: Config = {
               groupPathsBy: "tag",
               categoryLinkSource: "info",
             },
+            showSchemas: true,
           } satisfies OpenApiPlugin.Options,
         } satisfies Plugin.PluginOptions,
       },
