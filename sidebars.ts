@@ -34,7 +34,7 @@ const sidebars: SidebarsConfig = {
         type: "doc",
         id: "core",
       },
-      items: ["game-launch-url", require("./docs/core/sidebar.ts")],
+      items: [require("./docs/core/sidebar.ts")],
     },
     {
       type: "category",
