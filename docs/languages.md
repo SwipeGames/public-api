@@ -6,4 +6,6 @@ slug: /languages
 
 # Languages
 
-[TODO]
+Currently we support only the following languages:
+
+-   English (code: `en_us`).
