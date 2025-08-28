@@ -33,6 +33,10 @@ Whether you're a developer looking to integrate with our platform or simply curi
 
 ## Integration Process
 
+> 📝 **To start the integration process, please fill out our Integration Request Form:**  
+> **[https://forms.gle/JZPyegfDxgEAvdVb7](https://forms.gle/JZPyegfDxgEAvdVb7)**  
+> This form is essential for partners to provide their integration details and begin the onboarding process.
+
 Integration process consists of the following steps:
 
 -   Registering and providing us with your integration details.
