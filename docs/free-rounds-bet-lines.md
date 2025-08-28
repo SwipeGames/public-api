@@ -35,9 +35,9 @@ e.g. `[1:10,2:20,3:30]` means that there are three bet lines available:
 
 Please consult with this documentation about list of games and their bet lines configuration.
 
-### Catch game configuration
+### Catch game example configuration
 
-default configuration for `Catch` game is the following:
+This is the example configuration for `Catch` game:
 
 | Currency | Bet lines                                                                                                                                                                      |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
