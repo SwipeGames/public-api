@@ -28,6 +28,10 @@ const config: Config = {
           routeBasePath: "/",
           sidebarPath: require.resolve("./sidebars.ts"),
           docItemComponent: "@theme/ApiItem", // Derived from docusaurus-theme-openapi
+          lastVersion: "current",
+          versions: {
+            current: { label: "1.0.0", path: "/" },
+          },
         },
         blog: false,
         theme: {
@@ -54,6 +58,12 @@ const config: Config = {
           href: "https://github.com/swipegames/public-api",
           label: "GitHub",
           position: "right",
+        },
+        {
+          type: "docsVersionDropdown",
+          versions: {
+            current: { label: "1.0.0" },
+          },
         },
       ],
     },
@@ -169,7 +179,7 @@ const config: Config = {
         config: {
           corev10: {
             specPath: "api/v1.0/core/api.yaml",
-            outputDir: "docs/v1.0/core",
+            outputDir: "docs/core", //latest version
             downloadUrl: "https://raw.githubusercontent.com/swipegames/public-api/main/api/v1.0/core/api.yaml",
             sidebarOptions: {
               groupPathsBy: "tag",
@@ -179,7 +189,7 @@ const config: Config = {
           } satisfies OpenApiPlugin.Options,
           swipegamesintegrationv10: {
             specPath: "api/v1.0/swipegames-integration/api.yaml",
-            outputDir: "docs/v1.0/swipegames-integration",
+            outputDir: "docs/swipegames-integration", // latest version
             downloadUrl:
               "https://raw.githubusercontent.com/swipegames/public-api/main/api/v1.0/swipegames-integration/api.yaml",
             sidebarOptions: {

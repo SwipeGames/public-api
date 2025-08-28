@@ -34,7 +34,7 @@ const sidebars: SidebarsConfig = {
         type: "doc",
         id: "core",
       },
-      items: ["game-launch-url", require("./docs/v1.0/core/sidebar.ts")],
+      items: ["game-launch-url", require("./docs/core/sidebar.ts")],
     },
     {
       type: "category",
@@ -43,7 +43,7 @@ const sidebars: SidebarsConfig = {
         type: "doc",
         id: "swipegames-integration",
       },
-      items: [require("./docs/v1.0/swipegames-integration/sidebar.ts")],
+      items: [require("./docs/swipegames-integration/sidebar.ts")],
     },
     "changes-log",
   ],

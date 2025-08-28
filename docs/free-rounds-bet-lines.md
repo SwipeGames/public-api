@@ -37,8 +37,8 @@ Please consult with this documentation about list of games and their bet lines c
 
 ### Catch game configuration
 
-[TODO]
+default configuration for `Catch` game is the following:
 
-### Swipe game configuration
-
-[TODO]
+| Currency | Bet lines                                                                                                                                                                      |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| USD      | `{1.10:5.00,1.20:5.00,1.30:5.00,1.40:5.00,1.50:5.00,1.60:5.00,1.70:5.00,1.80:5.00,1.90:5.00,2.00:5.00,2.20:5.00,2.40:5.00,2.60:5.00,2.80:5.00,3.00:5.00,5.00:5.00,10.00:5.00}` |
