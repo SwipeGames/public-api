@@ -4,7 +4,15 @@ title: Getting Started
 slug: /
 ---
 
-# Welcome to Swipe Games Public API documentation!
+# Swipe Games Public API Documentation
+
+> ⚠️ **IMPORTANT INFORMATION**
+> 
+> Swipe Games API is currently in BETA and will be undergoing regular maintenance to increase data offerings and improve performance.
+> 
+> Swipe Games reserves the right to revoke or restrict API access.
+> 
+> For any questions or support, please email us at tech@swipegames.io
 
 This documentation provides a comprehensive guide to the Swipe Games Public API, detailing its features, endpoints, and usage.  
 Whether you're a developer looking to integrate with our platform or simply curious about our API capabilities, you'll find all the information you need here.
@@ -39,10 +47,10 @@ and provide us the following details:
 -   your IP addresses or range of IP addresses that will be used to access the Public API (for both evironments: staging and production)
 -   base URL to your back end that will be used for reverse integration with Swipe Games Integration Adapter API (our calls to your). URL should support HTTPS and be accessible from our servers (if you have white lists).
 -   API key that we should use to authenticate our requests to your back end (for reverse integration with Swipe Games Integration Adapter API).
-    ( see [Authentication](/authn) for more details).
+    (see [Authentication](/authn) for more details).
 
 From our side, we will provide you with the following details:
 
 -   client ID (CID) - this is your unique identifier in our system that will be used to identify your integration.
--   your API key that will be used to authenticate your requests to the Public API ( see [Authentication](/authn) for more details).
+-   your API key that will be used to authenticate your requests to the Public API (see [Authentication](/authn) for more details).
 -   list of our IP addresses or range of IP addresses that will be used to access your back end (for reverse integration with Swipe Games Integration Adapter API). You can find this information also in [IP Addresses](/swipegames-integration#please-whitelist-our-ip-addresses-to-allow-requests-from-our-servers-to-your-api) section.
