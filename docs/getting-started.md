@@ -6,9 +6,11 @@ slug: /
 
 # Swipe Games Public API Documentation
 
-> ⚠️ **IMPORTANT INFORMATION**
+> ⚠️  **IMPORTANT INFORMATION**
+> 
 > Swipe Games API is currently in BETA and will be undergoing regular maintenance to increase data offerings and improve performance.
 > Swipe Games reserves the right to revoke or restrict API access.
+>
 > For any questions or support, please email us at tech@swipegames.io
 
 This documentation provides a comprehensive guide to the Swipe Games Public API, detailing its features, endpoints, and usage.  
@@ -16,15 +18,13 @@ Whether you're a developer looking to integrate with our platform or simply curi
 
 ### Learn about this documentation, API, platform and integration process
 
--   To learn about Terms used in this API please refer to the [Terms](/terms).
--   Swipe Games Public API consists of two APIs. To learn about each of them, please refer to the following sections:
-
-    -   [Core Public API](/core)
+- To learn about Terms used in this API please refer to the [Terms](/terms).
+- Swipe Games Public API consists of two APIs. To learn about each of them, please refer to the following sections:
+    -  [Core Public API](/core)
         This is the main integration API (direct) that allows you to create and manage games, free rounds and other core functionalities.
-    -   [Swipe Games Integration Adapter API](/swipegames-integration)
+    -  [Swipe Games Integration Adapter API](/swipegames-integration)
         This is an Adapter API (reverse integration) you need to implement in your game server to allow Swipe Games to communicate with your game server. Please follow the link and use our OpenAPI specification for simpler integration.
-        
--   we have 2 stable [Environments](/core#environments) you could use for integration and testing: `staging` and `production`.
+-   We have 2 stable [Environments](/core#environments) you could use for integration and testing: `staging` and `production`.
 
 ## Integration Process
 
