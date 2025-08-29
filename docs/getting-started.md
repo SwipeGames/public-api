@@ -7,11 +7,8 @@ slug: /
 # Swipe Games Public API Documentation
 
 > ⚠️ **IMPORTANT INFORMATION**
-> 
 > Swipe Games API is currently in BETA and will be undergoing regular maintenance to increase data offerings and improve performance.
-> 
 > Swipe Games reserves the right to revoke or restrict API access.
-> 
 > For any questions or support, please email us at tech@swipegames.io
 
 This documentation provides a comprehensive guide to the Swipe Games Public API, detailing its features, endpoints, and usage.  
