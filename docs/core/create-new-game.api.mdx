@@ -19,32 +19,46 @@ import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 
-<Heading as={"h1"} className={"openapi__heading"} children={"Create new game"}></Heading>
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create new game"}
+>
+</Heading>
 
 <MethodEndpoint
   method={"post"}
   path={"/create-new-game"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
+
+
 
 Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
 for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
 
-<Heading id={"request"} as={"h2"} className={"openapi-tabs__heading"} children={"Request"}></Heading>
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
 
 <ParamsDetails
   parameters={[{"name":"X-REQUEST-SIGN","in":"header","required":true,"description":"Request signature (read more in the Authentication section)","schema":{"type":"string"}}]}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["cID","extCID","gameID","demo","returnURL","platform","currency","locale"],"properties":{"cID":{"description":"Client's ID. It's provided by Swipe Games and is used as your identifier.\n","type":"string","format":"uuid"},"extCID":{"description":"External Client's ID (client/platform/game aggregator/integrator or casino on your side). This is provided from your side, and this is\nhow you identify your clients. We use it in all callbacks to you.\n","type":"string"},"gameID":{"description":"Game's ID. This is Swipe Games's game identifier. See the list of supported games in `Game IDs` section.\n","type":"string"},"sessionID":{"description":"Session ID (external).This is your Session ID. We use it in all callbacks to you.\nNot required for demo games, since we don't use callbacks for demo games.\n","type":"string"},"returnURL":{"description":"Return URL which we could use to redirect the user after the game is finished/exited. If you don't provide this URL, return button in the game will be disabled. Please make sure you provide this URL when using redirect to open the game, otherwise player cannot","type":"string"},"currency":{"description":"Currency code in ISO4217.","type":"string"},"locale":{"description":"Locale code in IIETF BCP 47 (ISO 639).","type":"string"},"platform":{"description":"Platform code. This is used to identify the platform where the game is launched.","type":"string","enum":["desktop","mobile"]},"demo":{"description":"Demo mode. If true, the game will be launched in demo mode (means no callbacks will be fired on your side,\nand we use our demo balance for the game). If false, the game will be launched in real mode.\n","type":"boolean"},"user":{"description":"User information we show in the game. User should be provided for real game.\n","x-go-type":"User","type":"object","required":["id"],"properties":{"id":{"description":"User's ID (external). This is User's ID on your side.","type":"string"},"firstName":{"type":"string"},"lastName":{"type":"string"},"nickName":{"type":"string"},"country":{"description":"Country code ISO 3166-1 alpha-2.","type":"string"}},"title":"User"}},"title":"CreateNewGameRequest"}}}}}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -52,5 +66,8 @@ for the game. You can redirect the user to this URL to start playing the game or
   label={undefined}
   responses={{"200":{"description":"ok","content":{"application/json":{"schema":{"type":"object","required":["gameURL","gsID"],"properties":{"gameURL":{"type":"string"},"gsID":{"type":"string","format":"uuid"}},"title":"CreateNewGameResponse"}}}},"401":{"description":"Wrong signature or API key","content":{"application/json":{"schema":{"description":"General error response for Swipe Games Public API. Usually used for Public API responses.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}}},"500":{"description":"Server error occurred","content":{"application/json":{"schema":{"description":"General error response for Swipe Games Public API. Usually used for Public API responses.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}}}}}
 >
-
+  
 </StatusCodes>
+
+
+      
