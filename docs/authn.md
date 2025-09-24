@@ -11,8 +11,11 @@ In all requests (both `Core Public API` and `Swipe Games Integration Adapter API
 
 For signature generation we use HMAC-SHA256 algorithm with your API `token key` as a `secret key`.
 
-The whole request payload (canonical JSON) should be signed, in case of `GET` requests, the payload is virtual - we use query parameters to construct the JSON, convert it into canonical form and use that JSON for signing.
-**Please notice** We don't use `request body` for signing, only the payload in canonical JSON form.
+The whole request payload (should be in canonical JSON form) should be signed.  
+In case of `GET` requests, the payload is virtual - we use query parameters to construct the JSON, convert it into canonical form and use that JSON for signing.  
+**Please notice!** JSON payload should be in canonical form before signing. You should convert it into canonical form first, then sign it.
+You send the same canonical JSON in the request body (for `POST` requests) as you used for signing.  
+In case of `GET` requests you don't send the JSON, only the query parameters.
 
 ### JSON canonical form
 
