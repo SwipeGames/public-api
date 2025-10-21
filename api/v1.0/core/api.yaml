@@ -8,8 +8,8 @@ info:
 servers:
   - url: https://staging.platform.0.swipegames.io/api/v1
     description: Stage server
-  # - url: https://prod.0.swipegames.io/api/v1
-  #   description: Production server
+  - url: https://prod.platform.1.swipegames.io/api/v1
+    description: Production server
 
 paths:
   /create-new-game:
