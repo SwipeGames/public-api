@@ -6,6 +6,11 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.0.1
+
+-   Add optional error code for core error responses.
+    It allows game clients to programmatically handle specific error scenarios.
+
 ## 1.0.0
 
 -   Initial release of the Swipe Games Public API documentation.
