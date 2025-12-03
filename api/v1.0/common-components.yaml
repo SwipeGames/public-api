@@ -13,6 +13,21 @@ components:
         details:
           description: Technical details for the error. Could be used for debugging, should not be shown to the player.
           type: string
+        code:
+          description: Error code.
+          type: string
+          enum:
+            - game_not_found
+            - currency_not_supported
+            - locale_not_supported
+            - account_blocked
+            - bet_limit
+            - loss_limit
+            - time_limit
+            - insufficient_funds
+            - session_expired
+            - session_not_found
+            - client_connection_error
 
     User:
       type: object

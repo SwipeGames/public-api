@@ -6,7 +6,7 @@ sidebar_label: "ErrorResponse"
 hide_title: true
 hide_table_of_contents: true
 schema: true
-sample: {"message":"string","details":"string"}
+sample: {"message":"string","details":"string","code":"game_not_found"}
 custom_edit_url: null
 ---
 
@@ -26,7 +26,7 @@ General error response for Swipe Games Public API. Usually used for Public API r
 
 
 <Schema
-  schema={{"description":"General error response for Swipe Games Public API. Usually used for Public API responses.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}
+  schema={{"description":"General error response for Swipe Games Public API. Usually used for Public API responses.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code.","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]}},"title":"ErrorResponse"}}
   schemaType={"response"}
 >
   
