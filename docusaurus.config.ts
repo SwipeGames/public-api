@@ -201,6 +201,7 @@ const config: Config = {
         } satisfies Plugin.PluginOptions,
       },
     ],
+    require.resolve('./plugins/canonical-json-plugin.js'),
   ],
 
   themes: ["docusaurus-theme-openapi-docs"],
