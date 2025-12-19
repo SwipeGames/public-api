@@ -28,17 +28,8 @@ export interface Props {
   required?: boolean;
 }
 
-// Helper function to sort object keys recursively for canonical JSON
-function sortObjectKeys(obj: any): any {
-  if (obj === null || typeof obj !== 'object' || Array.isArray(obj)) {
-    return obj;
-  }
-  const sorted: any = {};
-  Object.keys(obj).sort().forEach(key => {
-    sorted[key] = sortObjectKeys(obj[key]);
-  });
-  return sorted;
-}
+// Note: Keys are already sorted by ApiExplorerWrapper
+// We only need to compact the JSON (remove whitespace)
 
 function BodyWrap({
   requestBodyMetadata,
@@ -231,12 +222,12 @@ function Body({
     contentType.endsWith("+json")
   ) {
     if (jsonRequestBodyExample) {
-      // Use compact canonical JSON format (sorted keys, no whitespace)
-      defaultBody = JSON.stringify(sortObjectKeys(jsonRequestBodyExample));
+      // Use compact canonical JSON format (keys already sorted, just remove whitespace)
+      defaultBody = JSON.stringify(jsonRequestBodyExample);
     }
     if (example) {
-      // Use compact canonical JSON format
-      exampleBody = JSON.stringify(sortObjectKeys(example));
+      // Use compact canonical JSON format (keys already sorted)
+      exampleBody = JSON.stringify(example);
     }
     if (examples) {
       for (const [key, example] of Object.entries(examples)) {
@@ -246,8 +237,8 @@ function Body({
           JSON.parse(example.value);
         }
         catch (e) {
-          // Use compact canonical JSON format
-          body = JSON.stringify(sortObjectKeys(example.value));
+          // Use compact canonical JSON format (keys already sorted)
+          body = JSON.stringify(example.value);
         }
 
         examplesBodies.push({

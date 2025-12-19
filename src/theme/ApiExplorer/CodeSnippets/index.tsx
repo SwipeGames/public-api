@@ -56,19 +56,10 @@ function CodeSnippets({ postman, codeSamples }: Props) {
   const clonedAuth = cloneDeep(auth);
   let placeholder: string;
 
-  // Helper function to sort object keys recursively
-  function sortObjectKeys(obj: any): any {
-    if (obj === null || typeof obj !== 'object' || Array.isArray(obj)) {
-      return obj;
-    }
-    const sorted: any = {};
-    Object.keys(obj).sort().forEach(key => {
-      sorted[key] = sortObjectKeys(obj[key]);
-    });
-    return sorted;
-  }
-
   // Post-process generated code snippets for canonical JSON
+  // Note: Keys are already sorted by ApiExplorerWrapper, we only need to:
+  // 1. Add sort_keys parameter for Python/Ruby (for explicitness)
+  // 2. Compact JSON for other languages (remove whitespace)
   function postProcessSnippet(snippet: string, language: string): string {
     try {
       // For Python: add sort_keys=True to json.dumps()
@@ -84,7 +75,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
         const jsonMatch = snippet.match(/-d\s+'(\{[\s\S]*?\})'/);
         if (jsonMatch) {
           const parsed = JSON.parse(jsonMatch[1]);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           snippet = snippet.replace(jsonMatch[1], compact);
         }
       }
@@ -96,7 +87,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
           // Unescape the JSON string first
           const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
           const parsed = JSON.parse(unescaped);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           // Escape for C# string
           const escaped = compact.replace(/"/g, '\\"');
           snippet = snippet.replace(jsonMatch[1], escaped);
@@ -108,7 +99,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
         const jsonMatch = snippet.match(/strings\.NewReader\(`(\{[\s\S]*?\})`\)/);
         if (jsonMatch) {
           const parsed = JSON.parse(jsonMatch[1]);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           snippet = snippet.replace(jsonMatch[1], compact);
         }
       }
@@ -126,7 +117,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
         const jsonMatch = snippet.match(/CURLOPT_POSTFIELDS\s*=>\s*'(\{[\s\S]*?\n\})'/);
         if (jsonMatch) {
           const parsed = JSON.parse(jsonMatch[1]);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           snippet = snippet.replace(jsonMatch[1], compact);
         }
       }
@@ -138,7 +129,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
           // Unescape the JSON string first
           const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
           const parsed = JSON.parse(unescaped);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           // Escape for Java string
           const escaped = compact.replace(/"/g, '\\"');
           snippet = snippet.replace(jsonMatch[1], escaped);
@@ -152,7 +143,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
           // Remove backtick escaping, parse, compact, re-escape
           const unescaped = jsonMatch[1].replace(/`"/g, '"');
           const parsed = JSON.parse(unescaped);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           // Escape quotes with backticks for PowerShell
           const escaped = compact.replace(/"/g, '`"');
           snippet = snippet.replace(jsonMatch[1], escaped);
@@ -166,7 +157,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
           // Unescape the JSON string first
           const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
           const parsed = JSON.parse(unescaped);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           // Escape for C string
           const escaped = compact.replace(/"/g, '\\"');
           snippet = snippet.replace(jsonMatch[1], escaped);
@@ -180,7 +171,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
           // Unescape the JSON string first
           const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
           const parsed = JSON.parse(unescaped);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           // Escape for Objective-C string
           const escaped = compact.replace(/"/g, '\\"');
           snippet = snippet.replace(jsonMatch[1], escaped);
@@ -193,7 +184,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
         if (jsonMatch) {
           const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
           const parsed = JSON.parse(unescaped);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           const escaped = compact.replace(/"/g, '\\"');
           snippet = snippet.replace(jsonMatch[1], escaped);
         }
@@ -204,7 +195,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
         const jsonMatch = snippet.match(/body = '(\{[\s\S]*?\})'/);
         if (jsonMatch) {
           const parsed = JSON.parse(jsonMatch[1]);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           snippet = snippet.replace(jsonMatch[1], compact);
         }
       }
@@ -215,7 +206,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
         if (jsonMatch) {
           const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
           const parsed = JSON.parse(unescaped);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           const escaped = compact.replace(/"/g, '\\"');
           snippet = snippet.replace(jsonMatch[1], escaped);
         }
@@ -227,7 +218,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
         if (jsonMatch) {
           const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
           const parsed = JSON.parse(unescaped);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           const escaped = compact.replace(/"/g, '\\"');
           snippet = snippet.replace(jsonMatch[1], escaped);
         }
@@ -238,7 +229,7 @@ function CodeSnippets({ postman, codeSamples }: Props) {
         const jsonMatch = snippet.match(/let data = r#"(\{[\s\S]*?\})"#/);
         if (jsonMatch) {
           const parsed = JSON.parse(jsonMatch[1]);
-          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const compact = JSON.stringify(parsed); // Keys already sorted, just compact
           snippet = snippet.replace(jsonMatch[1], compact);
         }
       }
