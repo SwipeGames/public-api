@@ -32,6 +32,7 @@ paths:
           description: |
             Session ID (external). Provided by client via `Create New Game` call.
             This is your Session ID. We use it in all reverse calls to you.
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
           schema:
             type: string
 
@@ -322,7 +323,7 @@ components:
           type: string
           description: |
             The Game Session's ID (external). Provided by client via `Create New Game` call.
-          example: some_external_session_id
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         amount:
           description: |
             The amount of the bet in currency **main** units (**not cents**).
@@ -369,7 +370,7 @@ components:
         txID:
           description: Unique ID for the bet on your side. This is required for further tracking/debugging pusposes.
           type: string
-          example: "some_external_bet_tx_id"
+          example: "your_txn_123"
 
     WinRequest:
       type: object
@@ -394,7 +395,7 @@ components:
           type: string
           description: |
             The Game Session's ID (external). Provided by client via `Create New Game` call.
-          example: some_external_session_id
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         amount:
           description: |
             The amount of the bet in currency **main** units (note: not cents). Currency selected by the client during the
@@ -454,7 +455,7 @@ components:
           type: string
           description: |
             The Game Session's ID (external). Provided by client via `Create New Game` call.
-          example: some_external_session_id
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         txID:
           description: |
             Unique ID for the refund (internal) on Swipe Games' side.

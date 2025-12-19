@@ -179,32 +179,39 @@ components:
             External Client's ID (client/platform/game aggregator/integrator or casino on your side). This is provided from your side, and this is
             how you identify your clients. We use it in all callbacks to you.
           type: string
+          example: your_ext_id
         gameID:
           description: |
             Game's ID. This is Swipe Games's game identifier. See the list of supported games in `Game IDs` section.
           type: string
+          example: sg_catch_97
         sessionID:
           description: |
             Session ID (external).This is your Session ID. We use it in all callbacks to you.
             Not required for demo games, since we don't use callbacks for demo games.
           type: string
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         returnURL:
           description: Return URL which we could use to redirect the user after the game is finished/exited.
             If you don't provide this URL, return button in the game will be disabled. Please make sure you provide this URL
             when using redirect to open the game, otherwise player cannot
           type: string
+          example: https://your-site.com/game-lobby
         currency:
           description: Currency code in ISO4217.
           type: string
+          example: USD
         locale:
           description: Locale code in IIETF BCP 47 (ISO 639).
           type: string
+          example: en-US
         platform:
           description: Platform code. This is used to identify the platform where the game is launched.
           type: string
           enum:
             - desktop
             - mobile
+          example: desktop
         demo:
           description: |
             Demo mode. If true, the game will be launched in demo mode (means no callbacks will be fired on your side,
@@ -242,6 +249,7 @@ components:
           description: |
             Free rounds ID (external). Used as idempotency key. Same ID can be used to create free rounds only once.
           type: string
+          example: free_rounds_id
         cID:
           description: Client's ID (internal)
           type: string
@@ -249,20 +257,24 @@ components:
         extCID:
           description: External Client's ID (game aggregator or casino)
           type: string
+          example: your_ext_id
         gameIDs:
           description: List of game IDs. If not provided, free rounds will be available for all games.
           type: array
           items:
             type: string
+          example: ["sg_catch_97", "sg_swipe_97"]
         userIDs:
           description: List of player IDs (external). If not provided, free rounds will be available for all players.
           type: array
           items:
             type: string
+          example: ["player123", "player456"]
 
         currency:
           description: Currency code in ISO4217
           type: string
+          example: USD
 
         quantity:
           description: Number of free rounds.
@@ -270,6 +282,7 @@ components:
           format: int32
           minimum: 1
           maximum: 99
+          example: 10
 
         betLine:
           description: Number of bet line configured for this game/provider.
@@ -277,17 +290,20 @@ components:
           format: int32
           minimum: 1
           maximum: 99
+          example: 20
 
         validFrom:
           description: Start date when free rounds become available.
           type: string
           format: date-time
+          example: "2026-01-01T00:00:00.000Z"
 
         validUntil:
           description: |
             End date when free rounds become unavailable. If not provided then this campaign never ends.
           type: string
           format: date-time
+          example: "2026-02-28T23:59:59.999Z"
 
     CreateFreeRoundsResponse:
       type: object

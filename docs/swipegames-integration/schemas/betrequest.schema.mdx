@@ -6,7 +6,7 @@ sidebar_label: "BetRequest"
 hide_title: true
 hide_table_of_contents: true
 schema: true
-sample: {"type":"regular","sessionID":"some_external_session_id","amount":"100.10","txID":"c27ccade-5a45-4157-a85f-7d023a689ea5","roundID":"b78e42f8-2041-482d-9c4b-f2ca79fc75e3","frID":"some_external_free_rounds_id"}
+sample: {"type":"regular","sessionID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","amount":"100.10","txID":"c27ccade-5a45-4157-a85f-7d023a689ea5","roundID":"b78e42f8-2041-482d-9c4b-f2ca79fc75e3","frID":"some_external_free_rounds_id"}
 custom_edit_url: null
 ---
 
@@ -25,7 +25,7 @@ import Heading from "@theme/Heading";
 
 
 <Schema
-  schema={{"type":"object","required":["type","sessionID","amount","txID","roundID"],"properties":{"type":{"description":"The type of the bet.\n- `regular` type means regular bet,\n- `free` type means free bet (see Free Rounds section).\n","type":"string","enum":["regular","free"],"example":"regular"},"sessionID":{"type":"string","description":"The Game Session's ID (external). Provided by client via `Create New Game` call.\n","example":"some_external_session_id"},"amount":{"description":"The amount of the bet in currency **main** units (**not cents**).\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n","type":"string","pattern":"^([1-9]\\d*)(\\.\\d+)?$","example":"100.10"},"txID":{"description":"Unique ID for the bet (internal) on Swipe Games' side.\nCould be used as idempotency key.\n","type":"string","format":"uuid","example":"c27ccade-5a45-4157-a85f-7d023a689ea5"},"roundID":{"description":"Non unique ID for the round (internal) on Swipe Games' side.\nCould be the same for different games.\n","type":"string","format":"uuid","example":"b78e42f8-2041-482d-9c4b-f2ca79fc75e3"},"frID":{"description":"Free Rounds ID (external).\nThis field is provided only for free rounds (where `type` is `free`).\n","type":"string","example":"some_external_free_rounds_id"}},"title":"BetRequest"}}
+  schema={{"type":"object","required":["type","sessionID","amount","txID","roundID"],"properties":{"type":{"description":"The type of the bet.\n- `regular` type means regular bet,\n- `free` type means free bet (see Free Rounds section).\n","type":"string","enum":["regular","free"],"example":"regular"},"sessionID":{"type":"string","description":"The Game Session's ID (external). Provided by client via `Create New Game` call.\n","example":"a1b2c3d4-e5f6-7890-abcd-ef1234567890"},"amount":{"description":"The amount of the bet in currency **main** units (**not cents**).\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n","type":"string","pattern":"^([1-9]\\d*)(\\.\\d+)?$","example":"100.10"},"txID":{"description":"Unique ID for the bet (internal) on Swipe Games' side.\nCould be used as idempotency key.\n","type":"string","format":"uuid","example":"c27ccade-5a45-4157-a85f-7d023a689ea5"},"roundID":{"description":"Non unique ID for the round (internal) on Swipe Games' side.\nCould be the same for different games.\n","type":"string","format":"uuid","example":"b78e42f8-2041-482d-9c4b-f2ca79fc75e3"},"frID":{"description":"Free Rounds ID (external).\nThis field is provided only for free rounds (where `type` is `free`).\n","type":"string","example":"some_external_free_rounds_id"}},"title":"BetRequest"}}
   schemaType={"response"}
 >
   

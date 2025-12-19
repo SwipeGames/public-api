@@ -6,7 +6,7 @@ sidebar_label: "BetResponse"
 hide_title: true
 hide_table_of_contents: true
 schema: true
-sample: {"balance":"100.10","txID":"some_external_bet_tx_id"}
+sample: {"balance":"100.10","txID":"your_txn_123"}
 custom_edit_url: null
 ---
 
@@ -25,7 +25,7 @@ import Heading from "@theme/Heading";
 
 
 <Schema
-  schema={{"type":"object","required":["balance","txID"],"properties":{"balance":{"description":"The player's balance in selected currency **main** units (note: not cents) after the bet is applied.\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n","type":"string","pattern":"^(0|[1-9]\\d*)(\\.\\d+)?$","example":"100.10"},"txID":{"description":"Unique ID for the bet on your side. This is required for further tracking/debugging pusposes.","type":"string","example":"some_external_bet_tx_id"}},"title":"BetResponse"}}
+  schema={{"type":"object","required":["balance","txID"],"properties":{"balance":{"description":"The player's balance in selected currency **main** units (note: not cents) after the bet is applied.\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n","type":"string","pattern":"^(0|[1-9]\\d*)(\\.\\d+)?$","example":"100.10"},"txID":{"description":"Unique ID for the bet on your side. This is required for further tracking/debugging pusposes.","type":"string","example":"your_txn_123"}},"title":"BetResponse"}}
   schemaType={"response"}
 >
   
