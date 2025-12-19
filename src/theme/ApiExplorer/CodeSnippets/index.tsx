@@ -88,6 +88,160 @@ function CodeSnippets({ postman, codeSamples }: Props) {
           snippet = snippet.replace(jsonMatch[1], compact);
         }
       }
+
+      // For C#: compact JSON in StringContent
+      if (language === 'csharp' && snippet.includes('StringContent')) {
+        const jsonMatch = snippet.match(/new StringContent\("(\{[\s\S]*?\})"/);
+        if (jsonMatch) {
+          // Unescape the JSON string first
+          const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+          const parsed = JSON.parse(unescaped);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          // Escape for C# string
+          const escaped = compact.replace(/"/g, '\\"');
+          snippet = snippet.replace(jsonMatch[1], escaped);
+        }
+      }
+
+      // For Go: compact JSON in strings.NewReader
+      if (language === 'go' && snippet.includes('strings.NewReader')) {
+        const jsonMatch = snippet.match(/strings\.NewReader\(`(\{[\s\S]*?\})`\)/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[1]);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          snippet = snippet.replace(jsonMatch[1], compact);
+        }
+      }
+
+      // For Ruby: add sort_keys: true to JSON.dump
+      if (language === 'ruby' && snippet.includes('JSON.dump')) {
+        snippet = snippet.replace(
+          /JSON\.dump\((\{[\s\S]*?\})\)(?!\s*,\s*sort_keys)/,
+          'JSON.dump($1, { sort_keys: true })'
+        );
+      }
+
+      // For PHP: compact JSON in CURLOPT_POSTFIELDS
+      if (language === 'php' && snippet.includes('CURLOPT_POSTFIELDS')) {
+        const jsonMatch = snippet.match(/CURLOPT_POSTFIELDS\s*=>\s*'(\{[\s\S]*?\n\})'/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[1]);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          snippet = snippet.replace(jsonMatch[1], compact);
+        }
+      }
+
+      // For Java: compact JSON in RequestBody.create
+      if (language === 'java' && snippet.includes('RequestBody.create')) {
+        const jsonMatch = snippet.match(/RequestBody\.create\([^,]+,\s*"(\{[\s\S]*?\})"\)/);
+        if (jsonMatch) {
+          // Unescape the JSON string first
+          const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+          const parsed = JSON.parse(unescaped);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          // Escape for Java string
+          const escaped = compact.replace(/"/g, '\\"');
+          snippet = snippet.replace(jsonMatch[1], escaped);
+        }
+      }
+
+      // For PowerShell: compact JSON in here-string
+      if (language === 'powershell' && snippet.includes('$body = @"')) {
+        const jsonMatch = snippet.match(/\$body = @"\s*(\{[\s\S]*?\})\s*"@/);
+        if (jsonMatch) {
+          // Remove backtick escaping, parse, compact, re-escape
+          const unescaped = jsonMatch[1].replace(/`"/g, '"');
+          const parsed = JSON.parse(unescaped);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          // Escape quotes with backticks for PowerShell
+          const escaped = compact.replace(/"/g, '`"');
+          snippet = snippet.replace(jsonMatch[1], escaped);
+        }
+      }
+
+      // For C: compact JSON in char* string
+      if (language === 'c' && snippet.includes('const char *data')) {
+        const jsonMatch = snippet.match(/const char \*data = "(\{[\s\S]*?\})";/);
+        if (jsonMatch) {
+          // Unescape the JSON string first
+          const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+          const parsed = JSON.parse(unescaped);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          // Escape for C string
+          const escaped = compact.replace(/"/g, '\\"');
+          snippet = snippet.replace(jsonMatch[1], escaped);
+        }
+      }
+
+      // For Objective-C: compact JSON in NSString
+      if (language === 'objective-c' && snippet.includes('initWithData')) {
+        const jsonMatch = snippet.match(/\[@"(\{[\s\S]*?\})" dataUsingEncoding/);
+        if (jsonMatch) {
+          // Unescape the JSON string first
+          const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+          const parsed = JSON.parse(unescaped);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          // Escape for Objective-C string
+          const escaped = compact.replace(/"/g, '\\"');
+          snippet = snippet.replace(jsonMatch[1], escaped);
+        }
+      }
+
+      // For OCaml: compact JSON in string ref
+      if (language === 'ocaml' && snippet.includes('let postData = ref')) {
+        const jsonMatch = snippet.match(/let postData = ref "(\{[\s\S]*?\})"/);
+        if (jsonMatch) {
+          const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+          const parsed = JSON.parse(unescaped);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const escaped = compact.replace(/"/g, '\\"');
+          snippet = snippet.replace(jsonMatch[1], escaped);
+        }
+      }
+
+      // For R: compact JSON in string
+      if (language === 'r' && snippet.includes("body = '")) {
+        const jsonMatch = snippet.match(/body = '(\{[\s\S]*?\})'/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[1]);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          snippet = snippet.replace(jsonMatch[1], compact);
+        }
+      }
+
+      // For Swift: compact JSON in string
+      if (language === 'swift' && snippet.includes('let parameters =')) {
+        const jsonMatch = snippet.match(/let parameters = "(\{[\s\S]*?\})"/);
+        if (jsonMatch) {
+          const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+          const parsed = JSON.parse(unescaped);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const escaped = compact.replace(/"/g, '\\"');
+          snippet = snippet.replace(jsonMatch[1], escaped);
+        }
+      }
+
+      // For Kotlin: compact JSON in string
+      if (language === 'kotlin' && snippet.includes('.toRequestBody')) {
+        const jsonMatch = snippet.match(/val body = "(\{[\s\S]*?\})".toRequestBody/);
+        if (jsonMatch) {
+          const unescaped = jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+          const parsed = JSON.parse(unescaped);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          const escaped = compact.replace(/"/g, '\\"');
+          snippet = snippet.replace(jsonMatch[1], escaped);
+        }
+      }
+
+      // For Rust: compact JSON in raw string
+      if (language === 'rust' && snippet.includes('let data = r#')) {
+        const jsonMatch = snippet.match(/let data = r#"(\{[\s\S]*?\})"#/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[1]);
+          const compact = JSON.stringify(sortObjectKeys(parsed));
+          snippet = snippet.replace(jsonMatch[1], compact);
+        }
+      }
     } catch (e) {
       // If processing fails, return original snippet
       console.warn('[Canonical JSON] Failed to post-process snippet:', e);
