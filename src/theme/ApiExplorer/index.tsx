@@ -23,7 +23,6 @@ function sortKeysCanonical(value: any): any {
 }
 
 export default function ApiExplorerWrapper(props: Props): ReactNode {
-  console.log('Rendering ApiExplorerWrapper with props:', props);
   const sortedJson = sortKeysCanonical(props.item.jsonRequestBodyExample);
   const updatedProps = { ...props, item: { ...props.item, jsonRequestBodyExample: sortedJson } };
 

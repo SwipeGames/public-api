@@ -20,16 +20,16 @@ paths:
       description: |
         Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
         for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
-
       parameters:
         - name: X-REQUEST-SIGN
           in: header
           required: true
-          description: Request signature (read more in the Authentication section)
+          description: Request signature (see Authentication section for more details)
           schema:
             type: string
       requestBody:
         required: true
+        description: Request body must be sent in JSON canonical format (see Authentication section for more details) 
         content:
           application/json:
             schema:
@@ -65,12 +65,13 @@ paths:
         - name: X-REQUEST-SIGN
           in: header
           required: true
-          description: Request signature (read more in the Authentication section)
+          description: Request signature (see Authentication section for more details)
           schema:
             type: string
 
       requestBody:
         required: true
+        description: Request body must be sent in JSON canonical format (see Authentication section for more details) 
         content:
           application/json:
             schema:
@@ -117,12 +118,13 @@ paths:
         - name: X-REQUEST-SIGN
           in: header
           required: true
-          description: Request signature (read more in the Authentication section)
+          description: Request signature (see Authentication section for more details)
           schema:
             type: string
 
       requestBody:
         required: true
+        description: Request body must be sent in JSON canonical format (see Authentication section for more details) 
         content:
           application/json:
             schema:

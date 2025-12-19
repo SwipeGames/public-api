@@ -23,7 +23,7 @@ paths:
         - name: X-REQUEST-SIGN
           in: header
           required: true
-          description: Request signature (read more in the Authentication section)
+          description: Request signature (see Authentication section for more details)
           schema:
             type: string
         - name: sessionID
@@ -80,12 +80,13 @@ paths:
         - name: X-REQUEST-SIGN
           in: header
           required: true
-          description: Request signature (read more in the Authentication section)
+          description: Request signature (see Authentication section for more details)
           schema:
             type: string
 
       requestBody:
         required: true
+        description: Request body must be sent in JSON canonical format (see Authentication section for more details) 
         content:
           application/json:
             schema:
@@ -138,12 +139,13 @@ paths:
         - name: X-REQUEST-SIGN
           in: header
           required: true
-          description: Request signature (read more in the Authentication section)
+          description: Request signature (see Authentication section for more details)
           schema:
             type: string
 
       requestBody:
         required: true
+        description: Request body must be sent in JSON canonical format (see Authentication section for more details) 
         content:
           application/json:
             schema:
@@ -195,12 +197,13 @@ paths:
         - name: X-REQUEST-SIGN
           in: header
           required: true
-          description: Request signature (read more in the Authentication section)
+          description: Request signature (see Authentication section for more details)
           schema:
             type: string
 
       requestBody:
         required: true
+        description: Request body must be sent in JSON canonical format (see Authentication section for more details) 
         content:
           application/json:
             schema:
