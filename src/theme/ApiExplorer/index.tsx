@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {type ReactNode} from 'react';
 import ApiExplorer from '@theme-original/ApiExplorer';
+import type ApiExplorerType from '@theme/ApiExplorer';
+import type {WrapperProps} from '@docusaurus/types';
 
-function sortKeysCanonical(value) {
+type Props = WrapperProps<typeof ApiExplorerType>;
+
+function sortKeysCanonical(value: any): any {
   if (Array.isArray(value)) {
     return value.map(sortKeysCanonical);
   }
@@ -9,7 +13,7 @@ function sortKeysCanonical(value) {
   if (value !== null && typeof value === 'object') {
     return Object.keys(value)
       .sort()
-      .reduce((acc, key) => {
+      .reduce<Record<string, any>>((acc, key) => {
         acc[key] = sortKeysCanonical(value[key]);
         return acc;
       }, {});
@@ -18,7 +22,7 @@ function sortKeysCanonical(value) {
   return value;
 }
 
-export default function ApiExplorerWrapper(props) {
+export default function ApiExplorerWrapper(props: Props): ReactNode {
   console.log('Rendering ApiExplorerWrapper with props:', props);
   const sortedJson = sortKeysCanonical(props.item.jsonRequestBodyExample);
   const updatedProps = { ...props, item: { ...props.item, jsonRequestBodyExample: sortedJson } };
