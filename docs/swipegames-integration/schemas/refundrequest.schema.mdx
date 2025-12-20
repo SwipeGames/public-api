@@ -6,7 +6,7 @@ sidebar_label: "RefundRequest"
 hide_title: true
 hide_table_of_contents: true
 schema: true
-sample: {"sessionID":"some_external_session_id","txID":"c27ccade-5a45-4157-a85f-7d023a689ea5","origTxID":"c27ccade-5a45-4157-a85f-7d023a689ea5","amount":"100.10"}
+sample: {"sessionID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","txID":"c27ccade-5a45-4157-a85f-7d023a689ea5","origTxID":"c27ccade-5a45-4157-a85f-7d023a689ea5","amount":"100.10"}
 custom_edit_url: null
 ---
 
@@ -25,7 +25,7 @@ import Heading from "@theme/Heading";
 
 
 <Schema
-  schema={{"type":"object","required":["sessionID","txID","origTxID","amount"],"properties":{"sessionID":{"type":"string","description":"The Game Session's ID (external). Provided by client via `Create New Game` call.\n","example":"some_external_session_id"},"txID":{"description":"Unique ID for the refund (internal) on Swipe Games' side.\nCould be used as idempotency key.\n","type":"string","format":"uuid","example":"c27ccade-5a45-4157-a85f-7d023a689ea5"},"origTxID":{"description":"Original transaction ID (internal) on Swipe Games' side.\nThis is the ID of the transaction that should be refunded.\nIn some cases this original transaction ID might be not recorded on your side (timeout, server side error, etc).\n","type":"string","format":"uuid","example":"c27ccade-5a45-4157-a85f-7d023a689ea5"},"amount":{"description":"The amount of the refund in currency **main** units (note: not cents).\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\nRefunds are always done for the whole bet amount.\n","type":"string","pattern":"^(0|[1-9]\\d*)(\\.\\d+)?$","example":"100.10"}},"title":"RefundRequest"}}
+  schema={{"type":"object","required":["sessionID","txID","origTxID","amount"],"properties":{"sessionID":{"type":"string","description":"The Game Session's ID (external). Provided by client via `Create New Game` call.\n","example":"a1b2c3d4-e5f6-7890-abcd-ef1234567890"},"txID":{"description":"Unique ID for the refund (internal) on Swipe Games' side.\nCould be used as idempotency key.\n","type":"string","format":"uuid","example":"c27ccade-5a45-4157-a85f-7d023a689ea5"},"origTxID":{"description":"Original transaction ID (internal) on Swipe Games' side.\nThis is the ID of the transaction that should be refunded.\nIn some cases this original transaction ID might be not recorded on your side (timeout, server side error, etc).\n","type":"string","format":"uuid","example":"c27ccade-5a45-4157-a85f-7d023a689ea5"},"amount":{"description":"The amount of the refund in currency **main** units (note: not cents).\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\nRefunds are always done for the whole bet amount.\n","type":"string","pattern":"^(0|[1-9]\\d*)(\\.\\d+)?$","example":"100.10"}},"title":"RefundRequest"}}
   schemaType={"response"}
 >
   
