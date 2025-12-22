@@ -45,19 +45,24 @@ Without canonicalization, the same data would produce different signatures, caus
 **Regular JSON (invalid for signing):**
 ```json
 {
-  "player_id": "12345",
+  "gameID": "sg_catch_97",
+  "platform": "desktop",
   "currency": "USD",
-  "amount": 100
+  "demo": true,
+  "cID": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "extCID": "your_ext_id",
+  "locale": "en-US",
+  "returnURL": "https://your-site.com/game-lobby"
 }
 ```
 
 **Canonical JSON (correct for signing):**
 ```json
-{"amount":100,"currency":"USD","player_id":"12345"}
+{"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 ```
 
 Notice:
-- Keys are alphabetically sorted: `amount`, `currency`, `player_id`
+- Keys are alphabetically sorted: `cID`, `currency`, `demo`, `extCID`, `gameID`, `locale`, `platform`, `returnURL`
 - No spaces or newlines
 - Compact representation
 
@@ -66,22 +71,24 @@ Notice:
 **Regular JSON:**
 ```json
 {
+  "gameID": "sg_catch_97",
+  "currency": "USD",
   "user": {
-    "name": "John",
-    "id": 42
-  },
-  "action": "bet"
+    "nickName": "player123",
+    "id": "ext_user_456",
+    "firstName": "John"
+  }
 }
 ```
 
 **Canonical JSON:**
 ```json
-{"action":"bet","user":{"id":42,"name":"John"}}
+{"currency":"USD","gameID":"sg_catch_97","user":{"firstName":"John","id":"ext_user_456","nickName":"player123"}}
 ```
 
 Notice:
-- Outer keys sorted: `action`, `user`
-- Inner keys sorted: `id`, `name`
+- Outer keys sorted: `currency`, `gameID`, `user`
+- Inner keys (in `user`) sorted: `firstName`, `id`, `nickName`
 - Completely compact
 
 ## How Authentication Works
@@ -130,22 +137,27 @@ function sign(payload, token) {
 // Step 3: Complete example
 const apiToken = 'your-api-token-here';
 const requestData = {
-    player_id: '12345',
+    cID: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+    extCID: 'your_ext_id',
+    gameID: 'sg_catch_97',
+    demo: true,
+    returnURL: 'https://your-site.com/game-lobby',
+    platform: 'desktop',
     currency: 'USD',
-    amount: 100
+    locale: 'en-US'
 };
 
 // Convert to canonical JSON
 const canonicalJSON = toCanonicalJSON(requestData);
 console.log('Canonical JSON:', canonicalJSON);
-// Output: {"amount":100,"currency":"USD","player_id":"12345"}
+// Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 
 // Generate signature
 const signature = sign(canonicalJSON, apiToken);
 console.log('Signature:', signature);
 
 // Make the request
-fetch('https://staging.platform.0.swipegames.io/api/v1/endpoint', {
+fetch('https://staging.platform.0.swipegames.io/api/v1/create-new-game', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
@@ -173,16 +185,16 @@ function sign(payload, token) {
 // For GET requests
 const apiToken = 'your-api-token-here';
 const queryParams = {
-    player_id: '12345',
-    session_id: 'abc-def-ghi'
+    sessionID: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
 };
 
 // Convert to canonical JSON for signing
 const canonicalJSON = toCanonicalJSON(queryParams);
+// Output: {"sessionID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890"}
 const signature = sign(canonicalJSON, apiToken);
 
 // Build URL with query parameters
-const url = new URL('https://staging.platform.0.swipegames.io/api/v1/endpoint');
+const url = new URL('https://your-integration-url.com/balance');
 Object.keys(queryParams).forEach(key =>
     url.searchParams.append(key, queryParams[key])
 );
@@ -224,15 +236,20 @@ def sign(payload, token):
 # Example usage
 api_token = 'your-api-token-here'
 request_data = {
-    'player_id': '12345',
+    'cID': 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+    'extCID': 'your_ext_id',
+    'gameID': 'sg_catch_97',
+    'demo': True,
+    'returnURL': 'https://your-site.com/game-lobby',
+    'platform': 'desktop',
     'currency': 'USD',
-    'amount': 100
+    'locale': 'en-US'
 }
 
 # Convert to canonical JSON
 canonical_json = to_canonical_json(request_data)
 print(f'Canonical JSON: {canonical_json}')
-# Output: {"amount":100,"currency":"USD","player_id":"12345"}
+# Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 
 # Generate signature
 signature = sign(canonical_json, api_token)
@@ -240,7 +257,7 @@ print(f'Signature: {signature}')
 
 # Make the request
 response = requests.post(
-    'https://staging.platform.0.swipegames.io/api/v1/endpoint',
+    'https://staging.platform.0.swipegames.io/api/v1/create-new-game',
     headers={
         'Content-Type': 'application/json',
         'X-REQUEST-SIGN': signature
@@ -271,17 +288,17 @@ def sign(payload, token):
 # For GET requests
 api_token = 'your-api-token-here'
 query_params = {
-    'player_id': '12345',
-    'session_id': 'abc-def-ghi'
+    'sessionID': 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
 }
 
 # Convert to canonical JSON for signing
 canonical_json = to_canonical_json(query_params)
+# Output: {"sessionID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890"}
 signature = sign(canonical_json, api_token)
 
 # Make the request with query parameters
 response = requests.get(
-    'https://staging.platform.0.swipegames.io/api/v1/endpoint',
+    'https://your-integration-url.com/balance',
     headers={
         'X-REQUEST-SIGN': signature
     },
@@ -336,14 +353,19 @@ func main() {
     apiToken := "your-api-token-here"
 
     requestData := map[string]interface{}{
-        "player_id": "12345",
+        "cID":       "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "extCID":    "your_ext_id",
+        "gameID":    "sg_catch_97",
+        "demo":      true,
+        "returnURL": "https://your-site.com/game-lobby",
+        "platform":  "desktop",
         "currency":  "USD",
-        "amount":    100,
+        "locale":    "en-US",
     }
 
     // Convert to canonical JSON
     canonicalJSON, _ := ToCanonicalJSON(requestData)
-    // Output: {"amount":100,"currency":"USD","player_id":"12345"}
+    // Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 
     // Generate signature
     signature := Sign(canonicalJSON, apiToken)
@@ -351,7 +373,7 @@ func main() {
     // Make the request
     req, _ := http.NewRequest(
         "POST",
-        "https://staging.platform.0.swipegames.io/api/v1/endpoint",
+        "https://staging.platform.0.swipegames.io/api/v1/create-new-game",
         bytes.NewBuffer([]byte(canonicalJSON)),
     )
     req.Header.Set("Content-Type", "application/json")
@@ -405,17 +427,17 @@ func main() {
 
     // Prepare query parameters
     params := url.Values{}
-    params.Set("player_id", "12345")
-    params.Set("session_id", "abc-def-ghi")
+    params.Set("sessionID", "a1b2c3d4-e5f6-7890-abcd-ef1234567890")
 
     // Convert to canonical JSON for signing
     canonicalJSON, _ := URLValuesToCanonicalJSON(params)
+    // Output: {"sessionID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890"}
 
     // Generate signature
     signature := Sign(canonicalJSON, apiToken)
 
     // Make the request
-    baseURL := "https://staging.platform.0.swipegames.io/api/v1/endpoint"
+    baseURL := "https://your-integration-url.com/balance"
     fullURL := baseURL + "?" + params.Encode()
 
     req, _ := http.NewRequest("GET", fullURL, nil)
@@ -445,9 +467,14 @@ function sign($payload, $token) {
 // Example usage
 $apiToken = 'your-api-token-here';
 $requestData = [
-    'player_id' => '12345',
+    'cID' => 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+    'extCID' => 'your_ext_id',
+    'gameID' => 'sg_catch_97',
+    'demo' => true,
+    'returnURL' => 'https://your-site.com/game-lobby',
+    'platform' => 'desktop',
     'currency' => 'USD',
-    'amount' => 100
+    'locale' => 'en-US'
 ];
 
 // PHP automatically sorts array keys when encoding to JSON
@@ -456,14 +483,14 @@ ksort($requestData); // Ensure alphabetical order
 // Convert to canonical JSON
 $canonicalJSON = toCanonicalJSON($requestData);
 echo "Canonical JSON: " . $canonicalJSON . "\n";
-// Output: {"amount":100,"currency":"USD","player_id":"12345"}
+// Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 
 // Generate signature
 $signature = sign($canonicalJSON, $apiToken);
 echo "Signature: " . $signature . "\n";
 
 // Make the request
-$ch = curl_init('https://staging.platform.0.swipegames.io/api/v1/endpoint');
+$ch = curl_init('https://staging.platform.0.swipegames.io/api/v1/create-new-game');
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $canonicalJSON);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -508,7 +535,7 @@ console.log('Signing this exact string:', canonical);
 
 1. **Start with a simple test case:**
 ```json
-{"amount":100,"currency":"USD","player_id":"12345"}
+{"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 ```
 
 2. **Verify the canonical form** - it should be exactly as shown above (compact, sorted keys)
