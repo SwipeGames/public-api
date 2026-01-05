@@ -15,7 +15,7 @@ const sidebars: SidebarsConfig = {
 
     "games",
     "currencies",
-    "languages",
+    "locales",
     "authn",
 
     {
