@@ -1,0 +1,33 @@
+---
+id: betlinevalue
+title: "BetLineValue"
+description: ""
+sidebar_label: "BetLineValue"
+hide_title: true
+hide_table_of_contents: true
+schema: true
+sample: {"maxBet":"1.00","maxCoeff":"5.00"}
+custom_edit_url: null
+---
+
+import Schema from "@theme/Schema";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"BetLineValue"}
+>
+</Heading>
+
+
+
+
+
+<Schema
+  schema={{"type":"object","required":["maxBet","maxCoeff"],"properties":{"maxBet":{"description":"Maximum bet amount for this line (in currency units)","type":"string","example":"1.00"},"maxCoeff":{"description":"Maximum multiplier applied to the bet","type":"string","example":"5.00"}},"title":"BetLineValue"}}
+  schemaType={"response"}
+>
+  
+</Schema>
+            

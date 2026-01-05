@@ -3,7 +3,7 @@ info:
   title: Swipe Games Core Public API
   description: |
     This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
-  version: 1.0.1
+  version: 1.1.0
 
 servers:
   - url: https://staging.platform.0.swipegames.io/api/v1
@@ -29,7 +29,7 @@ paths:
             type: string
       requestBody:
         required: true
-        description: Request body must be sent in JSON canonical format (see Authentication section for more details) 
+        description: Request body must be sent in JSON canonical format (see Authentication section for more details)
         content:
           application/json:
             schema:
@@ -71,7 +71,7 @@ paths:
 
       requestBody:
         required: true
-        description: Request body must be sent in JSON canonical format (see Authentication section for more details) 
+        description: Request body must be sent in JSON canonical format (see Authentication section for more details)
         content:
           application/json:
             schema:
@@ -124,7 +124,7 @@ paths:
 
       requestBody:
         required: true
-        description: Request body must be sent in JSON canonical format (see Authentication section for more details) 
+        description: Request body must be sent in JSON canonical format (see Authentication section for more details)
         content:
           application/json:
             schema:
@@ -155,8 +155,66 @@ paths:
               schema:
                 $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
 
+  /games:
+    get:
+      tags:
+        - Get Games
+      summary: Get Games' Information
+      description: Get information about supported games
+      parameters:
+        - name: X-REQUEST-SIGN
+          in: header
+          required: true
+          description: Request signature (see Authentication section for more details)
+          schema:
+            type: string
+        - name: cid
+          in: query
+          required: true
+          description: Client's ID
+          x-go-name: CID
+          schema:
+            type: string
+            format: uuid
+
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GamesResponse"
+
+        401:
+          description: Wrong signature or API key
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+
+        409:
+          description: Free rounds campaign already exists
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+
+        500:
+          description: Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+
 components:
   schemas:
+    PlatformType:
+      type: string
+      description: Platform type where the game can be launched
+      enum:
+        - desktop
+        - mobile
+
     CreateNewGameRequest:
       type: object
       required:
@@ -207,10 +265,8 @@ components:
           example: en-US
         platform:
           description: Platform code. This is used to identify the platform where the game is launched.
-          type: string
-          enum:
-            - desktop
-            - mobile
+          allOf:
+            - $ref: "#/components/schemas/PlatformType"
           example: desktop
         demo:
           description: |
@@ -345,3 +401,120 @@ components:
         extCID:
           description: External Client's ID (external)
           type: string
+
+    GameInfoImages:
+      type: object
+      required:
+        - baseURL
+        - square
+        - horizontal
+        - widescreen
+        - vertical
+      properties:
+        baseURL:
+          description: Image's base URL
+          type: string
+        square:
+          description: Path to square image. 1:1 aspect.
+          type: string
+        horizontal:
+          description: Path to horizontal image. 4:3 aspect.
+          type: string
+        widescreen:
+          description: Path to widescreen image. 16:9 aspect.
+          type: string
+        vertical:
+          description: Path to vertical image. 3:4 aspect.
+          type: string
+
+    BetLineValue:
+      type: object
+      required:
+        - maxBet
+        - maxCoeff
+      properties:
+        maxBet:
+          description: Maximum bet amount for this line (in currency units)
+          type: string
+          example: "1.00"
+        maxCoeff:
+          description: Maximum multiplier applied to the bet
+          type: string
+          example: "5.00"
+
+    BetLineInfo:
+      type: object
+      required:
+        - currency
+        - values
+      properties:
+        currency:
+          description: Currency code in ISO4217
+          type: string
+          example: USD
+        values:
+          description: List of bet line values
+          type: array
+          items:
+            $ref: "#/components/schemas/BetLineValue"
+
+    GameInfo:
+      type: object
+      required:
+        - title
+        - id
+        - locales
+        - currencies
+        - images
+        - platforms
+        - hasFreeSpins
+
+        - rtp
+      properties:
+        title:
+          description: Game's title in English
+          type: string
+        id:
+          description: Game's ID (internal)
+          type: string
+        locales:
+          description: List of supported locale codes in ISO 639-1 format
+          type: array
+          items:
+            type: string
+          example: ["en", "es", "pt-br", "zh", "ja"]
+
+        currencies:
+          description: List of supported currency codes in ISO 4217 format
+          type: array
+          items:
+            type: string
+          example: ["USD", "EUR", "GBP", "BTC", "ETH"]
+        platforms:
+          description: List of supported platform types
+          type: array
+          items:
+            $ref: "#/components/schemas/PlatformType"
+
+        images:
+          description: Image URLs for the game
+          $ref: "#/components/schemas/GameInfoImages"
+
+        hasFreeSpins:
+          description: If game supports free spins
+          type: boolean
+        rtp:
+          description: Game's RTP
+          type: string
+        betLines:
+          description: |
+            List of bet lines supported for this game per currency. Available
+            only if game has free spins. See more info in related section.
+          type: array
+          items:
+            $ref: "#/components/schemas/BetLineInfo"
+
+    GamesResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/GameInfo"

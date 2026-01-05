@@ -1,0 +1,33 @@
+---
+id: gameinfo
+title: "GameInfo"
+description: ""
+sidebar_label: "GameInfo"
+hide_title: true
+hide_table_of_contents: true
+schema: true
+sample: {"title":"string","id":"string","locales":["en","es","pt-br","zh","ja"],"currencies":["USD","EUR","GBP","BTC","ETH"],"platforms":["desktop"],"images":{"baseURL":"string","square":"string","horizontal":"string","widescreen":"string","vertical":"string"},"hasFreeSpins":true,"rtp":"string","betLines":[{"currency":"USD","values":[{"maxBet":"1.00","maxCoeff":"5.00"}]}]}
+custom_edit_url: null
+---
+
+import Schema from "@theme/Schema";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"GameInfo"}
+>
+</Heading>
+
+
+
+
+
+<Schema
+  schema={{"type":"object","required":["title","id","locales","currencies","images","platforms","hasFreeSpins","rtp"],"properties":{"title":{"description":"Game's title in English","type":"string"},"id":{"description":"Game's ID (internal)","type":"string"},"locales":{"description":"List of supported locale codes in ISO 639-1 format","type":"array","items":{"type":"string"},"example":["en","es","pt-br","zh","ja"]},"currencies":{"description":"List of supported currency codes in ISO 4217 format","type":"array","items":{"type":"string"},"example":["USD","EUR","GBP","BTC","ETH"]},"platforms":{"description":"List of supported platform types","type":"array","items":{"type":"string","description":"Platform type where the game can be launched","enum":["desktop","mobile"],"title":"PlatformType"}},"images":{"description":"Image URLs for the game","type":"object","required":["baseURL","square","horizontal","widescreen","vertical"],"properties":{"baseURL":{"description":"Image's base URL","type":"string"},"square":{"description":"Path to square image. 1:1 aspect.","type":"string"},"horizontal":{"description":"Path to horizontal image. 4:3 aspect.","type":"string"},"widescreen":{"description":"Path to widescreen image. 16:9 aspect.","type":"string"},"vertical":{"description":"Path to vertical image. 3:4 aspect.","type":"string"}},"title":"GameInfoImages"},"hasFreeSpins":{"description":"If game supports free spins","type":"boolean"},"rtp":{"description":"Game's RTP","type":"string"},"betLines":{"description":"List of bet lines supported for this game per currency. Available\nonly if game has free spins. See more info in related section.\n","type":"array","items":{"type":"object","required":["currency","values"],"properties":{"currency":{"description":"Currency code in ISO4217","type":"string","example":"USD"},"values":{"description":"List of bet line values","type":"array","items":{"type":"object","required":["maxBet","maxCoeff"],"properties":{"maxBet":{"description":"Maximum bet amount for this line (in currency units)","type":"string","example":"1.00"},"maxCoeff":{"description":"Maximum multiplier applied to the bet","type":"string","example":"5.00"}},"title":"BetLineValue"}}},"title":"BetLineInfo"}}},"title":"GameInfo"}}
+  schemaType={"response"}
+>
+  
+</Schema>
+            
