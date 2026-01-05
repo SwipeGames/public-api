@@ -168,7 +168,7 @@ paths:
           description: Request signature (see Authentication section for more details)
           schema:
             type: string
-        - name: cid
+        - name: cID
           in: query
           required: true
           description: Client's ID
@@ -176,6 +176,13 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: extCID
+          in: query
+          required: true
+          description: External Client's ID
+          x-go-name: extCID
+          schema:
+            type: string
 
       responses:
         200:
