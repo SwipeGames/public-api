@@ -176,6 +176,7 @@ paths:
           schema:
             type: string
             format: uuid
+          example: 550e8400-e29b-41d4-a716-446655440000
         - name: extCID
           in: query
           required: true
@@ -183,6 +184,7 @@ paths:
           x-go-name: extCID
           schema:
             type: string
+          example: your_ext_id
 
       responses:
         200:
@@ -199,8 +201,8 @@ paths:
               schema:
                 $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
 
-        409:
-          description: Free rounds campaign already exists
+        404:
+          description: Games not found
           content:
             application/json:
               schema:
@@ -267,9 +269,9 @@ components:
           type: string
           example: USD
         locale:
-          description: Locale code in IIETF BCP 47 (ISO 639).
+          description: Locale code in IETF BCP 47 format (ISO 639-1 language code with optional ISO 3166-1 country code), using underscore as separator.
           type: string
-          example: en-US
+          example: en_us
         platform:
           description: Platform code. This is used to identify the platform where the game is launched.
           allOf:
@@ -421,18 +423,23 @@ components:
         baseURL:
           description: Image's base URL
           type: string
+          example: https://cdn.swipegames.io/images/sg_catch_97
         square:
           description: Path to square image. 1:1 aspect.
           type: string
+          example: /square.png
         horizontal:
           description: Path to horizontal image. 4:3 aspect.
           type: string
+          example: /horizontal.png
         widescreen:
           description: Path to widescreen image. 16:9 aspect.
           type: string
+          example: /widescreen.png
         vertical:
           description: Path to vertical image. 3:4 aspect.
           type: string
+          example: /vertical.png
 
     BetLineValue:
       type: object
@@ -460,7 +467,8 @@ components:
           type: string
           example: USD
         values:
-          description: List of bet line values
+          description: |
+            List of bet line values. Array starts from index 1.
           type: array
           items:
             $ref: "#/components/schemas/BetLineValue"
@@ -475,44 +483,45 @@ components:
         - images
         - platforms
         - hasFreeSpins
-
         - rtp
       properties:
         title:
           description: Game's title in English
           type: string
+          example: Catch 97
         id:
           description: Game's ID (internal)
           type: string
+          example: sg_catch_97
         locales:
-          description: List of supported locale codes in ISO 639-1 format
+          description: List of supported locales in IETF BCP 47 format (ISO 639-1 language code with optional ISO 3166-1 country code), using underscore as separator.
           type: array
           items:
             type: string
-          example: ["en", "es", "pt-br", "zh", "ja"]
-
+          example: ["en_us", "es", "pt_br"]
         currencies:
           description: List of supported currency codes in ISO 4217 format
           type: array
           items:
             type: string
-          example: ["USD", "EUR", "GBP", "BTC", "ETH"]
+          example: ["USD", "EUR", "GBP"]
         platforms:
           description: List of supported platform types
           type: array
           items:
             $ref: "#/components/schemas/PlatformType"
-
+          example: ["desktop", "mobile"]
         images:
           description: Image URLs for the game
           $ref: "#/components/schemas/GameInfoImages"
-
         hasFreeSpins:
           description: If game supports free spins
           type: boolean
+          example: true
         rtp:
           description: Game's RTP
-          type: string
+          type: integer
+          example: 97
         betLines:
           description: |
             List of bet lines supported for this game per currency. Available
