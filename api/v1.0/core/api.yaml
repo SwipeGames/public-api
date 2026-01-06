@@ -468,7 +468,8 @@ components:
           example: USD
         values:
           description: |
-            List of bet line values. Array starts from index 1.
+            List of bet line values (0-indexed array maps to 1-based bet lines).
+
           type: array
           items:
             $ref: "#/components/schemas/BetLineValue"
