@@ -6,7 +6,7 @@ sidebar_label: "GameInfoImages"
 hide_title: true
 hide_table_of_contents: true
 schema: true
-sample: {"baseURL":"string","square":"string","horizontal":"string","widescreen":"string","vertical":"string"}
+sample: {"baseURL":"https://cdn.swipegames.io/images/sg_catch_97","square":"/square.png","horizontal":"/horizontal.png","widescreen":"/widescreen.png","vertical":"/vertical.png"}
 custom_edit_url: null
 ---
 
@@ -25,7 +25,7 @@ import Heading from "@theme/Heading";
 
 
 <Schema
-  schema={{"type":"object","required":["baseURL","square","horizontal","widescreen","vertical"],"properties":{"baseURL":{"description":"Image's base URL","type":"string"},"square":{"description":"Path to square image. 1:1 aspect.","type":"string"},"horizontal":{"description":"Path to horizontal image. 4:3 aspect.","type":"string"},"widescreen":{"description":"Path to widescreen image. 16:9 aspect.","type":"string"},"vertical":{"description":"Path to vertical image. 3:4 aspect.","type":"string"}},"title":"GameInfoImages"}}
+  schema={{"type":"object","required":["baseURL","square","horizontal","widescreen","vertical"],"properties":{"baseURL":{"description":"Image's base URL","type":"string","example":"https://cdn.swipegames.io/images/sg_catch_97"},"square":{"description":"Path to square image. 1:1 aspect.","type":"string","example":"/square.png"},"horizontal":{"description":"Path to horizontal image. 4:3 aspect.","type":"string","example":"/horizontal.png"},"widescreen":{"description":"Path to widescreen image. 16:9 aspect.","type":"string","example":"/widescreen.png"},"vertical":{"description":"Path to vertical image. 3:4 aspect.","type":"string","example":"/vertical.png"}},"title":"GameInfoImages"}}
   schemaType={"response"}
 >
   
