@@ -30,7 +30,7 @@ const config: Config = {
           docItemComponent: "@theme/ApiItem", // Derived from docusaurus-theme-openapi
           lastVersion: "current",
           versions: {
-            current: { label: "1.0.1", path: "/" },
+            current: { label: "1.1.0", path: "/" },
           },
         },
         blog: false,
@@ -62,7 +62,7 @@ const config: Config = {
         {
           type: "docsVersionDropdown",
           versions: {
-            current: { label: "1.0.1" },
+            current: { label: "1.1.0" },
           },
         },
       ],

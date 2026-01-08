@@ -24,11 +24,29 @@ import (
 	externalRef0 "github.com/swipegames/public-api/api/v1.0"
 )
 
-// Defines values for CreateNewGameRequestPlatform.
+// Defines values for PlatformType.
 const (
-	Desktop CreateNewGameRequestPlatform = "desktop"
-	Mobile  CreateNewGameRequestPlatform = "mobile"
+	Desktop PlatformType = "desktop"
+	Mobile  PlatformType = "mobile"
 )
+
+// BetLineInfo defines model for BetLineInfo.
+type BetLineInfo struct {
+	// Currency Currency code in ISO4217
+	Currency string `json:"currency"`
+
+	// Values List of bet line values (0-indexed array maps to 1-based bet lines).
+	Values []BetLineValue `json:"values"`
+}
+
+// BetLineValue defines model for BetLineValue.
+type BetLineValue struct {
+	// MaxBet Maximum bet amount for this line (in currency units)
+	MaxBet string `json:"maxBet"`
+
+	// MaxCoeff Maximum multiplier applied to the bet
+	MaxCoeff string `json:"maxCoeff"`
+}
 
 // CreateFreeRoundsRequest defines model for CreateFreeRoundsRequest.
 type CreateFreeRoundsRequest struct {
@@ -91,11 +109,11 @@ type CreateNewGameRequest struct {
 	// GameID Game's ID. This is Swipe Games's game identifier. See the list of supported games in `Game IDs` section.
 	GameID string `json:"gameID"`
 
-	// Locale Locale code in IIETF BCP 47 (ISO 639).
+	// Locale Locale code in IETF BCP 47 format (ISO 639-1 language code with optional ISO 3166-1 country code), using underscore as separator.
 	Locale string `json:"locale"`
 
 	// Platform Platform code. This is used to identify the platform where the game is launched.
-	Platform CreateNewGameRequestPlatform `json:"platform"`
+	Platform PlatformType `json:"platform"`
 
 	// ReturnURL Return URL which we could use to redirect the user after the game is finished/exited. If you don't provide this URL, return button in the game will be disabled. Please make sure you provide this URL when using redirect to open the game, otherwise player cannot
 	ReturnURL string `json:"returnURL"`
@@ -105,9 +123,6 @@ type CreateNewGameRequest struct {
 	SessionID *string            `json:"sessionID,omitempty"`
 	User      *externalRef0.User `json:"user,omitempty"`
 }
-
-// CreateNewGameRequestPlatform Platform code. This is used to identify the platform where the game is launched.
-type CreateNewGameRequestPlatform string
 
 // CreateNewGameResponse defines model for CreateNewGameResponse.
 type CreateNewGameResponse struct {
@@ -130,21 +145,86 @@ type DeleteFreeRoundsRequest struct {
 	Id *openapi_types.UUID `json:"id,omitempty"`
 }
 
+// GameInfo defines model for GameInfo.
+type GameInfo struct {
+	// BetLines List of bet lines supported for this game per currency. Available
+	// only if game has free spins. See more info in related section.
+	BetLines *[]BetLineInfo `json:"betLines,omitempty"`
+
+	// Currencies List of supported currency codes in ISO 4217 format
+	Currencies []string `json:"currencies"`
+
+	// HasFreeSpins If game supports free spins
+	HasFreeSpins bool `json:"hasFreeSpins"`
+
+	// Id Game's ID (internal)
+	Id     string         `json:"id"`
+	Images GameInfoImages `json:"images"`
+
+	// Locales List of supported locales in IETF BCP 47 format (ISO 639-1 language code with optional ISO 3166-1 country code), using underscore as separator.
+	Locales []string `json:"locales"`
+
+	// Platforms List of supported platform types
+	Platforms []PlatformType `json:"platforms"`
+
+	// Rtp Game's RTP
+	Rtp int `json:"rtp"`
+
+	// Title Game's title in English
+	Title string `json:"title"`
+}
+
+// GameInfoImages defines model for GameInfoImages.
+type GameInfoImages struct {
+	// BaseURL Image's base URL
+	BaseURL string `json:"baseURL"`
+
+	// Horizontal Path to horizontal image. 4:3 aspect.
+	Horizontal string `json:"horizontal"`
+
+	// Square Path to square image. 1:1 aspect.
+	Square string `json:"square"`
+
+	// Vertical Path to vertical image. 3:4 aspect.
+	Vertical string `json:"vertical"`
+
+	// Widescreen Path to widescreen image. 16:9 aspect.
+	Widescreen string `json:"widescreen"`
+}
+
+// GamesResponse defines model for GamesResponse.
+type GamesResponse = []GameInfo
+
+// PlatformType Platform type where the game can be launched
+type PlatformType string
+
 // PostCreateNewGameParams defines parameters for PostCreateNewGame.
 type PostCreateNewGameParams struct {
-	// XREQUESTSIGN Request signature (read more in the Authentication section)
+	// XREQUESTSIGN Request signature (see Authentication section for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 
 // DeleteFreeRoundsParams defines parameters for DeleteFreeRounds.
 type DeleteFreeRoundsParams struct {
-	// XREQUESTSIGN Request signature (read more in the Authentication section)
+	// XREQUESTSIGN Request signature (see Authentication section for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 
 // PostFreeRoundsParams defines parameters for PostFreeRounds.
 type PostFreeRoundsParams struct {
-	// XREQUESTSIGN Request signature (read more in the Authentication section)
+	// XREQUESTSIGN Request signature (see Authentication section for more details)
+	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
+}
+
+// GetGamesParams defines parameters for GetGames.
+type GetGamesParams struct {
+	// CID Client's ID
+	CID openapi_types.UUID `form:"cID" json:"cID"`
+
+	// ExtCID External Client's ID
+	ExtCID string `form:"extCID" json:"extCID"`
+
+	// XREQUESTSIGN Request signature (see Authentication section for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 
@@ -244,6 +324,9 @@ type ClientInterface interface {
 	PostFreeRoundsWithBody(ctx context.Context, params *PostFreeRoundsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PostFreeRounds(ctx context.Context, params *PostFreeRoundsParams, body PostFreeRoundsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetGames request
+	GetGames(ctx context.Context, params *GetGamesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) PostCreateNewGameWithBody(ctx context.Context, params *PostCreateNewGameParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -308,6 +391,18 @@ func (c *Client) PostFreeRoundsWithBody(ctx context.Context, params *PostFreeRou
 
 func (c *Client) PostFreeRounds(ctx context.Context, params *PostFreeRoundsParams, body PostFreeRoundsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostFreeRoundsRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetGames(ctx context.Context, params *GetGamesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetGamesRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -477,6 +572,76 @@ func NewPostFreeRoundsRequestWithBody(server string, params *PostFreeRoundsParam
 	return req, nil
 }
 
+// NewGetGamesRequest generates requests for GetGames
+func NewGetGamesRequest(server string, params *GetGamesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/games")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "cID", runtime.ParamLocationQuery, params.CID); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "extCID", runtime.ParamLocationQuery, params.ExtCID); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		var headerParam0 string
+
+		headerParam0, err = runtime.StyleParamWithLocation("simple", false, "X-REQUEST-SIGN", runtime.ParamLocationHeader, params.XREQUESTSIGN)
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Set("X-REQUEST-SIGN", headerParam0)
+
+	}
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -534,6 +699,9 @@ type ClientWithResponsesInterface interface {
 	PostFreeRoundsWithBodyWithResponse(ctx context.Context, params *PostFreeRoundsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostFreeRoundsResponse, error)
 
 	PostFreeRoundsWithResponse(ctx context.Context, params *PostFreeRoundsParams, body PostFreeRoundsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostFreeRoundsResponse, error)
+
+	// GetGamesWithResponse request
+	GetGamesWithResponse(ctx context.Context, params *GetGamesParams, reqEditors ...RequestEditorFn) (*GetGamesResponse, error)
 }
 
 type PostCreateNewGameResponse struct {
@@ -609,6 +777,31 @@ func (r PostFreeRoundsResponse) StatusCode() int {
 	return 0
 }
 
+type GetGamesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *GamesResponse
+	JSON401      *externalRef0.ErrorResponse
+	JSON404      *externalRef0.ErrorResponse
+	JSON500      *externalRef0.ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetGamesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetGamesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // PostCreateNewGameWithBodyWithResponse request with arbitrary body returning *PostCreateNewGameResponse
 func (c *ClientWithResponses) PostCreateNewGameWithBodyWithResponse(ctx context.Context, params *PostCreateNewGameParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostCreateNewGameResponse, error) {
 	rsp, err := c.PostCreateNewGameWithBody(ctx, params, contentType, body, reqEditors...)
@@ -658,6 +851,15 @@ func (c *ClientWithResponses) PostFreeRoundsWithResponse(ctx context.Context, pa
 		return nil, err
 	}
 	return ParsePostFreeRoundsResponse(rsp)
+}
+
+// GetGamesWithResponse request returning *GetGamesResponse
+func (c *ClientWithResponses) GetGamesWithResponse(ctx context.Context, params *GetGamesParams, reqEditors ...RequestEditorFn) (*GetGamesResponse, error) {
+	rsp, err := c.GetGames(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetGamesResponse(rsp)
 }
 
 // ParsePostCreateNewGameResponse parses an HTTP response from a PostCreateNewGameWithResponse call
@@ -787,6 +989,53 @@ func ParsePostFreeRoundsResponse(rsp *http.Response) (*PostFreeRoundsResponse, e
 	return response, nil
 }
 
+// ParseGetGamesResponse parses an HTTP response from a GetGamesWithResponse call
+func ParseGetGamesResponse(rsp *http.Response) (*GetGamesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetGamesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest GamesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest externalRef0.ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest externalRef0.ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest externalRef0.ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// Create new game
@@ -798,6 +1047,9 @@ type ServerInterface interface {
 	// Create new free rounds campaign
 	// (POST /free-rounds)
 	PostFreeRounds(ctx echo.Context, params PostFreeRoundsParams) error
+	// Get Games' Information
+	// (GET /games)
+	GetGames(ctx echo.Context, params GetGamesParams) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -898,6 +1150,50 @@ func (w *ServerInterfaceWrapper) PostFreeRounds(ctx echo.Context) error {
 	return err
 }
 
+// GetGames converts echo context to params.
+func (w *ServerInterfaceWrapper) GetGames(ctx echo.Context) error {
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetGamesParams
+	// ------------- Required query parameter "cID" -------------
+
+	err = runtime.BindQueryParameter("form", true, true, "cID", ctx.QueryParams(), &params.CID)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter cID: %s", err))
+	}
+
+	// ------------- Required query parameter "extCID" -------------
+
+	err = runtime.BindQueryParameter("form", true, true, "extCID", ctx.QueryParams(), &params.ExtCID)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter extCID: %s", err))
+	}
+
+	headers := ctx.Request().Header
+	// ------------- Required header parameter "X-REQUEST-SIGN" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-REQUEST-SIGN")]; found {
+		var XREQUESTSIGN string
+		n := len(valueList)
+		if n != 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for X-REQUEST-SIGN, got %d", n))
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-REQUEST-SIGN", valueList[0], &XREQUESTSIGN, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter X-REQUEST-SIGN: %s", err))
+		}
+
+		params.XREQUESTSIGN = XREQUESTSIGN
+	} else {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter X-REQUEST-SIGN is required, but not found"))
+	}
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.GetGames(ctx, params)
+	return err
+}
+
 // This is a simple interface which specifies echo.Route addition functions which
 // are present on both echo.Echo and echo.Group, since we want to allow using
 // either of them for path registration
@@ -929,50 +1225,68 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	router.POST(baseURL+"/create-new-game", wrapper.PostCreateNewGame)
 	router.DELETE(baseURL+"/free-rounds", wrapper.DeleteFreeRounds)
 	router.POST(baseURL+"/free-rounds", wrapper.PostFreeRounds)
+	router.GET(baseURL+"/games", wrapper.GetGames)
 
 }
 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/+xZYW/bONL+KwO9L9AWcOykzXVRf+smaWEgaHtxg71DWzi0OJa5oYYqScUxiv73w5CS",
-	"LFtymlxbYHvYb7FEDYczzzzzDPMlSU1eGELyLhl/SVy6xFyEP08sCo+vLOKFKUm6C/xcovP8qrCmQOsV",
-	"hoVz9OeKkP+U6FKrCq8MJePkTZnP0YJZwBw9aEUIqaGFykqLEhbGgl8qB5nIcVRYc6Mk2mEySBbG5sIn",
-	"40SRf/Y0GSS5uFV5mSfjFy8GSa4o/jgaJH5dYFyHGdrk6yBJJ6ddR060QvKPHExO4TEvtiT0k/ZOZalk",
-	"0thz3irKgrnSWqR03WOzegOpkQiKYDJ9e/z06Lc+K3jrT/r8OruNrsCWgxwPEFlmMRPeWDAWUuEUmSd7",
-	"bPeZ5ryBDYkLRrHa6skQLh1KEA6UxLwwPhziGtdDmPLGk1NIBcEcoeR13kAagACLlkVDeg2GUhx+pD6n",
-	"+AiTU9d161w5z4DI4lZuCJMFkPFQ5V8OtvZZKa3ZFXEjlBZzjQE1QutgwDFYlMc8bNRxonogrBVr/v25",
-	"FOSVX98F1Nbm34vE0qG9MwaFFmu0HIWt9PyXAYnWHhiSG6GVfGVN3vVy6oX1IDnzqyXSlhdzTE3ecmIr",
-	"VPzJgVc59gEjbHhJXumeaiB5934lbXbcDRN4/ijwSSryQqiMgPAGLSDnMsD0Pi5+HSQWP5fKokzGHwKd",
-	"1DXW1HGLFlqoGjRE2I7rp2YHM/8TU89B6DKrKww57FLrw4v7PUdAuU1cFEcFwUb2HvYlRclvb9Gw5vDb",
-	"tLkTw7AknmR/NN7g6rXIcW+T+RavD2HCfzTHnq9hulIFAlt1IEhyVMqK+tamtMx/5NVCod2Bx49rBr3h",
-	"lpibrolTzA3kRkZoe1viICQuMGVd9lqUlC5jVmX9ATzOUZADMpAKrecivd4QxYKzAIbikZ2SOPhIHI1V",
-	"IHjgp8HSXGhBKVZtOe4b2WghtPuWMxaFjt63G8LcGI2CHt4C0/BjVGjhOSujnZY4CjRrt7vj1iH7KmFh",
-	"Td4KQ8CEj4s+0tKs+F0NinVcGP1wQ/gjRkt5PizT7SbS3vDaOxth99iMygq3tZ8tuD6KoqiNUJgihhTo",
-	"qnu4siiM9ShjK2S/rl5XXfUKHKa80x6vtEmF7hFs5+H5BsSTs/ev4PeTd3D8GzyeTN/C82cvnvRius5U",
-	"1+a76k2wujltLS6aePPZaivcASxuEKdcAzbeHYmb7gfe6NqbgtuymSuNLXrZeGbRl5YuL867rl2EV3B5",
-	"cQ6rpUqXXBOpKbUMufYGLEplMfXBE+7nIBYe7ZZjC0XKLVGO8FZ5lKFiGEjS0KOmPUWcXV6cDyD6A/PS",
-	"e0M1O2/VlVSOW5wcwjuNwiHk4hrBlRaD4V2TsV2WTlHWctiAKXBjfADGL9GulMNad6SCyPi+ZDp0Thnq",
-	"w+00vtrpOnVSQ81sltyvbN4YD3W7COwT6CiAegBOMSetsAonG9uY2F68B+ucNj7H/1tcJOPk/0abgWdU",
-	"TTsjUajZzdHwcJaaPDd0sFkyu+TP96qCqAaqIq+YvQ25VmFsiYaqAO/RDvcpA96zAnWXdFxM3cPadG2x",
-	"+r7Pt1PUeK+R8AdPYQ9rHg0uf/K49JaQiVhJ7kHBLuSl81zCdc/Zg8mHCa4f4MHDkLAF7z4c3FEvZ9Ya",
-	"24btTt9DQis0IC8DW60LldyWa+/KuVYpvHw34dOXQut17Bi8cPOyMVAV/w4IjezxIDgYm1GrlTD4Z2T8",
-	"bMEZaBVreNj02qZ0O49FmpqS/GyuTXodnszRz7TKlQ8fOdf84MGj+aHIlYuFShm/swVnP2kIeIa3RcjJ",
-	"5smWiwH0s9QQxW4/C1Ht7YISvVC6Zxh9j+mSVCo0VEsaARiMDeEkNMT6OiBS7rzMMkXZANwyvOVBbI78",
-	"a0VM7FUvX8frnI4zOTonsp7cvIS5VbiA1lPGd+MNd5EzyrRyy5Zj99t2B+O1Dw+E92XVTXaRVpK3fXNB",
-	"fBEVFQuoZ0fPnx8cgdDFUhw87Y3OQlnn34gce7m9jzrYqUd7J8HN27ZA7t1aizt2JpVe73nZHfi6YeVF",
-	"ihY9k0/tKKfvxFgMlX0XI0waXeV4ui+MIu9aN1WEq1o/5IJEtn13VV8PuDgB5MbWQ4vyLIqT9rbBn83e",
-	"PNqjddHvo+Hh8Igjw0pLFCoZJ8+Gh8NnTETCLwMyRtGlA8LVQVYFrzCxZXaSGCVdNam3ziOaE4WzW8yU",
-	"82hdeHzFouOKG8AVD2FXUUuaKP0c2htWrSQr3RmjfB7FtGX5+JHaE98Q/m3KcAHY1b6hwirN6Q24cEHE",
-	"9cbKs1GxPJKx8oyaT72ybDXElytG8GknkucC4/yW1glh49V8tGT8oavWY1ycykh4VsOPLYqYwFpHvyz9",
-	"kueJNOxTT0FPAs8m42SJQqJNBgmFVCT/Org4++fl2fT9wXTy+k3SRnEYwKvr8D7Ef4qL0fnfjVxHEiCP",
-	"FDIrikJXPoz+dOz9l5apu5Ro72XI1+0CY9fCg6r3sc2nh4c/y4eqlQcntjNirhn9x4dHP2zrewuLHm/+",
-	"sIayFjqMDURyjeGm8x8/MEDf4+U0VmRsZyYNMkMGBnVlngtuItUI0BQ9U5PIuCSSWLiBm5JP/NGIme0g",
-	"MlvkFFboPY1IUIp6FAU84K1ynqu2jxc3FJCGj3oWUQaytHXZN/etBVpl5CAWY7iIdfiReOy7UnRQWJNZ",
-	"dO6q90KbE6OoRDng0RjIhOP3rQy8UwvbbU7ZnU/+phThRvuGtvuzyq9b9ceHx38JL1/11FlQzVHL/2r8",
-	"tEUmfRzSoqxw9KocP30d7FE/LcrbY6+rHv6u8562/T11/pPc+N8QEMeHL/66VCI043kdG7v7hfXOg8gk",
-	"WAn2+4p+6nnyi++TQVJazWXsfeHGo5HzIlOUDevr2eHh0PHYF2+SleEzj254uuv8P8MaWaYVR/TaLqyR",
-	"G8NHewx/+vqfAAAA//8zKdA2fCMAAA==",
+	"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",
+	"Y+Iv3/4VAAD//xEr7pD1NgAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

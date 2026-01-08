@@ -34,8 +34,26 @@ const sidebar: SidebarsConfig = {
     },
     {
       type: "category",
+      label: "Get Games",
+      items: [
+        {
+          type: "doc",
+          id: "core/get-games-information",
+          label: "Get Games' Information",
+          className: "api-method get",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Schemas",
       items: [
+        {
+          type: "doc",
+          id: "core/schemas/platformtype",
+          label: "PlatformType",
+          className: "schema",
+        },
         {
           type: "doc",
           id: "core/schemas/createnewgamerequest",
@@ -64,6 +82,36 @@ const sidebar: SidebarsConfig = {
           type: "doc",
           id: "core/schemas/deletefreeroundsrequest",
           label: "DeleteFreeRoundsRequest",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "core/schemas/gameinfoimages",
+          label: "GameInfoImages",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "core/schemas/betlinevalue",
+          label: "BetLineValue",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "core/schemas/betlineinfo",
+          label: "BetLineInfo",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "core/schemas/gameinfo",
+          label: "GameInfo",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "core/schemas/gamesresponse",
+          label: "GamesResponse",
           className: "schema",
         },
         {
