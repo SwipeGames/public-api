@@ -368,7 +368,7 @@ components:
           pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
         txID:
-          description: Unique ID for the bet on your side. This is required for further tracking/debugging pusposes.
+          description: Unique ID for the bet on your side. This is required for further tracking/debugging purposes.
           type: string
           example: "your_txn_123"
 
@@ -439,7 +439,7 @@ components:
           pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
         txID:
-          description: Unique ID for the win on your side. This is required for further tracking/debugging pusposes.
+          description: Unique ID for the win on your side. This is required for further tracking/debugging purposes.
           type: string
           example: "some_external_bet_tx_id"
 
@@ -496,6 +496,6 @@ components:
           pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
         txID:
-          description: Unique ID for the refund on your side. This is required for further tracking/debugging pusposes.
+          description: Unique ID for the refund on your side. This is required for further tracking/debugging purposes.
           type: string
           example: "some_external_bet_tx_id"
