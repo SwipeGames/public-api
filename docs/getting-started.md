@@ -43,7 +43,7 @@ Integration process consists of the following steps:
 To start using our Public API, you need to register an account on our portal (or request via any communication channel)
 and provide us the following details:
 
--   your IP addresses or range of IP addresses that will be used to access the Public API (for both evironments: staging and production)
+-   your IP addresses or range of IP addresses that will be used to access the Public API (for both environments: staging and production)
 -   base URL to your back end that will be used for reverse integration with Swipe Games Integration Adapter API (our calls to your). URL should support HTTPS and be accessible from our servers (if you have white lists).
 -   API key that we should use to authenticate our requests to your back end (for reverse integration with Swipe Games Integration Adapter API).
     (see [Authentication](/authn) for more details).
