@@ -138,7 +138,6 @@ At the moment we support the following currencies:
 | ETH           | Ethereum                                 |
 | mETH          | Milliether                               |
 | BTC           | Bitcoin                                  |
-| mBTC          | Millibitcoin                             |
 | uBTC          | Microbitcoin                             |
 | TON           | Toncoin                                  |
 | nanoTON       | Nano Toncoin                             |
