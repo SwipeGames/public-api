@@ -7,6 +7,13 @@ slug: /games
 # Default Games
 
 Notice all game IDs here start with `sg_` prefix which stands for `Swipe Games` (default).  
+
+The list below represents default game examples.
+To retrieve the actual list of games available for your integration,  
+you should always use the API endpoint below:**
+
+:point_right: https://swipegames.github.io/public-api/core/get-games-information
+
 The available game IDs are:  
 
 | Game Name | RTP % | Game ID |
