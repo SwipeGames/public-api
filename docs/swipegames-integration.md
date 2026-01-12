@@ -14,7 +14,7 @@ You need to provide us with the following information to set up the integration:
 -   `ExtCID` - this is a unique identifier for your internal client (casino, operator, etc.).
     You can use any string, but it should be unique across all integrations.
 -   Base URL of your integration API (e.g., `https://example.com/api/v1.0`), we will setup all the endpoints for you according to the API specification.  
-    Please make sure that you provide exact endpoints for each action. You can use our OpenAPI specification to generated the server stubs for your API.
+    Please make sure that you provide exact endpoints for each action. You can use our OpenAPI specification to generate the server stubs for your API.
 -   Your API key for authentication, we will use it to sign the requests to your API. Please read more in [Authentication](#authn) section.
 
 All settings are done against every `ExtCID`. So if you have multiple clients (casinos, operators, etc.), you need to provide us with the `ExtCID` for each of them.
@@ -54,7 +54,7 @@ All error codes except 200 (OK) are considered as errors. We decline game's acti
 
 Timeout over than 5 seconds will be considered as an error as well and refund will be issued afterwards in this case.
 In case of any 500 error from your side we will issue refund as well.
-All other errors aren't refundable, so if you want some tranaction to be refundable, please return 500 error code.
+All other errors aren't refundable, so if you want some transaction to be refundable, please return 500 error code.
 We don't retry bet requests.
 
 #### Win
