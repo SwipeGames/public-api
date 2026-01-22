@@ -264,6 +264,11 @@ components:
             when using redirect to open the game, otherwise player cannot
           type: string
           example: https://your-site.com/game-lobby
+        depositURL:
+          description: Deposit URL which we could use to open a deposit page for the user.
+            If you don't provide this URL, deposit flow in the game will be disabled.
+          type: string
+          example: https://your-site.com/deposit
         currency:
           description: Currency code in ISO4217.
           type: string

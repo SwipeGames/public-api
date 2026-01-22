@@ -103,7 +103,7 @@ type BetResponse struct {
 	// We support 2 decimal places for all fiat currencies.
 	Balance string `json:"balance"`
 
-	// TxID Unique ID for the bet on your side. This is required for further tracking/debugging pusposes.
+	// TxID Unique ID for the bet on your side. This is required for further tracking/debugging purposes.
 	TxID string `json:"txID"`
 }
 
@@ -168,7 +168,7 @@ type RefundResponse struct {
 	// We support 2 decimal places for all fiat currencies.
 	Balance string `json:"balance"`
 
-	// TxID Unique ID for the refund on your side. This is required for further tracking/debugging pusposes.
+	// TxID Unique ID for the refund on your side. This is required for further tracking/debugging purposes.
 	TxID string `json:"txID"`
 }
 
@@ -211,7 +211,7 @@ type WinResponse struct {
 	// We support 2 decimal places for all fiat currencies.
 	Balance string `json:"balance"`
 
-	// TxID Unique ID for the win on your side. This is required for further tracking/debugging pusposes.
+	// TxID Unique ID for the win on your side. This is required for further tracking/debugging purposes.
 	TxID string `json:"txID"`
 }
 
@@ -1281,7 +1281,7 @@ var swaggerSpec = []string{
 	"T0wS2cN0d+/B/sGP1LLJYn+5ydg3a+6nyPoA55cOJQgHSmJeGM8hdo6LVauTvYdJIiT2DsT+QW9/9+Bh",
 	"Tzw6SHsP5WDvgfjx0WMUB7fxe2jY5HJ60mGH/kj34MzitMyEPQtPcxTaQdVGnWLuxCjv9uCgYD84ROiG",
 	"l8OEpqxDQpc50V01ItlvkVmvXXj77GbK5KddXMU1G1Zb18bRtaz6O8qYNh4PoeHYbRCpxxZAyoEoikyh",
-	"/FYU7sMCyGhYmNKGaAEmYUXIC/sdmLe0fkYusyI5V3p6X+KknE7JE0XpCuPQ9ZfspwHH/lKPd/ce3FqB",
+	"/FYU7sMCyGhYmNKGaAEmYUXIC/sdmLe0fkYusyI5V3p6X+KknE7JE0VpC+PQ9ZfspwHH/lKPd/ce3FqB",
 	"K7M3QeaZtcbWoDlVfvbESDzS8igJS3sfiSx7kUaHv7yPfrCYRofRX+63udT9KpG6Lwo1vtjtD8aJyXOj",
 	"e22X8dIU0VW8pvfNVMtOPakdVSEk9KtDOrXoZmfQAzczcwcCqiaYlN4bDd7wPgRg9+El/w+J0AxXo73S",
 	"JcJc+Zkpff1yjUBSDSjElEgO6N/Q33PEcmmZwXyGuu1VxSrgZaEsOqj2n58px8EhLoTKxCRDEHqRG4t9",
@@ -1314,8 +1314,8 @@ var swaggerSpec = []string{
 	"JjUJJPYJglKxIEUbfzPG39a09/enlXpU3ZY/ZuHTiKrI2aRwjB4OBoNaKS00d40ic2ak6658c99+QpRg",
 	"5rqKNtJHoZZUEbixIPSiGpV3s1ay9vskbxdE6qX2KuvqxN5gsCQR19F8uNy6Y/oKxcsfH3zrZL9ys3nH",
 	"93d8/3X4vmGhmyh/rvQn8D0X5/Uy3a4fIeZKu5iIN9zFoZYom49VRX1FFFzNlF7dzyoHg+14pD/+0NGH",
-	"U2pkY5Rr0/lP04VqxRORnE/Dkj5aKU6VvpOJCvyd2/xvXSO692t3AnEnEF9HIAL5XKsOV1f/DwAA//9o",
-	"nzheaToAAA==",
+	"U2pkY5Rr0/lP04VqxRORnE/Dkj5aKU6VvpOJCvyd2/xvXSO692t3AnEnEF9HIAL5XKsOV1f/DwAA//86",
+	"CQC5aToAAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
