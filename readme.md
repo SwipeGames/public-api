@@ -26,6 +26,10 @@ Major versions require creating a new folder under `api/` with the new version n
 Update current version in `docusaurus.config.ts` using the variable `API_VERSION` at the top of the file.
 Regenerate the docs using `make gen-docs`.
 
+### How to add a new version to the change log
+
+Changes introduced with new version should be captured in `CHANGELOG.md`.
+
 ## Documentation
 
 ## How to
