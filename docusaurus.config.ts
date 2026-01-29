@@ -6,13 +6,14 @@ import type { Config } from "@docusaurus/types";
 import type * as Plugin from "@docusaurus/types/src/plugin";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 
+const API_VERSION = "1.1.1";
+
 const config: Config = {
   title: "Swipe Games",
   tagline: "Swipe Games Public API",
   url: "https://swipegames.github.io",
   baseUrl: "/public-api/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
 
   // GitHub pages deployment config.
@@ -30,7 +31,7 @@ const config: Config = {
           docItemComponent: "@theme/ApiItem", // Derived from docusaurus-theme-openapi
           lastVersion: "current",
           versions: {
-            current: { label: "1.1.0", path: "/" },
+            current: { label: API_VERSION, path: "/" },
           },
         },
         blog: false,
@@ -40,6 +41,12 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+    },
+  },
 
   themeConfig: {
     docs: {
@@ -62,7 +69,7 @@ const config: Config = {
         {
           type: "docsVersionDropdown",
           versions: {
-            current: { label: "1.1.0" },
+            current: { label: API_VERSION },
           },
         },
       ],

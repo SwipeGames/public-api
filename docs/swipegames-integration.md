@@ -11,11 +11,11 @@ It's located in our cluster and sends requests to your endpoints on every game a
 
 You need to provide us with the following information to set up the integration:
 
--   `ExtCID` - this is a unique identifier for your internal client (casino, operator, etc.).
-    You can use any string, but it should be unique across all integrations.
--   Base URL of your integration API (e.g., `https://example.com/api/v1.0`), we will setup all the endpoints for you according to the API specification.  
-    Please make sure that you provide exact endpoints for each action. You can use our OpenAPI specification to generate the server stubs for your API.
--   Your API key for authentication, we will use it to sign the requests to your API. Please read more in [Authentication](#authn) section.
+- `ExtCID` - this is a unique identifier for your internal client (casino, operator, etc.).
+  You can use any string, but it should be unique across all integrations.
+- Base URL of your integration API (e.g., `https://example.com/api/v1.0`), we will setup all the endpoints for you according to the API specification.  
+  Please make sure that you provide exact endpoints for each action. You can use our OpenAPI specification to generate the server stubs for your API.
+- Your API key for authentication, we will use it to sign the requests to your API. Please read more in [Authentication](/authn) section.
 
 All settings are done against every `ExtCID`. So if you have multiple clients (casinos, operators, etc.), you need to provide us with the `ExtCID` for each of them.
 
@@ -23,18 +23,19 @@ All settings are done against every `ExtCID`. So if you have multiple clients (c
 
 #### Staging environment
 
--   18.185.156.20
+- 18.185.156.20
 
 #### Production environment
--   3.65.138.8
+
+- 3.65.138.8
 
 ### Rounds, transactions and idempotency
 
 Every game round usually consists of the sequence of actions:
 
--   bet - player places a `bet` in the game
--   win - player `wins` some money in the game (or 0 if no `win`)
--   refund - usually we send a `refund` request when the `bet` request failed.
+- bet - player places a `bet` in the game
+- win - player `wins` some money in the game (or 0 if no `win`)
+- refund - usually we send a `refund` request when the `bet` request failed.
 
 Every round has a single `RoundID` identifier, which is used to identify the round across all actions. `RoundID` could be not unique across different games, so you should use it only in the context of the game.
 
