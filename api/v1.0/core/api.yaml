@@ -231,7 +231,6 @@ components:
         - extCID
         - gameID
         - demo
-        - returnURL
         - platform
         - currency
         - locale
@@ -261,7 +260,7 @@ components:
         returnURL:
           description: Return URL which we could use to redirect the user after the game is finished/exited.
             If you don't provide this URL, return button in the game will be disabled. Please make sure you provide this URL
-            when using redirect to open the game, otherwise player cannot
+            when using redirect to open the game, otherwise player cannot go back to your site.
           type: string
           example: https://your-site.com/game-lobby
         depositURL:
