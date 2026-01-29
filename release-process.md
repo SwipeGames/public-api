@@ -1,4 +1,4 @@
-# Release process (main branch)
+# Release process (main branch only)
 
 We use **Release Please** to generate versions, changelog, Git tags, and GitHub Releases using **Conventional Commits**.
 
