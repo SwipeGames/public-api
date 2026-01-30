@@ -25,7 +25,7 @@ const sidebars: SidebarsConfig = {
         type: "doc",
         id: "free-rounds",
       },
-      items: [],
+      items: ["free-rounds-bet-lines"],
     },
     {
       type: "category",

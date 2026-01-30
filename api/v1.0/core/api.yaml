@@ -354,7 +354,9 @@ components:
           example: 10
 
         betLine:
-          description: Number of bet line configured for this game/provider.
+          description: |
+            Number of bet line configured for this game/provider. You can find more information in related section
+            [Free Rounds Bet Lines](/public-api/free-rounds-bet-lines).
           type: integer
           format: int32
           minimum: 1
@@ -530,7 +532,7 @@ components:
         betLines:
           description: |
             List of bet lines supported for this game per currency. Available
-            only if game has free spins. See more info in related section.
+            only if game has free spins. See more info in related section [Free Rounds Bet Lines](/public-api/free-rounds-bet-lines).
           type: array
           items:
             $ref: "#/components/schemas/BetLineInfo"

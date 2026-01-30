@@ -30,9 +30,9 @@ The `bet lines` are configured prior the free rounds integration. Integrator mus
 
 e.g. `[1:10,2:20,3:30]` means that there are three bet lines available:
 
--   line 1: bet `1 currency unit` with 10x multiplier
--   line 2: bet `2 currency units` with 20x multiplier
--   line 3: bet `3 currency units` with 30x multiplier
+- line 1: bet `1 currency unit` with 10x multiplier
+- line 2: bet `2 currency units` with 20x multiplier
+- line 3: bet `3 currency units` with 30x multiplier
 
 Please consult with this documentation about list of games and their bet lines configuration.
 
