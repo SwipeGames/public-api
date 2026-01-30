@@ -21,7 +21,34 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Checkout code for workflow dispatch
+      - name: Checkout for tag validation
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Show existing tags (latest first) for tag validation
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          git fetch --tags --force
+          echo "Latest tags:"
+          git tag -l --sort=-v:refname | head -n 20
+
+      - name: Validate input tag exists
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          git fetch --tags --force
+          TAG="${{ inputs.version_tag }}"
+          if ! git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "ERROR: Tag '$TAG' not found."
+            echo "Tip: pick one of these:"
+            git tag -l --sort=-v:refname | head -n 20
+            exit 1
+          fi
+
+      - name: Checkout code for workflow dispatch (build)
         if: github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v4
         with:
@@ -52,30 +79,6 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - name: Checkout for tags check
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Show existing tags (latest first)
-        shell: bash
-        run: |
-          git fetch --tags --force
-          echo "Latest tags:"
-          git tag -l --sort=-v:refname | head -n 20
-
-      - name: Validate input tag exists
-        shell: bash
-        run: |
-          git fetch --tags --force
-          TAG="${{ inputs.version_tag }}"
-          if ! git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
-            echo "ERROR: Tag '$TAG' not found."
-            echo "Tip: pick one of these:"
-            git tag -l --sort=-v:refname | head -n 20
-            exit 1
-          fi
-
       - name: Checkout the requested tag
         uses: actions/checkout@v4
         with:
