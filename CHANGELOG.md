@@ -2,7 +2,7 @@
 
 ## 1.1.1 (2026-01-29)
 
-### Make returnUrl poraneter optional in /create-new-game ([PR-42](https://github.com/SwipeGames/public-api/pull/42))
+### Make returnUrl paraneter optional in /create-new-game ([PR-42](https://github.com/SwipeGames/public-api/pull/42))
 
 The fields is only used when game are launched via redirect (no iframe), so it should not be always required.
 
