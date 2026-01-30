@@ -1,0 +1,64 @@
+name: PR workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pr:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout for tag validation
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read version from docusaurus.config.ts
+        id: current
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          CURRENT="$(node -e '
+            const fs = require("fs");
+            const s = fs.readFileSync("docusaurus.config.ts", "utf8");
+            const m = s.match(/const\s+API_VERSION\s*=\s*"([^"]+)"/);
+            if (!m) process.exit(1);
+            process.stdout.write(m[1]);
+          ')"
+
+          CURRENT="v${CURRENT}"
+
+          echo "current_version=$CURRENT" >> "$GITHUB_OUTPUT"
+
+      - name: Check if version is different
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          CURRENT="${{ steps.current.outputs.current_version }}"
+          LATEST="$(git tag -l --sort=-v:refname | head -n 1)"
+
+          # Continue only if CURRENT > LATEST (SemVer order)
+          HIGHEST="$(printf '%s\n%s\n' "$LATEST" "$CURRENT" | sort -V | tail -n 1)"
+
+          if [ "$HIGHEST" = "$LATEST" ]; then
+            echo "Tag in docusaurus.config.ts is the same as the latest tag ${LATEST}. Stop workflow."
+            echo "Please update the version in docusaurus.config.ts to a higher version."
+            exit 1
+          fi
+
+          echo "Tag in docusaurus.config.ts is ${CURRENT} and the latest tag is ${LATEST}. Continue workflow."
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build website
+        run: yarn build
