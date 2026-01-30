@@ -13,6 +13,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Checkout code for release
         if: github.event_name == 'release'
@@ -67,8 +71,15 @@ jobs:
       - name: Build website
         run: yarn build
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./build"
+
   deploy:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'release'
     needs: build
     environment:
       name: github-pages
@@ -79,40 +90,6 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - name: Checkout the requested tag for workflow dispatch
-        if: github.event_name == 'workflow_dispatch'
-        uses: actions/checkout@v4
-        with:
-          ref: refs/tags/${{ inputs.version_tag }}
-          persist-credentials: false
-
-      - name: Checkout the requested tag for release
-        if: github.event_name == 'release'
-        uses: actions/checkout@v4
-        with:
-          ref: refs/tags/${{ github.event.release.tag_name }}
-          persist-credentials: false
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 23
-          cache: yarn
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Build website
-        run: yarn build
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "./build"
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
