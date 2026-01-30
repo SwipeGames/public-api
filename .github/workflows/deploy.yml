@@ -75,6 +75,7 @@ jobs:
             git tag -l --sort=-v:refname | head -n 20
             exit 1
           fi
+
       - name: Checkout the requested tag
         uses: actions/checkout@v4
         with:
