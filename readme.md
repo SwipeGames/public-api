@@ -30,20 +30,20 @@ Regenerate the docs using `make gen-docs`.
 
 Changes introduced with new version should be captured in `CHANGELOG.md`.
 
+## Deployment
+
 ## Documentation
 
-## How to
-
-### Add new API
-
-### Add fix to the API
+### Adding update to the API
 
 Make sure fix doesn't break backward compatibility.
 
 - add the fix to the appropriate versioned API file in `api/v1.0/<service>/<service>-api.yaml`
 - change API version in the file header
 - update related docs if needed
-- generate the API documentation using `make gen-docs`
+- regenerate the API documentation using `make gen-docs`
+- update version in docs (`docusaurus.config.ts`)
+- update `CHANGELOG.md` with new version and related changes
 - test the API using `make up`
 
 ### Generate docs
