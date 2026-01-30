@@ -1,0 +1,96 @@
+name: Auto-create git tag from Docusaurus version
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  auto-tag:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read desired version from docusaurus.config.ts
+        id: desired
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Extract from: const API_VERSION = "1.1.1";
+          DESIRED="$(node -e '
+            const fs = require("fs");
+            const s = fs.readFileSync("docusaurus.config.ts", "utf8");
+            const m = s.match(/const\s+API_VERSION\s*=\s*"([^"]+)"/);
+            if (!m) process.exit(1);
+            process.stdout.write(m[1]);
+          ')"
+
+          echo "desired_version=$DESIRED" >> "$GITHUB_OUTPUT"
+
+      - name: Decide tag name format (v-prefix or not)
+        id: tagname
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          DESIRED="${{ steps.desired.outputs.desired_version }}"
+
+          # If repo already uses vX.Y.Z tags, keep that convention
+          if git tag -l | grep -Eq '^v[0-9]+'; then
+            TAG="v$DESIRED"
+          else
+            TAG="$DESIRED"
+          fi
+
+          echo "desired_tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create tag if needed
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          DESIRED_TAG="${{ steps.tagname.outputs.desired_tag }}"
+
+          # Latest existing tag (SemVer-aware). Empty if no tags exist.
+          LATEST_TAG="$(git tag -l --sort=-v:refname | head -n 1 || true)"
+
+          echo "Desired tag: $DESIRED_TAG"
+          echo "Latest tag:  ${LATEST_TAG:-<none>}"
+
+          # If the desired tag already exists, do nothing.
+          if git rev-parse -q --verify "refs/tags/$DESIRED_TAG" >/dev/null; then
+            echo "Tag $DESIRED_TAG already exists. Nothing to do."
+            exit 0
+          fi
+
+          # If latest equals desired, do nothing.
+          if [ -n "$LATEST_TAG" ] && [ "$LATEST_TAG" = "$DESIRED_TAG" ]; then
+            echo "Latest tag matches desired. Nothing to do."
+            exit 0
+          fi
+
+          # Safety: only create if desired is strictly greater than latest (SemVer-ish).
+          # sort -V works for plain SemVer and common v-prefixed tags in most cases.
+          if [ -n "$LATEST_TAG" ]; then
+            HIGHEST="$(printf '%s\n%s\n' "$LATEST_TAG" "$DESIRED_TAG" | sort -V | tail -n 1)"
+            if [ "$HIGHEST" != "$DESIRED_TAG" ] || [ "$LATEST_TAG" = "$DESIRED_TAG" ]; then
+              echo "Desired tag is not greater than latest. Not creating a tag."
+              exit 0
+            fi
+          fi
+
+          # Create annotated tag on the commit that just landed in main
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git tag -a "$DESIRED_TAG" -m "Release $DESIRED_TAG"
+          git push origin "$DESIRED_TAG"
+
+          echo "Created and pushed tag $DESIRED_TAG"

@@ -1,49 +1,62 @@
 name: Deploy to GitHub Pages
 
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    tags:
-      - "v*"
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: "The Git tag to checkout (e.g., v1.0.0)"
+        required: true
+        type: string
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 23
-          cache: yarn
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Build website
-        run: yarn build
-
-  deploy:
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-24.04
     permissions:
       contents: read
       pages: write
       id-token: write
     steps:
-      - name: Checkout code
+      - name: Checkout code for release
+        if: github.event_name == 'release'
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
+          ref: refs/tags/${{ github.event.release.tag_name }}
+
+      - name: Checkout for tag validation
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Show existing tags (latest first) for tag validation
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          git fetch --tags --force
+          echo "Latest tags:"
+          git tag -l --sort=-v:refname | head -n 20
+
+      - name: Validate input tag exists
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          git fetch --tags --force
+          TAG="${{ inputs.version_tag }}"
+          if ! git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "ERROR: Tag '$TAG' not found."
+            echo "Tip: pick one of these:"
+            git tag -l --sort=-v:refname | head -n 20
+            exit 1
+          fi
+
+      - name: Checkout code for workflow dispatch (build)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ inputs.version_tag }}
           persist-credentials: false
 
       - name: Set up Node.js
@@ -61,11 +74,22 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./build"
 
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
