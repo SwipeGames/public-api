@@ -6,7 +6,7 @@ import type { Config } from "@docusaurus/types";
 import type * as Plugin from "@docusaurus/types/src/plugin";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 
-const API_VERSION = "1.1.1";
+const API_VERSION = "1.1.2";
 
 const config: Config = {
   title: "Swipe Games",
@@ -42,11 +42,7 @@ const config: Config = {
     ],
   ],
 
-  markdown: {
-    hooks: {
-      onBrokenMarkdownLinks: "warn",
-    },
-  },
+  onBrokenMarkdownLinks: "warn",
 
   themeConfig: {
     docs: {

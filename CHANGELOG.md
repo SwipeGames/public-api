@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2 (2026-02-13)
+
+Add more information about free rounds processing.
+
 ## 1.1.1 (2026-01-29)
 
 ### Make returnUrl paraneter optional in /create-new-game ([PR-42](https://github.com/SwipeGames/public-api/pull/42))
