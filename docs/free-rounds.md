@@ -26,3 +26,9 @@ Before setting up Free Rounds you can share with us global `Bet Lines` configura
 then to issue Free Rounds. By default we setup initial configuration which is OK for most use cases.
 More information about Bet Lines you can find in related section:
 [Bet Lines](/free-rounds-bet-lines).
+
+## How to handle Free Rounds on integration
+
+During Free Rounds, we send `bet` and `win` requests to the integration with type=`free` and the associated `frID` (the external Free Rounds ID you used when creating Free Rounds). These requests are **for tracking purposes only** — the integration should not modify the player's balance for free `bets`/`wins`. On SwipeGames' side, we track them on the player's `bonus balance`.
+
+Once all Free Rounds are completed, we issue a `bonus withdrawal` request. It is sent as a `win` request with type=`regular` and the associated `frID`. This is the only request that should be added to the player's balance — it represents the total Free Rounds bonus.
