@@ -3,7 +3,7 @@ info:
   title: Swipe Games Core Public API
   description: |
     This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
-  version: 1.1.2
+  version: 1.2.0
 
 servers:
   - url: https://staging.platform.0.swipegames.io/api/v1
@@ -286,6 +286,12 @@ components:
             Demo mode. If true, the game will be launched in demo mode (means no callbacks will be fired on your side,
             and we use our demo balance for the game). If false, the game will be launched in real mode.
           type: boolean
+        initDemoBalance:
+          description: |
+            Initial demo balance for the user (in currency units). Only used in demo mode, ignored in real mode.
+            Must be greater than the minimum bet. Default is 10 000 USD equivalent.
+          type: string
+          example: "10000.00"
         user:
           description: |
             User information we show in the game. User should be provided for real game.
