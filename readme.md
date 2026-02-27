@@ -9,54 +9,17 @@ Based on [docusaurus-openapi-docs](https://github.com/PaloAltoNetworks/docusauru
 
 ## Versioning
 
-When we add/change something we bump the version of the API and docs.
-We use semver versioning for both API and docs:
-
-- Major version is incremented when there are breaking changes.
-- Minor version is incremented when new features are added without breaking changes.
-- Patch version is incremented for bug fixes or minor changes that do not affect the API
-
-### How to add a new version into the API
-
-Minor and Patch versions are added directly into the API file header `version` attribute.
-Major versions require creating a new folder under `api/` with the new version name and copying the API files into it.
-
-### How to add a new version into the docs
-
-Update current version in `docusaurus.config.ts` using the variable `API_VERSION` at the top of the file.
-Regenerate the docs using `make gen-docs`.
-
-### How to add a new version to the change log
-
-Changes introduced with new version should be captured in `CHANGELOG.md`.
-
-## Deployment
+We use [semver](https://semver.org/) versioning for both API and docs. See `CLAUDE.md` for the full versioning workflow.
 
 ## Documentation
 
-### Adding update to the API
-
-Make sure fix doesn't break backward compatibility.
-
-- add the fix to the appropriate versioned API file in `api/v1.0/<service>/<service>-api.yaml`
-- change API version in the file header
-- update related docs if needed
-- regenerate the API documentation using `make gen-docs`
-- update version in docs (`docusaurus.config.ts`)
-- update `CHANGELOG.md` with new version and related changes
-- test the API using `make up`
-
 ### Generate docs
-
-Run the following command to generate the API documentation:
 
 ```bash
 make gen-docs
 ```
 
 ### Start locally
-
-Run the following command to generate the API documentation:
 
 ```bash
 make up
