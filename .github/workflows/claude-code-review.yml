@@ -1,0 +1,76 @@
+name: Claude Code Review
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  check:
+    if: |
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '/swipegames-claude:code-review')
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Generate a token
+        id: generate-token
+        uses: getsentry/action-github-app-token@d4b5da6c5e37703f8c3b3e43abb5705b46e159cc
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Check commenter permissions
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: |
+          COMMENTER="${{ github.event.comment.user.login }}"
+          PERM=$(gh api repos/${{ github.repository }}/collaborators/$COMMENTER/permission -q '.permission')
+          if [[ "$PERM" != "admin" && "$PERM" != "maintain" && "$PERM" != "write" ]]; then
+            echo "User $COMMENTER has permission '$PERM' -- write access required. Skipping."
+            exit 1
+          fi
+
+      - name: Acknowledge trigger
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions \
+            -f content="eyes"
+
+      - name: Comment start
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh pr comment -R "$GH_REPO" "${{ github.event.issue.number }}" --body "**Code Review** — Started
+
+          Analyzing PR with specialized review agents...
+
+          [View workflow run](${RUN_URL})"
+
+  review:
+    needs: check
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    uses: SwipeGames/agentic-review/.github/workflows/claude-code-review.yml@main
+    with:
+      pr_number: ${{ github.event.issue.number }}
+      comment_id: ${{ github.event.comment.id }}
+      checkout_docs_internal: true
+      language_hint: "go"
+      use_bedrock: true
+      runner: "ubuntu-24.04"
+    secrets:
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+      BEDROCK_API_KEY: ${{ secrets.BEDROCK_API_KEY }}
+      BEDROCK_REGION: ${{ secrets.BEDROCK_REGION }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
