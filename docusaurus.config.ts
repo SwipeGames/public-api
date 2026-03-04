@@ -15,6 +15,9 @@ const config: Config = {
   baseUrl: "/public-api/",
   onBrokenLinks: "throw",
   favicon: "img/favicon.ico",
+  markdown: {
+    mermaid: true,
+  },
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -206,7 +209,7 @@ const config: Config = {
     ],
   ],
 
-  themes: ["docusaurus-theme-openapi-docs"],
+  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"],
 };
 
 export default async function createConfig() {
