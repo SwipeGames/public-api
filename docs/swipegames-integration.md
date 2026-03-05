@@ -4,7 +4,7 @@ title: Swipe Games Public Integration Adapter API
 slug: /swipegames-integration
 ---
 
-We use this integration adapter API to make reverse calls back to integrations.  
+We use this integration adapter API to make reverse calls back to integrations.
 It's located in our cluster and sends requests to your endpoints on every game actions (mostly related to money processing) - like bets, wins, refunds, etc.
 
 ### Setup and configuration
@@ -80,3 +80,71 @@ Please notice that we don't show `details` to the end user, so you can return an
 but `message` could be shown to the end user, so it should be user-friendly and understandable. See more in API specification.
 
 Also we have special `actions` which allow our client to execute some actions on client's side. See more in API specification.
+
+### Integration flow diagrams
+
+#### Open game flow
+
+The following diagram shows the flow when a player opens a game. The Integrator's backend calls the Swipe Games [Core API](/core) to create a new game session, and then redirects the player to the game URL. Once the game loads, Swipe Games calls back the Integrator's [GET /balance](/swipegames-integration/get-balance) endpoint to display the player's current balance.
+
+```mermaid
+sequenceDiagram
+    actor Player
+    participant Swipe Games
+    participant Integrator
+
+    Player->>Integrator: Open game
+    Integrator->>Swipe Games: POST /create-new-game (cID, gameID, sessionID, user, ...)
+    Swipe Games-->>Integrator: Return gameURL, gsID
+    Integrator-->>Player: Redirect to gameURL
+    Player->>Swipe Games: Open gameURL
+    Swipe Games->>Integrator: GET /balance (sessionID)
+    Integrator-->>Swipe Games: Return balance
+    Swipe Games-->>Player: Show game, ready to play
+```
+
+#### Game round (normal flow)
+
+Each game round consists of a **bet** followed by a **win**. Swipe Games sends a [POST /bet](/swipegames-integration/bet) to the Integrator to deduct the player's balance, and after the round completes, sends a [POST /win](/swipegames-integration/win) to credit winnings (amount is 0 if no win).
+
+```mermaid
+sequenceDiagram
+    actor Player
+    participant Swipe Games
+    participant Integrator
+
+    loop Each round
+        Player->>Swipe Games: Place bet
+        Swipe Games->>Integrator: POST /bet (sessionID, amount, txID, roundID)
+        Note over Integrator: Deduct balance
+        Integrator-->>Swipe Games: 200 OK (balance, txID)
+        Note over Swipe Games: Round plays out
+        Swipe Games->>Integrator: POST /win (sessionID, amount, txID, roundID)
+        Note over Integrator: Credit balance (if amount > 0)
+        Integrator-->>Swipe Games: 200 OK (balance, txID)
+        Swipe Games-->>Player: Display game result
+    end
+```
+
+#### Error handling and refund flow
+
+When a [POST /bet](/swipegames-integration/bet) fails (500 error or timeout > 5s), the game action is declined and the player is notified. Swipe Games then issues a [POST /refund](/swipegames-integration/refund), retrying until a 200 OK is received.
+
+```mermaid
+sequenceDiagram
+    actor Player
+    participant Swipe Games
+    participant Integrator
+
+    Player->>Swipe Games: Place bet
+    Swipe Games->>Integrator: POST /bet (sessionID, amount, txID, roundID)
+    Note over Integrator: Deduct balance
+    Integrator--xSwipe Games: 500 error / timeout
+    Swipe Games-->>Player: Show error to player
+
+    loop Retry until 200 OK
+        Swipe Games->>Integrator: POST /refund (sessionID, txID, origTxID, amount)
+        Note over Integrator: Refund balance
+        Integrator-->>Swipe Games: 200 OK (balance, txID)
+    end
+```
