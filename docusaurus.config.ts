@@ -6,7 +6,7 @@ import type { Config } from "@docusaurus/types";
 import type * as Plugin from "@docusaurus/types/src/plugin";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 
-const API_VERSION = "1.2.0";
+const API_VERSION = "1.2.1";
 
 const config: Config = {
   title: "Swipe Games",
@@ -15,6 +15,9 @@ const config: Config = {
   baseUrl: "/public-api/",
   onBrokenLinks: "throw",
   favicon: "img/favicon.ico",
+  markdown: {
+    mermaid: true,
+  },
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -206,7 +209,7 @@ const config: Config = {
     ],
   ],
 
-  themes: ["docusaurus-theme-openapi-docs"],
+  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"],
 };
 
 export default async function createConfig() {
