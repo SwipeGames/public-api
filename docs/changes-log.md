@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.2.1
+
+- Add sequence diagrams to "Swipe Games Public Integration Adapter API" page (/swipegames-integration)
+
 ## 1.2.0
 
 - Added optional `initDemoBalance` field to `/create-new-game` request. Allows setting initial demo balance for demo mode games. Default is 10 000 USD equivalent.
@@ -24,9 +28,9 @@ slug: /changes-log
 
 ## 1.0.1
 
--   Added optional error code for core error responses.
-    It allows game clients to programmatically handle specific error scenarios.
+- Added optional error code for core error responses.
+  It allows game clients to programmatically handle specific error scenarios.
 
 ## 1.0.0
 
--   Initial release of the Swipe Games Public API documentation.
+- Initial release of the Swipe Games Public API documentation.
