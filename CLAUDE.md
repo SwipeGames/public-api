@@ -17,8 +17,8 @@ We use [semver](https://semver.org/) for both API and docs:
 When updating the API:
 
 1. Make sure the change doesn't break backward compatibility
-2. Update the appropriate API file in `api/v1.0/<service>/<service>-api.yaml`
-3. Bump the version in the API file header
+2. Update the appropriate API file in `api/v*.*/**/*api.yaml`
+3. Bump the version in the API file header (for all api files, they should be in sync)
 4. Update `API_VERSION` in `docusaurus.config.ts`
 5. Regenerate the API: `make gen-api`
 6. Regenerate the docs: `make gen-docs`

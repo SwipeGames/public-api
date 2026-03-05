@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.2.2
+
+- Added documentation about 30-day limit for finite free rounds campaigns. Free rounds with a `validUntil` date must not exceed 30 days. Infinite free rounds (no `validUntil`) are still supported.
+
 ## 1.2.1
 
 - Add sequence diagrams to "Swipe Games Public Integration Adapter API" page (/swipegames-integration)

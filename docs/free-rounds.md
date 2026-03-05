@@ -19,6 +19,7 @@ You can use Free Rounds endpoints in our [Core API](/core) to configure the free
 You can set up free rounds and also cancel them at any time. Please note that if you cancel a free rounds campaign, all users who have already started free rounds will still have them available.
 
 You can setup Free Rounds for specific games and for specific users. Also for all games and all users.
+Free Rounds duration should not exceed 30 days (you can create infinite free rounds though - which never ends).
 
 ## Free Rounds Bet Lines Configuration
 
@@ -32,3 +33,5 @@ More information about Bet Lines you can find in related section:
 During Free Rounds, we send `bet` and `win` requests to the integration with type=`free` and the associated `frID` (the external Free Rounds ID you used when creating Free Rounds). These requests are **for tracking purposes only** — the integration should not modify the player's balance for free `bets`/`wins`. On SwipeGames' side, we track them on the player's `bonus balance`.
 
 Once all Free Rounds are completed, we issue a `bonus withdrawal` request. It is sent as a `win` request with type=`regular` and the associated `frID`. This is the only request that should be added to the player's balance — it represents the total Free Rounds bonus.
+
+Free Rounds registered on integration based on the _latest_ game session by this user. If user started playing free rounds over that 30 days ago we cannot finish such free rounds automatically, since we have 30 days limit.
