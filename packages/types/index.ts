@@ -1,7 +1,7 @@
 // Zod schemas
-export * as CoreSchemas from "./generated/core.zod.js";
-export * as IntegrationSchemas from "./generated/integration.zod.js";
+export * as CoreSchemas from "../../api/v1.0/core/api.gen.zod.js";
+export * as IntegrationSchemas from "../../api/v1.0/swipegames-integration/api.gen.zod.js";
 
 // TypeScript types
-export * as CoreTypes from "./generated/core.types.js";
-export * as IntegrationTypes from "./generated/integration.types.js";
+export * as CoreTypes from "../../api/v1.0/core/api.gen.js";
+export * as IntegrationTypes from "../../api/v1.0/swipegames-integration/api.gen.js";

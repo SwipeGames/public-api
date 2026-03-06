@@ -5,6 +5,7 @@
     "moduleResolution": "Node16",
     "lib": ["ES2020"],
     "outDir": "./dist",
+    "rootDir": "../..",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -13,5 +14,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["index.ts", "generated/**/*.ts"]
+  "include": [
+    "index.ts",
+    "../../api/v1.0/core/api.gen.ts",
+    "../../api/v1.0/core/api.gen.zod.ts",
+    "../../api/v1.0/swipegames-integration/api.gen.ts",
+    "../../api/v1.0/swipegames-integration/api.gen.zod.ts"
+  ]
 }

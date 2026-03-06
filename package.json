@@ -15,7 +15,8 @@
     "gen-api-docs": "docusaurus gen-api-docs",
     "clean-api-docs": "docusaurus clean-api-docs",
     "gen-api-docs:version": "docusaurus gen-api-docs:version",
-    "clean-api-docs:version": "docusaurus clean-api-docs:version"
+    "clean-api-docs:version": "docusaurus clean-api-docs:version",
+    "gen-api-ts": "orval"
   },
   "dependencies": {
     "@docusaurus/core": "^3.9.2",
@@ -28,6 +29,9 @@
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "orval": "^8.5.2"
   },
   "browserslist": {
     "production": [
