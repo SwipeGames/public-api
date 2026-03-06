@@ -1,0 +1,62 @@
+name: Publish @swipegames/public-api to GitHub Packages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: packages/types
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: "@swipegames"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Extract version from docusaurus.config.ts
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Extract MAJOR.MINOR from: const API_VERSION = "1.2.2";
+          API_VER="$(node -e '
+            const fs = require("fs");
+            const s = fs.readFileSync("../../docusaurus.config.ts", "utf8");
+            const m = s.match(/const\s+API_VERSION\s*=\s*"([^"]+)"/);
+            if (!m) process.exit(1);
+            const parts = m[1].split(".");
+            process.stdout.write(parts[0] + "." + parts[1]);
+          ')"
+
+          PKG_VERSION="${API_VER}.${GITHUB_RUN_NUMBER}"
+          echo "pkg_version=$PKG_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Publishing version: $PKG_VERSION"
+
+      - name: Set package version
+        run: npm version --no-git-tag-version "${{ steps.version.outputs.pkg_version }}"
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}

@@ -29,4 +29,10 @@ gen-docs:
 up:
 	yarn start
 
+.PHONY: gen-api-ts
+gen-api-ts:
+	cd packages/types && npm install && npm run generate
 
+.PHONY: build-types
+build-types:
+	cd packages/types && npm run build
