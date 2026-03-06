@@ -30,6 +30,15 @@ gen-docs:
 up:
 	yarn start
 
+.PHONY: bump-version
+bump-version:
+	@test -n "$(v)" || (echo "Usage: make bump-version v=x.y.z" && exit 1)
+	sed -i '' 's/const API_VERSION = ".*"/const API_VERSION = "$(v)"/' docusaurus.config.ts
+	sed -i '' 's/^  version: .*/  version: $(v)/' api/v1.0/core/api.yaml api/v1.0/swipegames-integration/api.yaml
+	@echo "Version updated to $(v)"
+	$(MAKE) gen-api
+	$(MAKE) gen-docs
+
 .PHONY: build-types
 build-types:
 	cd packages/types && npm run build
