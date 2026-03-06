@@ -77,11 +77,6 @@ jobs:
         run: npm version --no-git-tag-version "${{ steps.version.outputs.pkg_version }}"
         working-directory: packages/types
 
-      - name: Build
-        if: steps.check.outputs.skip == 'false'
-        run: npm run build
-        working-directory: packages/types
-
       - name: Publish
         if: steps.check.outputs.skip == 'false'
         run: npm publish
