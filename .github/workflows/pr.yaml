@@ -62,3 +62,14 @@ jobs:
 
       - name: Build website
         run: yarn build
+
+      - name: Generate TypeScript from OpenAPI specs
+        run: yarn gen-api-ts
+
+      - name: Install types package dependencies
+        run: npm ci
+        working-directory: packages/types
+
+      - name: Build types package
+        run: npm run build
+        working-directory: packages/types
