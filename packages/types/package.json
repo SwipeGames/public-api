@@ -1,0 +1,30 @@
+{
+  "name": "@swipegames/public-api",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/packages/types/index.js",
+  "types": "./dist/packages/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/packages/types/index.d.ts",
+      "import": "./dist/packages/types/index.js"
+    }
+  },
+  "license": "UNLICENSED",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}

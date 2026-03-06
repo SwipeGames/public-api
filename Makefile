@@ -16,6 +16,7 @@ gen-api-v10:
 	$(API_GEN_RUN) -package apiv1 -generate types,skip-prune,spec $(V10_API_PATH)/common-components.yaml > $(V10_API_PATH)/common-components.gen.go
 	$(API_GEN_RUN) $(V10_API_GEN_IMPORT_COMMON) -package coreapiv1 -generate server,types,skip-prune,spec,client $(V10_API_PATH)/core/api.yaml > $(V10_API_PATH)/core/api.gen.go
 	$(API_GEN_RUN) $(V10_API_GEN_IMPORT_COMMON) -package swipegamesintegrationapiv1 -generate server,types,skip-prune,spec,client $(V10_API_PATH)/swipegames-integration/api.yaml > $(V10_API_PATH)/swipegames-integration/api.gen.go
+	yarn gen-api-ts
 
 
 .PHONY: gen-docs
@@ -29,4 +30,15 @@ gen-docs:
 up:
 	yarn start
 
+.PHONY: bump-version
+bump-version:
+	@test -n "$(v)" || (echo "Usage: make bump-version v=x.y.z" && exit 1)
+	sed -i '' 's/const API_VERSION = ".*"/const API_VERSION = "$(v)"/' docusaurus.config.ts
+	sed -i '' 's/^  version: .*/  version: $(v)/' api/v1.0/core/api.yaml api/v1.0/swipegames-integration/api.yaml
+	@echo "Version updated to $(v)"
+	$(MAKE) gen-api
+	$(MAKE) gen-docs
 
+.PHONY: build-types
+build-types:
+	cd packages/types && npm run build

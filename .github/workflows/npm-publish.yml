@@ -1,0 +1,85 @@
+name: Publish @swipegames/public-api to GitHub Packages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com
+          scope: "@swipegames"
+
+      - name: Extract API version from docusaurus.config.ts
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          PKG_VERSION="$(node -e '
+            const fs = require("fs");
+            const s = fs.readFileSync("docusaurus.config.ts", "utf8");
+            const m = s.match(/const\s+API_VERSION\s*=\s*"([^"]+)"/);
+            if (!m) process.exit(1);
+            process.stdout.write(m[1]);
+          ')"
+
+          echo "pkg_version=$PKG_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Detected API version: $PKG_VERSION"
+
+      - name: Check if version already published
+        id: check
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          PKG_VERSION="${{ steps.version.outputs.pkg_version }}"
+
+          if npm view "@swipegames/public-api@${PKG_VERSION}" version 2>/dev/null; then
+            echo "Version $PKG_VERSION already published. Skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Version $PKG_VERSION not yet published."
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+
+      - name: Install root dependencies
+        if: steps.check.outputs.skip == 'false'
+        run: yarn install --ignore-engines
+
+      - name: Generate TypeScript from OpenAPI specs
+        if: steps.check.outputs.skip == 'false'
+        run: yarn gen-api-ts
+
+      - name: Install types package dependencies
+        if: steps.check.outputs.skip == 'false'
+        run: npm ci
+        working-directory: packages/types
+
+      - name: Set package version
+        if: steps.check.outputs.skip == 'false'
+        run: npm version --no-git-tag-version "${{ steps.version.outputs.pkg_version }}"
+        working-directory: packages/types
+
+      - name: Publish
+        if: steps.check.outputs.skip == 'false'
+        run: npm publish
+        working-directory: packages/types
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
