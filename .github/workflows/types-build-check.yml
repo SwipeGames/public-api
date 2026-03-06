@@ -1,4 +1,4 @@
-name: CI
+name: Types package build check
 
 on:
   pull_request:
