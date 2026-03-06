@@ -8,10 +8,6 @@ slug: /changes-log
 
 ## 1.2.3
 
-- Add typescript and zod generation and node package (/packages/types)
-
-## 1.2.2
-
 - Added documentation about 30-day limit for finite free rounds campaigns. Free rounds with a `validUntil` date must not exceed 30 days. Infinite free rounds (no `validUntil`) are still supported.
 
 ## 1.2.1
