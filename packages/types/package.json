@@ -10,6 +10,10 @@
       "import": "./dist/packages/types/index.js"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SwipeGames/public-api.git"
+  },
   "license": "UNLICENSED",
   "files": [
     "dist"
