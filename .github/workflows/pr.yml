@@ -51,6 +51,11 @@ jobs:
 
           echo "Tag in docusaurus.config.ts is ${CURRENT} and the latest tag is ${LATEST}. Continue workflow."
 
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -60,11 +65,17 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build website
-        run: yarn build
+      - name: Regenerate all generated code
+        run: make gen-api gen-docs
 
-      - name: Generate TypeScript from OpenAPI specs
-        run: yarn gen-api-ts
+      - name: Check generated code is up-to-date
+        shell: bash
+        run: |
+          if [ -n "$(git diff --name-only)" ]; then
+            echo "::error::Generated code is out of date. Please run 'make gen-api gen-docs' and commit the changes."
+            git diff --name-only
+            exit 1
+          fi
 
       - name: Install types package dependencies
         run: npm ci
@@ -73,3 +84,6 @@ jobs:
       - name: Build types package
         run: npm run build
         working-directory: packages/types
+
+      - name: Build website
+        run: yarn build

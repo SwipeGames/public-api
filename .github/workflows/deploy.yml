@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Publish package and deploy docs
 
 on:
   release:
@@ -11,7 +11,77 @@ on:
         type: string
 
 jobs:
+  publish-package:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code for release
+        if: github.event_name == 'release'
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: refs/tags/${{ github.event.release.tag_name }}
+
+      - name: Checkout for tag validation
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate input tag exists
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          git fetch --tags --force  
+          TAG="${{ inputs.version_tag }}"
+          if ! git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "ERROR: Tag '$TAG' not found."
+            echo "Tip: pick one of these:"
+            git tag -l --sort=-v:refname | head -n 20
+            exit 1
+          fi
+
+      - name: Checkout code for workflow dispatch
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ inputs.version_tag }}
+          persist-credentials: false
+
+      - name: Resolve version from tag
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            TAG="${{ github.event.release.tag_name }}"
+          else
+            TAG="${{ inputs.version_tag }}"
+          fi
+          # Strip leading 'v' if present
+          echo "pkg_version=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Install types package dependencies
+        run: npm ci
+        working-directory: packages/types
+
+      - name: Set package version
+        run: npm version --no-git-tag-version "${{ steps.version.outputs.pkg_version }}"
+        working-directory: packages/types
+
+      - name: Publish to npm
+        run: npm publish --access public
+        working-directory: packages/types
+
   build:
+    needs: publish-package
     runs-on: ubuntu-24.04
     permissions:
       contents: read
