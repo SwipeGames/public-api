@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.2.7
+ * OpenAPI spec version: 1.2.8
  */
 import * as zod from 'zod';
 
