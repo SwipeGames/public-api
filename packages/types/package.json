@@ -1,6 +1,6 @@
 {
   "name": "@swipegames/public-api",
-  "version": "0.0.0",
+  "version": "1.2.5",
   "type": "module",
   "main": "./dist/packages/types/index.js",
   "types": "./dist/packages/types/index.d.ts",

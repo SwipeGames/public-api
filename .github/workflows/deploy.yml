@@ -83,7 +83,7 @@ jobs:
         working-directory: packages/types
 
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        run: npm publish --access public
         working-directory: packages/types
 
   build:
