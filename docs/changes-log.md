@@ -6,7 +6,7 @@ slug: /changes-log
 
 # Changes Log
 
-## 1.2.7
+## 1.2.8
 
 - Added documentation about 30-day limit for finite free rounds campaigns. Free rounds with a `validUntil` date must not exceed 30 days. Infinite free rounds (no `validUntil`) are still supported.
 
@@ -20,7 +20,7 @@ slug: /changes-log
 
 ## 1.1.2
 
-- Added more information about free rounds processing.
+- Added more information about free rounds processing.8
 
 ## 1.1.1
 
