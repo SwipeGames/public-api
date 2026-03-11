@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.2.11
+
+Update regEx pattern for the `amount` field in `BetReqeust` to allow decimals.
+
 ## 1.2.8
 
 - Added documentation about 30-day limit for finite free rounds campaigns. Free rounds with a `validUntil` date must not exceed 30 days. Infinite free rounds (no `validUntil`) are still supported.

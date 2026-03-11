@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.2.10
+ * OpenAPI spec version: 1.2.11
  */
 import * as zod from 'zod';
 
@@ -48,7 +48,7 @@ export const PostBetHeader = zod.object({
   "X-REQUEST-SIGN": zod.string().describe('Request signature (see Authentication section for more details)')
 })
 
-export const postBetBodyAmountRegExp = new RegExp('^([1-9]\\d\*)(\\.\\d+)?$');
+export const postBetBodyAmountRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
 
 
 export const PostBetBody = zod.object({

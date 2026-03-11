@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.2.10
+ * OpenAPI spec version: 1.2.11
  */
 /**
  * Error code. Could be handled by client accordingly (with localized message and related action).
@@ -140,7 +140,7 @@ export interface BetRequest {
 Currency selected by the client during the `Create New Game` call.
 We support 2 decimal places for all fiat currencies.
 
-   * @pattern ^([1-9]\d*)(\.\d+)?$
+   * @pattern ^(0|[1-9]\d*)(\.\d+)?$
    */
   amount: string;
   /** Unique ID for the bet (internal) on Swipe Games' side.
