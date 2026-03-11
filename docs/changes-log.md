@@ -8,7 +8,7 @@ slug: /changes-log
 
 ## 1.2.11
 
-Update regEx pattern for the `amount` field in `BetReqeust` to allow decimals.
+Update regEx pattern for the `amount` field in `BetRequest` to allow decimals.
 
 ## 1.2.8
 
