@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.2.12
+
+- Added new game `Tripple Nipple` to the games list.
+
 ## 1.2.11
 
 Update regEx pattern for the `amount` field in `BetRequest` to allow decimals.
