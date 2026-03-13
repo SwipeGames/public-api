@@ -21,6 +21,8 @@ The available game IDs are:
 | Cash Garage   | 95% | sg_catch_95 |
 | Smash or Cash | 97% | sg_swipe_97 |
 | Smash or Cash | 95% | sg_swipe_95 |
+| Tripple Nipple | 97% | sg_swipeaigirls_97 |
+| Tripple Nipple | 95% | sg_swipeaigirls_95 |
 
 _*_ for other RTP values please contact support.
 # Customized Games
