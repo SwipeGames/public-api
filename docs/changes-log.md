@@ -6,7 +6,7 @@ slug: /changes-log
 
 # Changes Log
 
-## 1.2.12
+## 1.2.13
 
 - Added new game `Tripple Nipple` to the games list.
 
