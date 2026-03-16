@@ -83,13 +83,13 @@ jobs:
             exit 1
           fi
 
-      - name: Install types package dependencies
+      - name: Install node package dependencies
         run: npm ci
-        working-directory: packages/types
+        working-directory: packages/node
 
-      - name: Build types package
+      - name: Build node package
         run: npm run build
-        working-directory: packages/types
+        working-directory: packages/node
 
       - name: Build website
         run: yarn build
