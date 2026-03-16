@@ -1,0 +1,14 @@
+{
+  "name": "swipegames/public-api",
+  "description": "Generated PHP types for Swipe Games Public API",
+  "type": "library",
+  "license": "proprietary",
+  "require": {
+    "php": "^8.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "SwipeGames\\PublicApi\\": "packages/php/src/"
+    }
+  }
+}

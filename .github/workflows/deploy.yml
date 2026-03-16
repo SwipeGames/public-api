@@ -74,17 +74,34 @@ jobs:
       - name: Install root dependencies
         run: yarn install --ignore-engines
 
-      - name: Install types package dependencies
+      - name: Install node package dependencies
         run: npm ci
-        working-directory: packages/types
+        working-directory: packages/node
 
       - name: Set package version
         run: npm version --no-git-tag-version "${{ steps.version.outputs.pkg_version }}"
-        working-directory: packages/types
+        working-directory: packages/node
+
+      - name: Check if npm version already published
+        id: npm_check
+        run: |
+          if npm view "@swipegames/public-api@${{ steps.version.outputs.pkg_version }}" version 2>/dev/null; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Version ${{ steps.version.outputs.pkg_version }} already published to npm, skipping."
+          fi
 
       - name: Publish to npm
+        if: steps.npm_check.outputs.skip != 'true'
         run: npm publish --provenance --access public
-        working-directory: packages/types
+        working-directory: packages/node
+
+      - name: Notify Packagist of update
+        run: |
+          curl -sf -X POST \
+            -H 'Content-Type: application/json' \
+            -H 'Authorization: Bearer ${{ secrets.PACKAGIST_USERNAME }}:${{ secrets.PACKAGIST_API_TOKEN }}' \
+            'https://packagist.org/api/update-package' \
+            -d '{"repository":{"url":"https://github.com/SwipeGames/public-api"}}'
 
   build:
     needs: publish-package
