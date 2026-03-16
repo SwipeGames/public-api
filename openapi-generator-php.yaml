@@ -1,0 +1,15 @@
+generatorName: php
+outputDir: packages/php
+globalProperties:
+  models: ""
+  supportingFiles: ""
+  modelDocs: false
+  modelTests: false
+additionalProperties:
+  invokerPackage: SwipeGames\PublicApi
+  packageName: swipegames-public-api
+  srcBasePath: src
+  modelPackage: ""
+  apiPackage: ""
+  hideGenerationTimestamp: true
+  phpVersion: "8.1"

@@ -10,7 +10,7 @@ V10_API_GEN_IMPORT_COMMON = "-import-mapping=../common-components.yaml:github.co
 # V12_API_GEN_IMPORT_COMMON = "-import-mapping=../common-components.yaml:github.com/swipegames/public-api/api/v1.2"
 
 .PHONY: gen-api
-gen-api: gen-api-v10
+gen-api: gen-api-v10 gen-api-php
 
 gen-api-v10:
 	$(API_GEN_RUN) -package apiv1 -generate types,skip-prune,spec $(V10_API_PATH)/common-components.yaml > $(V10_API_PATH)/common-components.gen.go
@@ -18,6 +18,25 @@ gen-api-v10:
 	$(API_GEN_RUN) $(V10_API_GEN_IMPORT_COMMON) -package swipegamesintegrationapiv1 -generate server,types,skip-prune,spec,client $(V10_API_PATH)/swipegames-integration/api.yaml > $(V10_API_PATH)/swipegames-integration/api.gen.go
 	yarn gen-api-ts
 
+
+PHP_GEN := npx @openapitools/openapi-generator-cli generate
+PHP_GEN_CONFIG := openapi-generator-php.yaml
+PHP_OUT := packages/php
+
+.PHONY: gen-api-php
+gen-api-php:
+	rm -rf $(PHP_OUT)/src
+	$(PHP_GEN) -c $(PHP_GEN_CONFIG) -i $(V10_API_PATH)/common-components.yaml \
+		--additional-properties=modelPackage=Common -o $(PHP_OUT)
+	$(PHP_GEN) -c $(PHP_GEN_CONFIG) -i $(V10_API_PATH)/core/api.yaml \
+		--additional-properties=modelPackage=Core \
+		--import-mappings=ErrorResponse=SwipeGames\\PublicApi\\Common\\ErrorResponse,User=SwipeGames\\PublicApi\\Common\\User \
+		-o $(PHP_OUT)
+	$(PHP_GEN) -c $(PHP_GEN_CONFIG) -i $(V10_API_PATH)/swipegames-integration/api.yaml \
+		--additional-properties=modelPackage=Integration \
+		--import-mappings=ErrorResponse=SwipeGames\\PublicApi\\Common\\ErrorResponse \
+		-o $(PHP_OUT)
+	rm -rf $(PHP_OUT)/.openapi-generator $(PHP_OUT)/.openapi-generator-ignore
 
 .PHONY: gen-docs
 gen-docs:
