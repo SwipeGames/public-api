@@ -1,7 +1,7 @@
 openapi: "3.0.3"
 info:
   title: Swipe Games Common Components
-  version: 1.2.17
+  version: 1.2.18
 paths: {}
 components:
   schemas:

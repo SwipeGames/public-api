@@ -6,9 +6,13 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.2.18
+
+- Add [Integration SDKs](https://swipegames.github.io/public-api/sdks) page to the documentation.
+
 ## 1.2.17
 
-- Update the "Refund" secion in [Swipe Games Public Integration Adapter API page](https://swipegames.github.io/public-api/swipegames-integration#refund). The documentation clarify that when sending a 200 OK response to a `/refund` request, this should always have a valid body.
+- Update the "Refund" section in [Swipe Games Public Integration Adapter API page](https://swipegames.github.io/public-api/swipegames-integration#refund). The documentation clarify that when sending a 200 OK response to a `/refund` request, this should always have a valid body.
 
 ## 1.2.15
 

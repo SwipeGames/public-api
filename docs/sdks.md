@@ -181,7 +181,8 @@ If the purpose is unclear, ask me before proceeding.
 1. Show me the exact files changed and why.
 2. List all environment variables I need to set.
 3. Confirm the integration compiles and the endpoints are reachable.
-4. If there are any ambiguities or decisions I need to make, list them.
+4. If tests were added, verify they pass.
+5. If there are any ambiguities or decisions I need to make, list them.
 
 ````
 
@@ -312,7 +313,8 @@ If the purpose is unclear, ask me before proceeding.
 1. Show me the exact files changed and why.
 2. List all environment variables I need to set.
 3. Confirm the integration compiles (`go build ./...`).
-4. If there are any ambiguities or decisions I need to make, list them.
+4. If tests were added, verify they pass.
+5. If there are any ambiguities or decisions I need to make, list them.
 
 ````
 
@@ -450,7 +452,8 @@ If the purpose is unclear, ask me before proceeding.
 1. Show me the exact files changed and why.
 2. List all environment variables I need to set.
 3. Confirm the integration works (no syntax errors, routes registered).
-4. If there are any ambiguities or decisions I need to make, list them.
+4. If tests were added, verify they pass.
+5. If there are any ambiguities or decisions I need to make, list them.
 
 ````
 

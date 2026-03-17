@@ -90,7 +90,7 @@ type User struct {
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/4yU0U8bORDG/5WRX+5OWlYXkDgpb4hDiJcWFXiiVeR4Z7NTvDOuxy5EKP97ZQcSyqZV",
+	"H4sIAAAAAAAC/4yU0U8bORDG/5WRX+5OWlYXkNApb4hDiJcWFXiiVeR4Z7NTvDOuxy5EKP97ZQcSyqZV",
 	"nxLP943982d7n42TMQgjJzXzZ6NuwNHWvxcxSvyEGoQVS6FDdZFCImEzN5fIGK0HLDaILz7oJcLNIwWE",
 	"SzuiwnVeenJwdn3Vwp1m6/0asmJXjXtxN4G2n9k0JkQJGBNhRXHSHSCogFC01jQGOY9mfm9WdsQFS1r0",
 	"krkzjXE5RmS3rkXNIUhMWAQvznqclK1zkjktll7cQ60sMS08jZRqk+pukGjE3YBYc9+TI+S06DN3ahqj",
@@ -98,7 +98,7 @@ var swaggerSpec = []string{
 	"yb6DJe7z73CZVyviVQM6VJUlFYcO8siQpLYHb9cYS8YTmBFV7erA2ZzBMhL28KYK0u9pgBgueOVJhzdg",
 	"f7bspjERv+Wa5/x+x7APS5Zf0aXCd6cYC9z765Q5xfWU+nwr1DsFVzcf4WR2eno0A+vDYI+OD0bQU9T0",
 	"wY41hIlK3XSVAvWXwtX/8Dc+JYxs/T8t3A6kQAp7VRjWkiMobW/4ZHJvf7Myk3v4hfguQOoOZFdMxL3U",
-	"dkq+aG/f9bmMo3D5ef16NOY7Rt1ucdYet7P/CoYEZBvIzM1J+297Up62TUM5hs3mRwAAAP//ytLwtH0E",
+	"dkq+aG/f9bmMo3D5ef16NOY7Rt1ucdYet7P/CoYEZBvIzM1J+297Up62TUM5hs3mRwAAAP//yqHIWH0E",
 	"AAA=",
 }
 
