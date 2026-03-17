@@ -252,7 +252,7 @@ components:
         priority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,
         related to the code. If you provide only message, the client will show it to the player as is.
       allOf:
-        - $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+        - $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
         - type: object
           properties:
             code:
@@ -338,6 +338,10 @@ components:
             Could be used as idempotency key.
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
           example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
         roundID:
           description: |
@@ -345,6 +349,10 @@ components:
             Could be the same for different games.
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
           example: "b78e42f8-2041-482d-9c4b-f2ca79fc75e3"
         frID:
           description: |
@@ -409,6 +417,10 @@ components:
             Could be used as idempotency key.
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
           example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
         roundID:
           description: |
@@ -416,6 +428,10 @@ components:
             Could be the same for different games.
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
           example: "b78e42f8-2041-482d-9c4b-f2ca79fc75e3"
         frID:
           description: |
@@ -463,6 +479,10 @@ components:
             Could be used as idempotency key.
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
           example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
         origTxID:
           description: |
@@ -471,6 +491,10 @@ components:
             In some cases this original transaction ID might be not recorded on your side (timeout, server side error, etc).
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
           example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
         amount:
           description: |
