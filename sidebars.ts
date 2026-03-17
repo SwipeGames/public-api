@@ -13,6 +13,7 @@ const sidebars: SidebarsConfig = {
       items: ["terms", "game-session"],
     },
 
+    "sdks",
     "games",
     "currencies",
     "locales",
