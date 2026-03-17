@@ -87,26 +87,16 @@ and all relevant endpoints are wired up.**
 
 ## What the SDK Provides
 
-1. **Core API client** (outbound calls we make to Swipe Games):
-   - `createNewGame()` — launch a game, returns a game URL to redirect the player
-   - `getGames()` — list available games with metadata
-   - `createFreeRounds()` / `cancelFreeRounds()` — manage promotional free rounds
+The SDK covers both sides of the integration. See the README for the full method
+list and usage examples.
 
-2. **Integration Adapter helpers** (inbound reverse calls from Swipe Games to us):
-   We must implement 4 HTTP endpoints that the platform calls during gameplay:
-   - GET /balance — return the player's current balance
-   - POST /bet — deduct a bet amount from the player's wallet
-   - POST /win — credit a win amount to the player's wallet
-   - POST /refund — refund a previously placed bet
-   The SDK provides:
-   - `parseAndVerifyBalanceRequest()` / `parseAndVerifyBetRequest()` /
-     `parseAndVerifyWinRequest()` / `parseAndVerifyRefundRequest()`
-     — verify signature + parse + validate with Zod in one step
-   - `createBalanceResponse()` / `createBetResponse()` / `createWinResponse()` /
-     `createRefundResponse()` / `createErrorResponse()` — typed response builders
+1. **Core API client** — outbound calls we make to Swipe Games: launch games,
+   list available games, manage free rounds campaigns.
 
-3. **Error types**: `SwipeGamesApiError` (non-2xx from API),
-   `SwipeGamesValidationError` (client-side Zod validation failure)
+2. **Integration Adapter helpers** — inbound reverse calls from Swipe Games to
+   us. We must implement 4 HTTP endpoints (GET /balance, POST /bet, POST /win,
+   POST /refund). The SDK provides parseAndVerify* methods for signature
+   verification + parsing, and typed response builders for each endpoint.
 
 ## Client Setup
 
@@ -124,14 +114,26 @@ const client = new SwipeGamesClient({
 
 ## Important Constraints
 
+- All monetary amounts are strings in the smallest currency unit (e.g., "1000"
+  = €10.00). Never divide or format — pass them as-is.
+- The `sessionID` in reverse calls is the one we provided when calling
+  `createNewGame()` — use it to identify the player/session in our system.
 - The platform enforces a 5-second timeout on all reverse calls. Keep handlers fast.
 - During free rounds, bet/win requests arrive with `type: "free"` and an `frID`.
   See https://swipegames.github.io/public-api/free-rounds for handling details.
 - Bet transactions must be idempotent — use `txID` as the idempotency key.
 - Refund requests reference `origTxID` — the original bet transaction to reverse.
 - The SDK handles request signing for outbound Core API calls automatically.
-- All reverse-call signatures MUST be verified using the SDK's parseAndVerify*
-  methods — never skip signature verification.
+
+## Common Mistakes — Do NOT
+
+- Do NOT implement your own signature verification — always use the SDK's
+  parseAndVerify* methods.
+- Do NOT treat amounts as floats or divide them — they are already in the
+  smallest currency unit as strings.
+- Do NOT generate your own txID — use the one provided by the platform in each
+  reverse call as the idempotency key.
+- Do NOT hardcode credentials — always use environment variables.
 
 ---
 
@@ -168,7 +170,11 @@ If the purpose is unclear, ask me before proceeding.
    - Handle free rounds (type: "free") if applicable.
 5. For Core API usage:
    - Wrap SDK calls in our application's service/controller layer.
-   - Handle both `SwipeGamesApiError` and `SwipeGamesValidationError`.
+   - Handle errors as documented in the SDK README.
+6. If this codebase already has a testing suite, add test coverage for the new
+   integration code. Do not set up a testing framework from scratch.
+7. If this codebase has existing documentation (README, API docs, developer
+   guides), update it to reflect the new integration.
 
 ### Step 3 — Verification
 
@@ -212,26 +218,16 @@ and all relevant endpoints are wired up.**
 
 ## What the SDK Provides
 
-1. **Core API client** (outbound calls we make to Swipe Games):
-   - `CreateNewGame()` — launch a game, returns a game URL to redirect the player
-   - `GetGames()` — list available games with metadata
-   - `CreateFreeRounds()` / `CancelFreeRounds()` — manage promotional free rounds
+The SDK covers both sides of the integration. See the README for the full method
+list and usage examples.
 
-2. **Integration Adapter helpers** (inbound reverse calls from Swipe Games to us):
-   We must implement 4 HTTP endpoints that the platform calls during gameplay:
-   - GET /balance — return the player's current balance
-   - POST /bet — deduct a bet amount from the player's wallet
-   - POST /win — credit a win amount to the player's wallet
-   - POST /refund — refund a previously placed bet
-   The SDK provides:
-   - `ParseAndVerifyBalanceRequest()` / `ParseAndVerifyBetRequest()` /
-     `ParseAndVerifyWinRequest()` / `ParseAndVerifyRefundRequest()`
-     — verify signature + parse + validate in one step
-   - `NewBalanceResponse()` / `NewBetResponse()` / `NewWinResponse()` /
-     `NewRefundResponse()` / `NewErrorResponse()` — typed response builders
+1. **Core API client** — outbound calls we make to Swipe Games: launch games,
+   list available games, manage free rounds campaigns.
 
-3. **Error types**: `*APIError` (non-2xx from API),
-   `*ValidationError` (client-side validation failure)
+2. **Integration Adapter helpers** — inbound reverse calls from Swipe Games to
+   us. We must implement 4 HTTP endpoints (GET /balance, POST /bet, POST /win,
+   POST /refund). The SDK provides ParseAndVerify* methods for signature
+   verification + parsing, and typed response builders for each endpoint.
 
 ## Client Setup
 
@@ -249,14 +245,26 @@ client, err := swipegames.NewClient(swipegames.ClientConfig{
 
 ## Important Constraints
 
+- All monetary amounts are strings in the smallest currency unit (e.g., "1000"
+  = €10.00). Never divide or format — pass them as-is.
+- The `SessionID` in reverse calls is the one we provided when calling
+  `CreateNewGame()` — use it to identify the player/session in our system.
 - The platform enforces a 5-second timeout on all reverse calls. Keep handlers fast.
 - During free rounds, bet/win requests arrive with `type: "free"` and an `frID`.
   See https://swipegames.github.io/public-api/free-rounds for handling details.
-- Bet transactions must be idempotent — use `txID` as the idempotency key.
-- Refund requests reference `origTxID` — the original bet transaction to reverse.
+- Bet transactions must be idempotent — use `TxID` as the idempotency key.
+- Refund requests reference `OrigTxID` — the original bet transaction to reverse.
 - The SDK handles request signing for outbound Core API calls automatically.
-- All reverse-call signatures MUST be verified using the SDK's ParseAndVerify*
-  methods — never skip signature verification.
+
+## Common Mistakes — Do NOT
+
+- Do NOT implement your own signature verification — always use the SDK's
+  ParseAndVerify* methods.
+- Do NOT treat amounts as floats or divide them — they are already in the
+  smallest currency unit as strings.
+- Do NOT generate your own TxID — use the one provided by the platform in each
+  reverse call as the idempotency key.
+- Do NOT hardcode credentials — always use environment variables.
 
 ---
 
@@ -289,12 +297,15 @@ If the purpose is unclear, ask me before proceeding.
    - Wire up all 4 reverse-call handlers using our framework's routing.
    - Use ParseAndVerify* for every inbound request.
    - Return properly typed responses using the response builders.
-   - Handle the `insufficient_funds` error case for bet requests
-     (use `NewErrorResponse` with `ErrorCodeInsufficientFunds`).
+   - Handle the `insufficient_funds` error case for bet requests.
    - Handle free rounds (type: "free") if applicable.
 5. For Core API usage:
    - Wrap SDK calls in our application's service/handler layer.
-   - Handle both `*APIError` and `*ValidationError` with `errors.As()`.
+   - Handle errors as documented in the SDK README.
+6. If this codebase already has a testing suite, add test coverage for the new
+   integration code. Do not set up a testing framework from scratch.
+7. If this codebase has existing documentation (README, API docs, developer
+   guides), update it to reflect the new integration.
 
 ### Step 3 — Verification
 
@@ -338,29 +349,18 @@ and all relevant endpoints are wired up.**
 
 ## What the SDK Provides
 
-1. **Core API client** (outbound calls we make to Swipe Games):
-   - `createNewGame()` — launch a game, returns a game URL to redirect the player
-   - `getGames()` — list available games with metadata
-   - `createFreeRounds()` / `cancelFreeRounds()` — manage promotional free rounds
+The SDK covers both sides of the integration. See the README for the full method
+list and usage examples.
 
-2. **Integration Adapter helpers** (inbound reverse calls from Swipe Games to us):
-   We must implement 4 HTTP endpoints that the platform calls during gameplay:
-   - GET /balance — return the player's current balance
-   - POST /bet — deduct a bet amount from the player's wallet
-   - POST /win — credit a win amount to the player's wallet
-   - POST /refund — refund a previously placed bet
-   The SDK provides:
-   - `parseAndVerifyBalanceRequest()` / `parseAndVerifyBetRequest()` /
-     `parseAndVerifyWinRequest()` / `parseAndVerifyRefundRequest()`
-     — verify signature + parse + validate in one step
-   - `ResponseBuilder::balanceResponse()` / `::betResponse()` /
-     `::winResponse()` / `::refundResponse()` / `::errorResponse()`
-     — JsonSerializable response builders
+1. **Core API client** — outbound calls we make to Swipe Games: launch games,
+   list available games, manage free rounds campaigns.
 
-3. **Error types**: `SwipeGamesApiException` (non-2xx from API),
-   `SwipeGamesValidationException` (client-side validation failure)
+2. **Integration Adapter helpers** — inbound reverse calls from Swipe Games to
+   us. We must implement 4 HTTP endpoints (GET /balance, POST /bet, POST /win,
+   POST /refund). The SDK provides parseAndVerify* methods for signature
+   verification + parsing, and ResponseBuilder for typed responses.
 
-4. **Type namespaces** (generated from OpenAPI specs):
+3. **Type namespaces** (generated from OpenAPI specs):
    - `SwipeGames\PublicApi\Common` — ErrorResponse, User
    - `SwipeGames\PublicApi\Core` — Core API request/response types
    - `SwipeGames\PublicApi\Integration` — Integration Adapter types
@@ -382,14 +382,26 @@ $client = new SwipeGamesClient(new ClientConfig(
 
 ## Important Constraints
 
+- All monetary amounts are strings in the smallest currency unit (e.g., "1000"
+  = €10.00). Never divide or format — pass them as-is.
+- The `sessionID` in reverse calls is the one we provided when calling
+  `createNewGame()` — use it to identify the player/session in our system.
 - The platform enforces a 5-second timeout on all reverse calls. Keep handlers fast.
 - During free rounds, bet/win requests arrive with `type: "free"` and an `frID`.
   See https://swipegames.github.io/public-api/free-rounds for handling details.
 - Bet transactions must be idempotent — use `txID` as the idempotency key.
 - Refund requests reference `origTxID` — the original bet transaction to reverse.
 - The SDK handles request signing for outbound Core API calls automatically.
-- All reverse-call signatures MUST be verified using the SDK's parseAndVerify*
-  methods — never skip signature verification.
+
+## Common Mistakes — Do NOT
+
+- Do NOT implement your own signature verification — always use the SDK's
+  parseAndVerify* methods.
+- Do NOT treat amounts as floats or divide them — they are already in the
+  smallest currency unit as strings.
+- Do NOT generate your own txID — use the one provided by the platform in each
+  reverse call as the idempotency key.
+- Do NOT hardcode credentials — always use environment variables.
 
 ---
 
@@ -427,7 +439,11 @@ If the purpose is unclear, ask me before proceeding.
    - Handle free rounds (type: "free") if applicable.
 5. For Core API usage:
    - Wrap SDK calls in our application's service/controller layer.
-   - Handle both `SwipeGamesApiException` and `SwipeGamesValidationException`.
+   - Handle errors as documented in the SDK README.
+6. If this codebase already has a testing suite, add test coverage for the new
+   integration code. Do not set up a testing framework from scratch.
+7. If this codebase has existing documentation (README, API docs, developer
+   guides), update it to reflect the new integration.
 
 ### Step 3 — Verification
 
