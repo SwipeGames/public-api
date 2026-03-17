@@ -19,32 +19,46 @@ import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 
-<Heading as={"h1"} className={"openapi__heading"} children={"Cancel/Delete free rounds campaign"}></Heading>
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Cancel/Delete free rounds campaign"}
+>
+</Heading>
 
 <MethodEndpoint
   method={"delete"}
   path={"/free-rounds"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
+
+
 
 Cancel/Delete existing free rounds campaign. You can cancel free rounds campaing during the campaign period, in this case
 all `in-progress` free rounds will be continued, but no new free rounds will be started.
 
-<Heading id={"request"} as={"h2"} className={"openapi-tabs__heading"} children={"Request"}></Heading>
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
 
 <ParamsDetails
   parameters={[{"name":"X-REQUEST-SIGN","in":"header","required":true,"description":"Request signature (see Authentication section for more details)","schema":{"type":"string"}}]}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={{"required":true,"description":"Request body must be sent in JSON canonical format (see Authentication section for more details)","content":{"application/json":{"schema":{"type":"object","required":["cID","extCID"],"properties":{"id":{"description":"Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.\n","type":"string","format":"uuid","x-go-type":"uuid.UUID","x-go-type-import":{"name":"uuid","path":"github.com/google/uuid"}},"extID":{"description":"Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.\n","type":"string"},"cID":{"description":"Client's ID (internal)","type":"string","format":"uuid","x-go-type":"uuid.UUID","x-go-type-import":{"name":"uuid","path":"github.com/google/uuid"}},"extCID":{"description":"External Client's ID (external)","type":"string"}},"title":"DeleteFreeRoundsRequest"}}}}}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -52,5 +66,8 @@ all `in-progress` free rounds will be continued, but no new free rounds will be 
   label={undefined}
   responses={{"200":{"description":"ok"},"401":{"description":"Wrong signature or API key","content":{"application/json":{"schema":{"description":"General error response for Swipe Games Core Public API.","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}}},"404":{"description":"Free rounds campaign not found","content":{"application/json":{"schema":{"description":"General error response for Swipe Games Core Public API.","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}}},"500":{"description":"Server error occurred","content":{"application/json":{"schema":{"description":"General error response for Swipe Games Core Public API.","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}}}}}
 >
-
+  
 </StatusCodes>
+
+
+      

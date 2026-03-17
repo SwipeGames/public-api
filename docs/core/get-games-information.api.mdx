@@ -19,31 +19,44 @@ import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 
-<Heading as={"h1"} className={"openapi__heading"} children={"Get Games' Information"}></Heading>
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Get Games' Information"}
+>
+</Heading>
 
 <MethodEndpoint
   method={"get"}
   path={"/games"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
+
+
 
 Get information about supported games
 
-<Heading id={"request"} as={"h2"} className={"openapi-tabs__heading"} children={"Request"}></Heading>
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
 
 <ParamsDetails
   parameters={[{"name":"X-REQUEST-SIGN","in":"header","required":true,"description":"Request signature (see Authentication section for more details)","schema":{"type":"string"}},{"name":"cID","in":"query","required":true,"description":"Client's ID","x-go-name":"CID","schema":{"type":"string","format":"uuid","x-go-type":"uuid.UUID","x-go-type-import":{"name":"uuid","path":"github.com/google/uuid"}},"example":"550e8400-e29b-41d4-a716-446655440000"},{"name":"extCID","in":"query","required":true,"description":"External Client's ID","x-go-name":"extCID","schema":{"type":"string"},"example":"your_ext_id"}]}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={undefined}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -51,5 +64,8 @@ Get information about supported games
   label={undefined}
   responses={{"200":{"description":"ok","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","required":["title","id","locales","currencies","images","platforms","hasFreeSpins","rtp"],"properties":{"title":{"description":"Game's title in English","type":"string","example":"Catch 97"},"id":{"description":"Game's ID (internal)","type":"string","example":"sg_catch_97"},"locales":{"description":"List of supported locales in IETF BCP 47 format (ISO 639-1 language code with optional ISO 3166-1 country code), using underscore as separator.","type":"array","items":{"type":"string"},"example":["en_us","es","pt_br"]},"currencies":{"description":"List of supported currency codes in ISO 4217 format","type":"array","items":{"type":"string"},"example":["USD","EUR","GBP"]},"platforms":{"description":"List of supported platform types","type":"array","items":{"type":"string","description":"Platform type where the game can be launched","enum":["desktop","mobile"],"title":"PlatformType"},"example":["desktop","mobile"]},"images":{"description":"Image URLs for the game","type":"object","required":["baseURL","square","horizontal","widescreen","vertical"],"properties":{"baseURL":{"description":"Image's base URL","type":"string","example":"https://cdn.swipegames.io/images/sg_catch_97"},"square":{"description":"Path to square image. 1:1 aspect.","type":"string","example":"/square.png"},"horizontal":{"description":"Path to horizontal image. 4:3 aspect.","type":"string","example":"/horizontal.png"},"widescreen":{"description":"Path to widescreen image. 16:9 aspect.","type":"string","example":"/widescreen.png"},"vertical":{"description":"Path to vertical image. 3:4 aspect.","type":"string","example":"/vertical.png"}},"title":"GameInfoImages"},"hasFreeSpins":{"description":"If game supports free spins","type":"boolean","example":true},"rtp":{"description":"Game's RTP","type":"integer","example":97},"betLines":{"description":"List of bet lines supported for this game per currency. Available\nonly if game has free spins. See more info in related section [Free Rounds Bet Lines](/public-api/free-rounds-bet-lines).\n","type":"array","items":{"type":"object","required":["currency","values"],"properties":{"currency":{"description":"Currency code in ISO4217","type":"string","example":"USD"},"values":{"description":"List of bet line values (0-indexed array maps to 1-based bet lines).\n","type":"array","items":{"type":"object","required":["maxBet","maxCoeff"],"properties":{"maxBet":{"description":"Maximum bet amount for this line (in currency units)","type":"string","example":"1.00"},"maxCoeff":{"description":"Maximum multiplier applied to the bet","type":"string","example":"5.00"}},"title":"BetLineValue"}}},"title":"BetLineInfo"}}},"title":"GameInfo"},"title":"GamesResponse"}}}},"401":{"description":"Wrong signature or API key","content":{"application/json":{"schema":{"description":"General error response for Swipe Games Core Public API.","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}}},"404":{"description":"Games not found","content":{"application/json":{"schema":{"description":"General error response for Swipe Games Core Public API.","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}}},"500":{"description":"Server error occurred","content":{"application/json":{"schema":{"description":"General error response for Swipe Games Core Public API.","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}}}}}
 >
-
+  
 </StatusCodes>
+
+
+      
