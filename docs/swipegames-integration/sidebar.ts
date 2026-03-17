@@ -84,12 +84,6 @@ const sidebar: SidebarsConfig = {
           label: "RefundResponse",
           className: "schema",
         },
-        {
-          type: "doc",
-          id: "swipegames-integration/schemas/errorresponse",
-          label: "ErrorResponse",
-          className: "schema",
-        },
       ],
     },
   ],
