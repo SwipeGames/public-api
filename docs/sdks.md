@@ -30,7 +30,7 @@ npm install @swipegames/integration-sdk
 go get github.com/swipegames/integration-sdk-go
 ```
 
-- Requirements: Go 1.22+
+- Requirements: Go 1.13+
 - [Documentation](https://github.com/swipegames/integration-sdk-go)
 
 </TabItem>
