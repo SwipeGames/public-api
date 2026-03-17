@@ -1,29 +1,63 @@
 # Swipe Games Public API
 
-Based on [docusaurus-openapi-docs](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs)
+API documentation site, OpenAPI specs, and generated client packages for Swipe Games Public API.
+
+- **Docs**: Built with [docusaurus-openapi-docs](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs)
+- **API specs**: OpenAPI 3.0 YAML in `api/v1.0/`
+- **Packages**: Go, TypeScript, and PHP types generated from the specs
 
 ## Requirements
 
-- node
-- yarn
+- Node.js + Yarn
+- Go
+- Java 17 (`brew install --cask temurin@17`)
+
+## Quick Start
+
+```bash
+# Install dependencies
+yarn install
+
+# Start docs locally
+make up
+```
+
+## Generated Packages
+
+Types are generated from the OpenAPI specs and published as packages:
+
+| Package | Registry | Install |
+|---------|----------|---------|
+| `@swipegames/public-api` | [npm](https://www.npmjs.com/package/@swipegames/public-api) | `npm install @swipegames/public-api` |
+| `swipegames/public-api` | [Packagist](https://packagist.org/packages/swipegames/public-api) | `composer require swipegames/public-api` |
+| Go types | GitHub | `go get github.com/swipegames/public-api/api/v1.0` |
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `make up` | Start docs site locally |
+| `make gen-api` | Regenerate all code (Go + TypeScript + PHP) |
+| `make gen-docs` | Regenerate API documentation |
+| `make bump-version v=x.y.z` | Bump version everywhere and regenerate |
+| `make build-node` | Build the Node/TypeScript package |
 
 ## Versioning
 
-We use [semver](https://semver.org/) versioning for both API and docs. See `CLAUDE.md` for the full versioning workflow.
+We use [semver](https://semver.org/). See `CLAUDE.md` for the full versioning workflow.
 
-## Documentation
-
-### Generate docs
+To bump the version:
 
 ```bash
-make gen-docs
+make bump-version v=1.2.14
 ```
 
-### Start locally
+This updates all version locations (API specs, docusaurus config) and regenerates all code and docs.
 
-```bash
-make up
-```
+## CI/CD
+
+- **PR workflow**: Validates version bump, checks generated code is up-to-date, builds packages and docs
+- **Deploy workflow** (on release): Publishes npm + Packagist packages, deploys docs to GitHub Pages
 
 ## Customizations
 

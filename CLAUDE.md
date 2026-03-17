@@ -2,7 +2,34 @@
 
 ## Project Overview
 
-Swipe Games Public API documentation site built with [docusaurus-openapi-docs](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs).
+Swipe Games Public API — documentation site, OpenAPI specs, and generated client packages.
+
+- **Docs site**: Built with [docusaurus-openapi-docs](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs)
+- **API specs**: OpenAPI 3.0 YAML files in `api/v1.0/`
+- **Generated packages**: Go, TypeScript/Node, and PHP types generated from the specs
+
+## Repository Structure
+
+```
+api/v1.0/
+  common-components.yaml       # Shared schemas (ErrorResponse, User)
+  common-components.gen.go     # Generated Go types
+  core/
+    api.yaml                   # Core Public API spec
+    api.gen.go                 # Generated Go types/server/client
+    api.gen.ts                 # Generated TypeScript types
+    api.gen.zod.ts             # Generated Zod schemas
+  swipegames-integration/
+    api.yaml                   # Integration Adapter API spec
+    api.gen.go / .ts / .zod.ts # Generated code
+packages/
+  node/                        # npm package: @swipegames/public-api
+  php/                         # Composer package: swipegames/public-api
+composer.json                  # Root composer.json for Packagist
+openapi-generator-php.yaml    # PHP generator config
+orval.config.ts                # TypeScript generator config (Orval)
+openapitools.json              # openapi-generator-cli version pinning
+```
 
 ## Versioning
 
@@ -12,31 +39,83 @@ We use [semver](https://semver.org/) for both API and docs:
 - **Minor** — new features without breaking changes
 - **Patch** — bug fixes or minor non-API changes
 
-## How to Add Changes
+### Version Locations (must stay in sync)
 
-When updating the API:
+- `api/v1.0/common-components.yaml` — `version` field
+- `api/v1.0/core/api.yaml` — `version` field
+- `api/v1.0/swipegames-integration/api.yaml` — `version` field
+- `docusaurus.config.ts` — `API_VERSION` constant
+- `docs/changes-log.md` — changelog
 
-1. Make sure the change doesn't break backward compatibility
-2. Update the appropriate API file in `api/v*.*/**/*api.yaml`
-3. Bump the version in the API file header (for all api files, they should be in sync)
-4. Update `API_VERSION` in `docusaurus.config.ts`
-5. Regenerate the API: `make gen-api`
-6. Regenerate the docs: `make gen-docs`
-7. Update related docs if needed
-8. Add entry to `docs/changes-log.md`
-9. Test locally: `make up`
-
-### Version Locations
-
-- API spec: `version` field in `api/v1.0/core/api.yaml` header
-- Docs: `API_VERSION` constant in `docusaurus.config.ts`
-- Changes log: `docs/changes-log.md`
+Use `make bump-version v=x.y.z` to update all version locations and regenerate everything.
 
 ### Major Version Changes
 
 Major versions require creating a new folder under `api/` with the new version name and copying the API files into it.
 
+## How to Add Changes
+
+When updating the API:
+
+1. Make sure the change doesn't break backward compatibility
+2. Update the appropriate API file in `api/v*.*/**/*.yaml`
+3. Run `make bump-version v=x.y.z` (bumps all versions, regenerates code and docs)
+4. Update related docs if needed
+5. Add entry to `docs/changes-log.md`
+6. Test locally: `make up`
+
+## Code Generation
+
+All generated code is committed to git. The CI checks that generated code matches the specs.
+
+| Language   | Generator                  | Source specs                    | Output                          |
+|------------|----------------------------|---------------------------------|---------------------------------|
+| Go         | oapi-codegen v2            | All YAML specs                  | `api/v1.0/*.gen.go`             |
+| TypeScript | Orval                      | core + integration YAML         | `api/v1.0/**/*.gen.ts`          |
+| PHP        | openapi-generator-cli 7.x  | All YAML specs                  | `packages/php/src/`             |
+
+### PHP Generation Notes
+
+- Requires Java 17 (`brew install --cask temurin@17`)
+- Shared schemas (ErrorResponse, User) live in `Common/` namespace; duplicates are removed post-generation
+- Namespace references are fixed automatically (Core/Integration → Common)
+- Generator scaffolding (.travis.yml, git_push.sh, etc.) is cleaned up automatically
+
 ## Commands
 
+- `make gen-api` — regenerate all code (Go + TypeScript + PHP)
+- `make gen-api-v10` — regenerate Go + TypeScript only
+- `make gen-api-php` — regenerate PHP only
 - `make gen-docs` — regenerate API documentation
-- `make up` — start locally
+- `make bump-version v=x.y.z` — bump version everywhere and regenerate
+- `make build-node` — build the Node/TypeScript package
+- `make up` — start docs site locally
+
+## Requirements
+
+- Node.js + Yarn
+- Go (for oapi-codegen)
+- Java 17 (for openapi-generator-cli, PHP generation)
+
+## CI/CD
+
+### PR Workflow (`.github/workflows/pr.yml`)
+
+- Validates version is bumped
+- Regenerates all code and checks it matches (no stale generated code)
+- Builds the Node package
+- Builds the docs site
+
+### Deploy Workflow (`.github/workflows/deploy.yml`)
+
+Triggered by GitHub release or manual dispatch:
+
+1. Publishes `@swipegames/public-api` to npm (idempotent — skips if version exists)
+2. Notifies Packagist to update `swipegames/public-api`
+3. Builds and deploys docs to GitHub Pages
+
+### Published Packages
+
+- **npm**: `@swipegames/public-api` (TypeScript types + Zod schemas)
+- **Packagist**: `swipegames/public-api` (PHP types, uses git tags as versions)
+- **Go**: Import directly from `github.com/swipegames/public-api/api/v1.0`
