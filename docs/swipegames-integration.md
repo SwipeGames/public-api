@@ -71,7 +71,7 @@ We don't send any `refunds` on win requests.
 In case of any refund we will retry `refund` request as long as you respond to our request `error`.
 All retrying refunds will have the same `txID` and `roundID`, we don't use different `txID` for retries.
 
-**Note:** Since we are waiting for 200 OK response from your side on refund request, you should not return any error codes in case if you don't have such transaction on your side. E.g. when we break connection in case of timeout, we will retry `refund` request and you should return 200 OK response with empty body, even if you don't have this transaction on your side.
+**Note:** Since we are waiting for a 200 OK response from your side on refund requests, you should not return any error codes if you don't have a matching transaction on your side. For example when we break connection in case of timeout we will retry the `refund` request and you should return a 200 OK response with a valid body, even if you don't have this transaction on your side. The `balance` can be set to 0 in this scenario.
 
 ### Errors processing and client actions
 
