@@ -6,17 +6,21 @@ slug: /changes-log
 
 # Changes Log
 
-## 1.2.13
+## 1.2.16
 
-- Added new game `Tripple Nipple` to the games list.
+- Update the "Refund" secion in [Swipe Games Public Integration Adapter API page](https://swipegames.github.io/public-api/swipegames-integration#refund). The documentation clarify that when sending a 200 OK response to a `/refund` request, this should always have a valid body.
+
+## 1.2.15
+
+- Add new game `Tripple Nipple` to the games list.
 
 ## 1.2.11
 
-Update regEx pattern for the `amount` field in `BetRequest` to allow decimals.
+- Update regEx pattern for the `amount` field in `BetRequest` to allow decimals.
 
 ## 1.2.8
 
-- Added documentation about 30-day limit for finite free rounds campaigns. Free rounds with a `validUntil` date must not exceed 30 days. Infinite free rounds (no `validUntil`) are still supported.
+- Add documentation about 30-day limit for finite free rounds campaigns. Free rounds with a `validUntil` date must not exceed 30 days. Infinite free rounds (no `validUntil`) are still supported.
 
 ## 1.2.1
 
