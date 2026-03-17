@@ -82,12 +82,12 @@ When updating the API:
 
 All generated code is committed to git. The CI checks that generated code matches the specs.
 
-| Language   | Generator                  | Source specs                    | Output                          |
-|------------|----------------------------|---------------------------------|---------------------------------|
-| Go (full)  | oapi-codegen v2            | All YAML specs                  | `api/v1.0/**/*.gen.go` (root module) |
-| Go (types) | oapi-codegen v2            | All YAML specs                  | `api/v1.0/**/types/*.gen.go` (sub-modules) |
-| TypeScript | Orval                      | core + integration YAML         | `api/v1.0/**/*.gen.ts`          |
-| PHP        | openapi-generator-cli 7.x  | All YAML specs                  | `packages/php/src/`             |
+| Language   | Generator                 | Source specs            | Output                                     |
+| ---------- | ------------------------- | ----------------------- | ------------------------------------------ |
+| Go (full)  | oapi-codegen v2           | All YAML specs          | `api/v1.0/**/*.gen.go` (root module)       |
+| Go (types) | oapi-codegen v2           | All YAML specs          | `api/v1.0/**/types/*.gen.go` (sub-modules) |
+| TypeScript | Orval                     | core + integration YAML | `api/v1.0/**/*.gen.ts`                     |
+| PHP        | openapi-generator-cli 7.x | All YAML specs          | `packages/php/src/`                        |
 
 ### PHP Generation Notes
 

@@ -19,22 +19,15 @@ import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 
-<Heading
-  as={"h1"}
-  className={"openapi__heading"}
-  children={"Win"}
->
-</Heading>
+<Heading as={"h1"} className={"openapi__heading"} children={"Win"}></Heading>
 
 <MethodEndpoint
   method={"post"}
   path={"/win"}
   context={"endpoint"}
 >
-  
+
 </MethodEndpoint>
-
-
 
 This endpoint is used to place a win in the game.
 
@@ -43,26 +36,19 @@ we send a request to this endpoint and wait for the answer. Wait time is 5 secon
 
 After timeout or any error this request will be retrying in the background until we receive 200(OK) response.
 
-
-<Heading
-  id={"request"}
-  as={"h2"}
-  className={"openapi-tabs__heading"}
-  children={"Request"}
->
-</Heading>
+<Heading id={"request"} as={"h2"} className={"openapi-tabs__heading"} children={"Request"}></Heading>
 
 <ParamsDetails
   parameters={[{"name":"X-REQUEST-SIGN","in":"header","required":true,"description":"Request signature (see Authentication section for more details)","schema":{"type":"string"}}]}
 >
-  
+
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={{"required":true,"description":"Request body must be sent in JSON canonical format (see Authentication section for more details)","content":{"application/json":{"schema":{"type":"object","required":["type","sessionID","amount","txID","roundID"],"properties":{"type":{"description":"The type of the win.\n- `regular` type means regular bet,\n- `free` type means free bet (see Free Rounds section).\n","type":"string","enum":["regular","free"],"example":"regular"},"sessionID":{"type":"string","description":"The Game Session's ID (external). Provided by client via `Create New Game` call.\n","example":"a1b2c3d4-e5f6-7890-abcd-ef1234567890"},"amount":{"description":"The amount of the bet in currency **main** units (note: not cents). Currency selected by the client during the\n`Create New Game` call. We support 2 decimal places for all fiat currencies.\n","type":"string","pattern":"^(0|[1-9]\\d*)(\\.\\d+)?$","example":"100.10"},"txID":{"description":"Unique ID for the win (internal) on Swipe Games' side.\nCould be used as idempotency key.\n","type":"string","format":"uuid","x-go-type":"uuid.UUID","x-go-type-import":{"name":"uuid","path":"github.com/google/uuid"},"example":"c27ccade-5a45-4157-a85f-7d023a689ea5"},"roundID":{"description":"Non unique ID for the round (internal) on Swipe Games' side.\nCould be the same for different games.\n","type":"string","format":"uuid","x-go-type":"uuid.UUID","x-go-type-import":{"name":"uuid","path":"github.com/google/uuid"},"example":"b78e42f8-2041-482d-9c4b-f2ca79fc75e3"},"frID":{"description":"Free Rounds ID (external).\nThis field is provided only for free rounds wins (where `type` is `free`),\nduring bonus balance withdrawal process (type is `regular`).\n","type":"string","example":"some_external_free_rounds_id"}},"title":"WinRequest"}}}}}
 >
-  
+
 </RequestSchema>
 
 <StatusCodes
@@ -70,8 +56,5 @@ After timeout or any error this request will be retrying in the background until
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","required":["balance","txID"],"properties":{"balance":{"description":"The player's balance in selected currency **main** units (note: not cents) after the win is applied.\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n","type":"string","pattern":"^(0|[1-9]\\d*)(\\.\\d+)?$","example":"100.10"},"txID":{"description":"Unique ID for the win on your side. This is required for further tracking/debugging purposes.","type":"string","example":"some_external_bet_tx_id"}},"title":"WinResponse"}}}},"400":{"description":"Bad request","content":{"application/json":{"schema":{"description":"Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,\nit contains an action field that describes the required client action (could be omit). If error code is provided in additional\nclient will handle it accordingly and with priority over action.\nYou can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]},"action":{"description":"Required client action.\n- `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.\n     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,\n     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded\n     in the casino, but are opened in a new tab or window, since it will reopen the game again.\n","type":"string","enum":["refresh"]},"actionData":{"description":"Client action related data.\nYou can pass additional data to the client action. Not all actions require this field.\n","type":"string"}},"title":"ErrorResponseWithCodeAndAction"}}}},"401":{"description":"Wrong signature","content":{"application/json":{"schema":{"description":"Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,\nit contains an action field that describes the required client action (could be omit). If error code is provided in additional\nclient will handle it accordingly and with priority over action.\nYou can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]},"action":{"description":"Required client action.\n- `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.\n     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,\n     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded\n     in the casino, but are opened in a new tab or window, since it will reopen the game again.\n","type":"string","enum":["refresh"]},"actionData":{"description":"Client action related data.\nYou can pass additional data to the client action. Not all actions require this field.\n","type":"string"}},"title":"ErrorResponseWithCodeAndAction"}}}},"404":{"description":"User with this game session ID not found","content":{"application/json":{"schema":{"description":"Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,\nit contains an action field that describes the required client action (could be omit). If error code is provided in additional\nclient will handle it accordingly and with priority over action.\nYou can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]},"action":{"description":"Required client action.\n- `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.\n     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,\n     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded\n     in the casino, but are opened in a new tab or window, since it will reopen the game again.\n","type":"string","enum":["refresh"]},"actionData":{"description":"Client action related data.\nYou can pass additional data to the client action. Not all actions require this field.\n","type":"string"}},"title":"ErrorResponseWithCodeAndAction"}}}},"500":{"description":"Server error","content":{"application/json":{"schema":{"description":"Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,\nit contains an action field that describes the required client action (could be omit). If error code is provided in additional\nclient will handle it accordingly and with priority over action.\nYou can provide either message or message and code. Code always has\npriority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,\nrelated to the code. If you provide only message, the client will show it to the player as is.\n","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"},"code":{"description":"Error code. Could be handled by client accordingly (with localized message and related action).","type":"string","enum":["game_not_found","currency_not_supported","locale_not_supported","account_blocked","bet_limit","loss_limit","time_limit","insufficient_funds","session_expired","session_not_found","client_connection_error"]},"action":{"description":"Required client action.\n- `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.\n     It's useful when the game session expires or the game is not available anymore. Once page is refreshed,\n     the game will be reloaded and the player can continue playing. This might not work when games aren't embedded\n     in the casino, but are opened in a new tab or window, since it will reopen the game again.\n","type":"string","enum":["refresh"]},"actionData":{"description":"Client action related data.\nYou can pass additional data to the client action. Not all actions require this field.\n","type":"string"}},"title":"ErrorResponseWithCodeAndAction"}}}}}}
 >
-  
+
 </StatusCodes>
-
-
-      

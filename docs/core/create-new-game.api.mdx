@@ -19,46 +19,32 @@ import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 
-<Heading
-  as={"h1"}
-  className={"openapi__heading"}
-  children={"Create new game"}
->
-</Heading>
+<Heading as={"h1"} className={"openapi__heading"} children={"Create new game"}></Heading>
 
 <MethodEndpoint
   method={"post"}
   path={"/create-new-game"}
   context={"endpoint"}
 >
-  
+
 </MethodEndpoint>
-
-
 
 Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
 for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
 
-
-<Heading
-  id={"request"}
-  as={"h2"}
-  className={"openapi-tabs__heading"}
-  children={"Request"}
->
-</Heading>
+<Heading id={"request"} as={"h2"} className={"openapi-tabs__heading"} children={"Request"}></Heading>
 
 <ParamsDetails
   parameters={[{"name":"X-REQUEST-SIGN","in":"header","required":true,"description":"Request signature (see Authentication section for more details)","schema":{"type":"string"}}]}
 >
-  
+
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={{"required":true,"description":"Request body must be sent in JSON canonical format (see Authentication section for more details)","content":{"application/json":{"schema":{"type":"object","required":["cID","extCID","gameID","demo","platform","currency","locale"],"properties":{"cID":{"description":"Client's ID. It's provided by Swipe Games and is used as your identifier.\n","type":"string","format":"uuid","x-go-type":"uuid.UUID","x-go-type-import":{"name":"uuid","path":"github.com/google/uuid"}},"extCID":{"description":"External Client's ID (client/platform/game aggregator/integrator or casino on your side). This is provided from your side, and this is\nhow you identify your clients. We use it in all callbacks to you.\n","type":"string","example":"your_ext_id"},"gameID":{"description":"Game's ID. This is Swipe Games's game identifier. See the list of supported games in `Game IDs` section.\n","type":"string","example":"sg_catch_97"},"sessionID":{"description":"Session ID (external).This is your Session ID. We use it in all callbacks to you.\nNot required for demo games, since we don't use callbacks for demo games.\n","type":"string","example":"a1b2c3d4-e5f6-7890-abcd-ef1234567890"},"returnURL":{"description":"Return URL which we could use to redirect the user after the game is finished/exited. If you don't provide this URL, return button in the game will be disabled. Please make sure you provide this URL when using redirect to open the game, otherwise player cannot go back to your site.","type":"string","example":"https://your-site.com/game-lobby"},"depositURL":{"description":"Deposit URL which we could use to open a deposit page for the user. If you don't provide this URL, deposit flow in the game will be disabled.","type":"string","example":"https://your-site.com/deposit"},"currency":{"description":"Currency code in ISO4217.","type":"string","example":"USD"},"locale":{"description":"Locale code in IETF BCP 47 format (ISO 639-1 language code with optional ISO 3166-1 country code), using underscore as separator.","type":"string","example":"en_us"},"platform":{"description":"Platform code. This is used to identify the platform where the game is launched.","allOf":[{"type":"string","description":"Platform type where the game can be launched","enum":["desktop","mobile"],"title":"PlatformType"}],"example":"desktop"},"demo":{"description":"Demo mode. If true, the game will be launched in demo mode (means no callbacks will be fired on your side,\nand we use our demo balance for the game). If false, the game will be launched in real mode.\n","type":"boolean"},"initDemoBalance":{"description":"Initial demo balance for the user (in currency units). Only used in demo mode, ignored in real mode.\nMust be greater than the minimum bet. Default is 10 000 USD equivalent.\n","type":"string","example":"10000.00"},"user":{"description":"User information we show in the game. User should be provided for real game.\n","x-go-type":"User","type":"object","required":["id"],"properties":{"id":{"description":"User's ID (external). This is User's ID on your side.","type":"string"},"firstName":{"type":"string"},"lastName":{"type":"string"},"nickName":{"type":"string"},"country":{"description":"Country code ISO 3166-1 alpha-2.","type":"string"}},"title":"User"}},"title":"CreateNewGameRequest"}}}}}
 >
-  
+
 </RequestSchema>
 
 <StatusCodes
@@ -66,8 +52,5 @@ for the game. You can redirect the user to this URL to start playing the game or
   label={undefined}
   responses={{"200":{"description":"ok","content":{"application/json":{"schema":{"type":"object","required":["gameURL","gsID"],"properties":{"gameURL":{"type":"string"},"gsID":{"type":"string","format":"uuid","x-go-type":"uuid.UUID","x-go-type-import":{"name":"uuid","path":"github.com/google/uuid"}}},"title":"CreateNewGameResponse"}}}},"401":{"description":"Wrong signature or API key","content":{"application/json":{"schema":{"description":"General error response for Swipe Games Core Public API.","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}}},"500":{"description":"Server error occurred","content":{"application/json":{"schema":{"description":"General error response for Swipe Games Core Public API.","type":"object","required":["message"],"properties":{"message":{"description":"A brief description of the error in English. Could be shown to the player.","type":"string"},"details":{"description":"Technical details for the error. Could be used for debugging, should not be shown to the player.","type":"string"}},"title":"ErrorResponse"}}}}}}
 >
-  
+
 </StatusCodes>
-
-
-      
