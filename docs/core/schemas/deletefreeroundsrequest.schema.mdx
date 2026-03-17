@@ -25,7 +25,7 @@ import Heading from "@theme/Heading";
 
 
 <Schema
-  schema={{"type":"object","required":["cID","extCID"],"properties":{"id":{"description":"Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.\n","type":"string","format":"uuid"},"extID":{"description":"Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.\n","type":"string"},"cID":{"description":"Client's ID (internal)","type":"string","format":"uuid"},"extCID":{"description":"External Client's ID (external)","type":"string"}},"title":"DeleteFreeRoundsRequest"}}
+  schema={{"type":"object","required":["cID","extCID"],"properties":{"id":{"description":"Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.\n","type":"string","format":"uuid","x-go-type":"uuid.UUID","x-go-type-import":{"name":"uuid","path":"github.com/google/uuid"}},"extID":{"description":"Free rounds ID (external). Used as idempotency key. One of id or extID must be provided.\n","type":"string"},"cID":{"description":"Client's ID (internal)","type":"string","format":"uuid","x-go-type":"uuid.UUID","x-go-type-import":{"name":"uuid","path":"github.com/google/uuid"}},"extCID":{"description":"External Client's ID (external)","type":"string"}},"title":"DeleteFreeRoundsRequest"}}
   schemaType={"response"}
 >
   

@@ -72,6 +72,10 @@ bump-version:
 	@test -n "$(v)" || (echo "Usage: make bump-version v=x.y.z" && exit 1)
 	sed -i '' 's/const API_VERSION = ".*"/const API_VERSION = "$(v)"/' docusaurus.config.ts
 	sed -i '' 's/^  version: .*/  version: $(v)/' api/v1.0/common/common.yaml api/v1.0/core/api.yaml api/v1.0/swipegames-integration/api.yaml
+	@# Update changes-log: replace last version header with new version
+	@LAST_VER=$$(sed -n 's/^## \(.*\)/\1/p' docs/changes-log.md | head -1); \
+	sed -i '' "s/^## $$LAST_VER/## $(v)/" docs/changes-log.md; \
+	echo "Changes log: $$LAST_VER -> $(v)"
 	@echo "Version updated to $(v)"
 	$(MAKE) gen-api
 	$(MAKE) gen-docs

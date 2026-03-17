@@ -11,25 +11,47 @@ Swipe Games Public API — documentation site, OpenAPI specs, and generated clie
 ## Repository Structure
 
 ```
+go.mod                           # Root Go module (server/client, Echo, go 1.23)
+go.work                         # Go workspace for local development
 api/v1.0/
-  common-components.yaml       # Shared schemas (ErrorResponse, User)
-  common-components.gen.go     # Generated Go types
+  common-components.gen.go       # Generated common types+spec (root module)
+  common/
+    common.yaml                  # Shared schemas (ErrorResponse, User)
+    common.gen.go                # Generated common types only (own module, go 1.22.5)
+    go.mod
   core/
-    api.yaml                   # Core Public API spec
-    api.gen.go                 # Generated Go types/server/client
-    api.gen.ts                 # Generated TypeScript types
-    api.gen.zod.ts             # Generated Zod schemas
+    api.yaml                     # Core Public API spec
+    api.gen.go                   # Generated Go server/client/types/spec (root module)
+    api.gen.ts                   # Generated TypeScript types
+    api.gen.zod.ts               # Generated Zod schemas
+    types/
+      types.gen.go               # Generated Go types only (own module, go 1.22.5)
+      go.mod
   swipegames-integration/
-    api.yaml                   # Integration Adapter API spec
-    api.gen.go / .ts / .zod.ts # Generated code
+    api.yaml                     # Integration Adapter API spec
+    api.gen.go / .ts / .zod.ts   # Generated code (root module)
+    types/
+      types.gen.go               # Generated Go types only (own module, go 1.22.5)
+      go.mod
 packages/
-  node/                        # npm package: @swipegames/public-api
-  php/                         # Composer package: swipegames/public-api
-composer.json                  # Root composer.json for Packagist
-openapi-generator-php.yaml    # PHP generator config
-orval.config.ts                # TypeScript generator config (Orval)
-openapitools.json              # openapi-generator-cli version pinning
+  node/                          # npm package: @swipegames/public-api
+  php/                           # Composer package: swipegames/public-api
+composer.json                    # Root composer.json for Packagist
+openapi-generator-php.yaml      # PHP generator config
+orval.config.ts                  # TypeScript generator config (Orval)
+openapitools.json                # openapi-generator-cli version pinning
 ```
+
+### Go Module Structure
+
+The Go code is split into multiple modules to allow lightweight SDK imports:
+
+- **Root module** (`github.com/swipegames/public-api`): Server + client + types + spec. Requires Echo, go 1.23. Used by services.
+- **Common types** (`github.com/swipegames/public-api/api/v1.0/common`): Shared types only (ErrorResponse, User). No Echo, go 1.22.5.
+- **Core types** (`github.com/swipegames/public-api/api/v1.0/core/types`): Core API types only. Depends on common. No Echo, go 1.22.5.
+- **Integration types** (`github.com/swipegames/public-api/api/v1.0/swipegames-integration/types`): Integration types only. Depends on common. No Echo, go 1.22.5.
+
+SDK consumers import the lightweight types modules; services import the root module for server/client code.
 
 ## Versioning
 
@@ -41,7 +63,7 @@ We use [semver](https://semver.org/) for both API and docs:
 
 ### Version Locations (must stay in sync)
 
-- `api/v1.0/common-components.yaml` — `version` field
+- `api/v1.0/common/common.yaml` — `version` field
 - `api/v1.0/core/api.yaml` — `version` field
 - `api/v1.0/swipegames-integration/api.yaml` — `version` field
 - `docusaurus.config.ts` — `API_VERSION` constant
@@ -70,7 +92,8 @@ All generated code is committed to git. The CI checks that generated code matche
 
 | Language   | Generator                  | Source specs                    | Output                          |
 |------------|----------------------------|---------------------------------|---------------------------------|
-| Go         | oapi-codegen v2            | All YAML specs                  | `api/v1.0/*.gen.go`             |
+| Go (full)  | oapi-codegen v2            | All YAML specs                  | `api/v1.0/**/*.gen.go` (root module) |
+| Go (types) | oapi-codegen v2            | All YAML specs                  | `api/v1.0/**/types/*.gen.go` (sub-modules) |
 | TypeScript | Orval                      | core + integration YAML         | `api/v1.0/**/*.gen.ts`          |
 | PHP        | openapi-generator-cli 7.x  | All YAML specs                  | `packages/php/src/`             |
 
@@ -118,4 +141,5 @@ Triggered by GitHub release or manual dispatch:
 
 - **npm**: `@swipegames/public-api` (TypeScript types + Zod schemas)
 - **Packagist**: `swipegames/public-api` (PHP types, uses git tags as versions)
-- **Go**: Import directly from `github.com/swipegames/public-api/api/v1.0`
+- **Go (services)**: `github.com/swipegames/public-api/api/v1.0/core` (server+client+types, requires Echo)
+- **Go (SDK/types only)**: `github.com/swipegames/public-api/api/v1.0/core/types` (no Echo)
