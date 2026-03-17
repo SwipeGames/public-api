@@ -102,11 +102,11 @@ jobs:
           for SUBMOD in "${SUBMODULES[@]}"; do
             SUBTAG="${SUBMOD}/${DESIRED_TAG}"
             if git rev-parse -q --verify "refs/tags/$SUBTAG" >/dev/null; then
-              echo "Sub-module tag $SUBTAG already exists. Skipping."
-            else
-              git tag -a "$SUBTAG" -m "Release $SUBTAG"
-              echo "Created sub-module tag $SUBTAG"
+              echo "::error::Sub-module tag $SUBTAG already exists."
+              exit 1
             fi
+            git tag -a "$SUBTAG" -m "Release $SUBTAG"
+            echo "Created sub-module tag $SUBTAG"
           done
 
           git push origin --tags
