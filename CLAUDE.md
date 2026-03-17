@@ -12,26 +12,20 @@ Swipe Games Public API — documentation site, OpenAPI specs, and generated clie
 
 ```
 go.mod                           # Root Go module (server/client, Echo, go 1.23)
-go.work                         # Go workspace for local development
 api/v1.0/
-  common-components.gen.go       # Generated common types+spec (root module)
-  common/
-    common.yaml                  # Shared schemas (ErrorResponse, User)
-    common.gen.go                # Generated common types only (own module, go 1.22.5)
-    go.mod
   core/
-    api.yaml                     # Core Public API spec
+    api.yaml                     # Core Public API spec (includes ErrorResponse, User)
     api.gen.go                   # Generated Go server/client/types/spec (root module)
     api.gen.ts                   # Generated TypeScript types
     api.gen.zod.ts               # Generated Zod schemas
     types/
-      types.gen.go               # Generated Go types only (own module, go 1.22.5)
+      types.gen.go               # Generated Go types only (own module, go 1.13)
       go.mod
   swipegames-integration/
-    api.yaml                     # Integration Adapter API spec
+    api.yaml                     # Integration Adapter API spec (self-contained)
     api.gen.go / .ts / .zod.ts   # Generated code (root module)
     types/
-      types.gen.go               # Generated Go types only (own module, go 1.22.5)
+      types.gen.go               # Generated Go types only (own module, go 1.13)
       go.mod
 packages/
   node/                          # npm package: @swipegames/public-api
@@ -47,11 +41,10 @@ openapitools.json                # openapi-generator-cli version pinning
 The Go code is split into multiple modules to allow lightweight SDK imports:
 
 - **Root module** (`github.com/swipegames/public-api`): Server + client + types + spec. Requires Echo, go 1.23. Used by services.
-- **Common types** (`github.com/swipegames/public-api/api/v1.0/common`): Shared types only (ErrorResponse, User). No Echo, go 1.22.5.
-- **Core types** (`github.com/swipegames/public-api/api/v1.0/core/types`): Core API types only. Depends on common. No Echo, go 1.22.5.
-- **Integration types** (`github.com/swipegames/public-api/api/v1.0/swipegames-integration/types`): Integration types only. Depends on common. No Echo, go 1.22.5.
+- **Core types** (`github.com/swipegames/public-api/api/v1.0/core/types`): Core API types only (includes ErrorResponse, User). No Echo, go 1.13. No external dependencies.
+- **Integration types** (`github.com/swipegames/public-api/api/v1.0/swipegames-integration/types`): Integration types only (includes ErrorResponseWithCodeAndAction). No Echo, go 1.13. No external dependencies.
 
-SDK consumers import the lightweight types modules; services import the root module for server/client code.
+Each spec is fully self-contained — no shared common.yaml. SDK consumers import the lightweight types modules; services import the root module for server/client code.
 
 ## Versioning
 
@@ -63,7 +56,6 @@ We use [semver](https://semver.org/) for both API and docs:
 
 ### Version Locations (must stay in sync)
 
-- `api/v1.0/common/common.yaml` — `version` field
 - `api/v1.0/core/api.yaml` — `version` field
 - `api/v1.0/swipegames-integration/api.yaml` — `version` field
 - `docusaurus.config.ts` — `API_VERSION` constant
@@ -90,18 +82,17 @@ When updating the API:
 
 All generated code is committed to git. The CI checks that generated code matches the specs.
 
-| Language   | Generator                  | Source specs                    | Output                          |
-|------------|----------------------------|---------------------------------|---------------------------------|
-| Go (full)  | oapi-codegen v2            | All YAML specs                  | `api/v1.0/**/*.gen.go` (root module) |
-| Go (types) | oapi-codegen v2            | All YAML specs                  | `api/v1.0/**/types/*.gen.go` (sub-modules) |
-| TypeScript | Orval                      | core + integration YAML         | `api/v1.0/**/*.gen.ts`          |
-| PHP        | openapi-generator-cli 7.x  | All YAML specs                  | `packages/php/src/`             |
+| Language   | Generator                 | Source specs            | Output                                     |
+| ---------- | ------------------------- | ----------------------- | ------------------------------------------ |
+| Go (full)  | oapi-codegen v2           | All YAML specs          | `api/v1.0/**/*.gen.go` (root module)       |
+| Go (types) | oapi-codegen v2           | All YAML specs          | `api/v1.0/**/types/*.gen.go` (sub-modules) |
+| TypeScript | Orval                     | core + integration YAML | `api/v1.0/**/*.gen.ts`                     |
+| PHP        | openapi-generator-cli 7.x | All YAML specs          | `packages/php/src/`                        |
 
 ### PHP Generation Notes
 
 - Requires Java 17 (`brew install --cask temurin@17`)
-- Shared schemas (ErrorResponse, User) live in `Common/` namespace; duplicates are removed post-generation
-- Namespace references are fixed automatically (Core/Integration → Common)
+- Each spec is self-contained, so PHP types are generated per-service (Core, Integration)
 - Generator scaffolding (.travis.yml, git_push.sh, etc.) is cleaned up automatically
 
 ## Commands

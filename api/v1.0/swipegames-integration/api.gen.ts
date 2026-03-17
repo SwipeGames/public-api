@@ -44,39 +44,6 @@ export const ErrorResponseWithCodeAndActionAction = {
 } as const;
 
 /**
- * Error code.
- */
-export type ErrorResponseCode = typeof ErrorResponseCode[keyof typeof ErrorResponseCode];
-
-
-export const ErrorResponseCode = {
-  game_not_found: 'game_not_found',
-  currency_not_supported: 'currency_not_supported',
-  locale_not_supported: 'locale_not_supported',
-  account_blocked: 'account_blocked',
-  bet_limit: 'bet_limit',
-  loss_limit: 'loss_limit',
-  time_limit: 'time_limit',
-  insufficient_funds: 'insufficient_funds',
-  session_expired: 'session_expired',
-  session_not_found: 'session_not_found',
-  client_connection_error: 'client_connection_error',
-} as const;
-
-/**
- * General error response for Swipe Games Public API. Usually used for Public API responses.
-
- */
-export interface ErrorResponse {
-  /** A brief description of the error in English. Could be shown to the player. */
-  message: string;
-  /** Technical details for the error. Could be used for debugging, should not be shown to the player. */
-  details?: string;
-  /** Error code. */
-  code?: ErrorResponseCode;
-}
-
-/**
  * Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,
 it contains an action field that describes the required client action (could be omit). If error code is provided in additional
 client will handle it accordingly and with priority over action.
@@ -85,7 +52,11 @@ priority over message when both are provided. It means if you provide code, the 
 related to the code. If you provide only message, the client will show it to the player as is.
 
  */
-export type ErrorResponseWithCodeAndAction = ErrorResponse & {
+export interface ErrorResponseWithCodeAndAction {
+  /** A brief description of the error in English. Could be shown to the player. */
+  message: string;
+  /** Technical details for the error. Could be used for debugging, should not be shown to the player. */
+  details?: string;
   /** Error code. Could be handled by client accordingly (with localized message and related action). */
   code?: ErrorResponseWithCodeAndActionCode;
   /** Required client action.
@@ -99,7 +70,7 @@ export type ErrorResponseWithCodeAndAction = ErrorResponse & {
 You can pass additional data to the client action. Not all actions require this field.
  */
   actionData?: string;
-};
+}
 
 export interface BalanceResponse {
   /**
@@ -263,16 +234,6 @@ We support 2 decimal places for all fiat currencies.
   balance: string;
   /** Unique ID for the refund on your side. This is required for further tracking/debugging purposes. */
   txID: string;
-}
-
-export interface User {
-  /** User's ID (external). This is User's ID on your side. */
-  id: string;
-  firstName?: string;
-  lastName?: string;
-  nickName?: string;
-  /** Country code ISO 3166-1 alpha-2. */
-  country?: string;
 }
 
 export type GetBalanceParams = {

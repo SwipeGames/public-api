@@ -68,7 +68,7 @@ class CreateNewGameRequest implements ModelInterface, ArrayAccess, \JsonSerializ
         'platform' => '\SwipeGames\PublicApi\Core\PlatformType',
         'demo' => 'bool',
         'init_demo_balance' => 'string',
-        'user' => '\SwipeGames\PublicApi\Common\User'
+        'user' => '\SwipeGames\PublicApi\Core\User'
     ];
 
     /**
@@ -687,7 +687,7 @@ class CreateNewGameRequest implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets user
      *
-     * @return \SwipeGames\PublicApi\Common\User|null
+     * @return \SwipeGames\PublicApi\Core\User|null
      */
     public function getUser()
     {
@@ -697,7 +697,7 @@ class CreateNewGameRequest implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets user
      *
-     * @param \SwipeGames\PublicApi\Common\User|null $user user
+     * @param \SwipeGames\PublicApi\Core\User|null $user user
      *
      * @return self
      */

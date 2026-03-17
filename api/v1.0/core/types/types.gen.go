@@ -7,7 +7,6 @@ import (
 	"time"
 
 	uuid "github.com/google/uuid"
-	externalRef0 "github.com/swipegames/public-api/api/v1.0/common"
 )
 
 // Defines values for PlatformType.
@@ -127,8 +126,8 @@ type CreateNewGameRequest struct {
 
 	// SessionID Session ID (external).This is your Session ID. We use it in all callbacks to you.
 	// Not required for demo games, since we don't use callbacks for demo games.
-	SessionID *string            `json:"sessionID,omitempty"`
-	User      *externalRef0.User `json:"user,omitempty"`
+	SessionID *string `json:"sessionID,omitempty"`
+	User      *User   `json:"user,omitempty"`
 }
 
 // CreateNewGameResponse defines model for CreateNewGameResponse.
@@ -150,6 +149,15 @@ type DeleteFreeRoundsRequest struct {
 
 	// Id Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.
 	Id *uuid.UUID `json:"id,omitempty"`
+}
+
+// ErrorResponse General error response for Swipe Games Core Public API.
+type ErrorResponse struct {
+	// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+	Details *string `json:"details,omitempty"`
+
+	// Message A brief description of the error in English. Could be shown to the player.
+	Message string `json:"message"`
 }
 
 // GameInfo defines model for GameInfo.
@@ -204,6 +212,18 @@ type GamesResponse = []GameInfo
 
 // PlatformType Platform type where the game can be launched
 type PlatformType string
+
+// User defines model for User.
+type User struct {
+	// Country Country code ISO 3166-1 alpha-2.
+	Country   *string `json:"country,omitempty"`
+	FirstName *string `json:"firstName,omitempty"`
+
+	// Id User's ID (external). This is User's ID on your side.
+	Id       string  `json:"id"`
+	LastName *string `json:"lastName,omitempty"`
+	NickName *string `json:"nickName,omitempty"`
+}
 
 // PostCreateNewGameParams defines parameters for PostCreateNewGame.
 type PostCreateNewGameParams struct {

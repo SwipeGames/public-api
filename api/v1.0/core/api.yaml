@@ -47,14 +47,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/ErrorResponse"
 
         500:
           description: Server error occurred
           content:
             application/json:
               schema:
-                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/ErrorResponse"
   /free-rounds:
     post:
       summary: Create new free rounds campaign
@@ -90,21 +90,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/ErrorResponse"
 
         409:
           description: Free rounds campaign already exists
           content:
             application/json:
               schema:
-                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/ErrorResponse"
 
         500:
           description: Server error occurred
           content:
             application/json:
               schema:
-                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/ErrorResponse"
 
     delete:
       summary: Cancel/Delete free rounds campaign
@@ -139,21 +139,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/ErrorResponse"
 
         404:
           description: Free rounds campaign not found
           content:
             application/json:
               schema:
-                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/ErrorResponse"
 
         500:
           description: Server error occurred
           content:
             application/json:
               schema:
-                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/ErrorResponse"
 
   /games:
     get:
@@ -203,21 +203,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/ErrorResponse"
 
         404:
           description: Games not found
           content:
             application/json:
               schema:
-                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/ErrorResponse"
 
         500:
           description: Server error occurred
           content:
             application/json:
               schema:
-                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/ErrorResponse"
 
 components:
   schemas:
@@ -304,7 +304,7 @@ components:
           description: |
             User information we show in the game. User should be provided for real game.
           x-go-type: User
-          $ref: "../common/common.yaml#/components/schemas/User"
+          $ref: "#/components/schemas/User"
 
     CreateNewGameResponse:
       type: object
@@ -576,3 +576,34 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/GameInfo"
+
+    User:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          description: User's ID (external). This is User's ID on your side.
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        nickName:
+          type: string
+        country:
+          description: Country code ISO 3166-1 alpha-2.
+          type: string
+
+    ErrorResponse:
+      description: General error response for Swipe Games Core Public API.
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          description: A brief description of the error in English. Could be shown to the player.
+          type: string
+        details:
+          description: Technical details for the error. Could be used for debugging, should not be shown to the player.
+          type: string
