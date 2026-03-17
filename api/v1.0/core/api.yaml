@@ -3,7 +3,7 @@ info:
   title: Swipe Games Core Public API
   description: |
     This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
-  version: 1.2.16
+  version: 1.2.17
 
 servers:
   - url: https://staging.platform.0.swipegames.io/api/v1
@@ -47,14 +47,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
 
         500:
           description: Server error occurred
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
   /free-rounds:
     post:
       summary: Create new free rounds campaign
@@ -90,21 +90,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
 
         409:
           description: Free rounds campaign already exists
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
 
         500:
           description: Server error occurred
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
 
     delete:
       summary: Cancel/Delete free rounds campaign
@@ -139,21 +139,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
 
         404:
           description: Free rounds campaign not found
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
 
         500:
           description: Server error occurred
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
 
   /games:
     get:
@@ -176,6 +176,10 @@ paths:
           schema:
             type: string
             format: uuid
+            x-go-type: uuid.UUID
+            x-go-type-import:
+              name: uuid
+              path: github.com/google/uuid
           example: 550e8400-e29b-41d4-a716-446655440000
         - name: extCID
           in: query
@@ -199,21 +203,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
 
         404:
           description: Games not found
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
 
         500:
           description: Server error occurred
           content:
             application/json:
               schema:
-                $ref: "../common-components.yaml#/components/schemas/ErrorResponse"
+                $ref: "../common/common.yaml#/components/schemas/ErrorResponse"
 
 components:
   schemas:
@@ -240,6 +244,10 @@ components:
             Client's ID. It's provided by Swipe Games and is used as your identifier.
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
         extCID:
           description: |
             External Client's ID (client/platform/game aggregator/integrator or casino on your side). This is provided from your side, and this is
@@ -296,7 +304,7 @@ components:
           description: |
             User information we show in the game. User should be provided for real game.
           x-go-type: User
-          $ref: "../common-components.yaml#/components/schemas/User"
+          $ref: "../common/common.yaml#/components/schemas/User"
 
     CreateNewGameResponse:
       type: object
@@ -309,6 +317,10 @@ components:
         gsID:
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
     CreateFreeRoundsRequest:
       type: object
       required:
@@ -329,6 +341,10 @@ components:
           description: Client's ID (internal)
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
         extCID:
           description: External Client's ID (game aggregator or casino)
           type: string
@@ -393,6 +409,10 @@ components:
           description: Free rounds ID (internal).
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
 
         extID:
           description: Free rounds ID (external). This is provided in the request.
@@ -409,6 +429,10 @@ components:
             Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
 
         extID:
           description: |
@@ -419,6 +443,10 @@ components:
           description: Client's ID (internal)
           type: string
           format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
 
         extCID:
           description: External Client's ID (external)
