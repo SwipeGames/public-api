@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.2.17
+ * OpenAPI spec version: 1.2.18
  */
 /**
  * Platform type where the game can be launched
@@ -60,6 +60,8 @@ and we use our demo balance for the game). If false, the game will be launched i
 Must be greater than the minimum bet. Default is 10 000 USD equivalent.
  */
   initDemoBalance?: string;
+  /** User information we show in the game. User should be provided for real game.
+ */
   user?: User;
 }
 
@@ -178,36 +180,13 @@ only if game has free spins. See more info in related section [Free Rounds Bet L
 export type GamesResponse = GameInfo[];
 
 /**
- * Error code.
- */
-export type ErrorResponseCode = typeof ErrorResponseCode[keyof typeof ErrorResponseCode];
-
-
-export const ErrorResponseCode = {
-  game_not_found: 'game_not_found',
-  currency_not_supported: 'currency_not_supported',
-  locale_not_supported: 'locale_not_supported',
-  account_blocked: 'account_blocked',
-  bet_limit: 'bet_limit',
-  loss_limit: 'loss_limit',
-  time_limit: 'time_limit',
-  insufficient_funds: 'insufficient_funds',
-  session_expired: 'session_expired',
-  session_not_found: 'session_not_found',
-  client_connection_error: 'client_connection_error',
-} as const;
-
-/**
- * General error response for Swipe Games Public API. Usually used for Public API responses.
-
+ * General error response for Swipe Games Core Public API.
  */
 export interface ErrorResponse {
   /** A brief description of the error in English. Could be shown to the player. */
   message: string;
   /** Technical details for the error. Could be used for debugging, should not be shown to the player. */
   details?: string;
-  /** Error code. */
-  code?: ErrorResponseCode;
 }
 
 export type GetGamesParams = {

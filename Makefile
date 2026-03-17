@@ -1,30 +1,18 @@
 API_GEN_RUN := go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
 
 V10_API_PATH:=./api/v1.0
-V10_API_GEN_IMPORT_COMMON = "-import-mapping=../common/common.yaml:github.com/swipegames/public-api/api/v1.0"
-V10_TYPES_GEN_IMPORT_COMMON = "-import-mapping=../common/common.yaml:github.com/swipegames/public-api/api/v1.0/common"
-
-# V11_API_PATH:=./api/v1.1
-# V11_API_GEN_IMPORT_COMMON = "-import-mapping=../common/common.yaml:github.com/swipegames/public-api/api/v1.1"
-
-# V12_API_PATH:=./api/v1.2
-# V12_API_GEN_IMPORT_COMMON = "-import-mapping=../common/common.yaml:github.com/swipegames/public-api/api/v1.2"
 
 .PHONY: gen-api
 gen-api: gen-api-v10 gen-api-php
 
 gen-api-v10:
-	$(API_GEN_RUN) -package apiv1 -generate types,skip-prune,spec \
-		$(V10_API_PATH)/common/common.yaml > $(V10_API_PATH)/common-components.gen.go
-	$(API_GEN_RUN) -package commonv1 -generate types,skip-prune \
-		$(V10_API_PATH)/common/common.yaml > $(V10_API_PATH)/common/common.gen.go
-	$(API_GEN_RUN) $(V10_API_GEN_IMPORT_COMMON) -package coreapiv1 -generate server,client,types,skip-prune,spec \
+	$(API_GEN_RUN) -package coreapiv1 -generate server,client,types,skip-prune,spec \
 		$(V10_API_PATH)/core/api.yaml > $(V10_API_PATH)/core/api.gen.go
-	$(API_GEN_RUN) $(V10_TYPES_GEN_IMPORT_COMMON) -package coretypesv1 -generate types,skip-prune \
+	$(API_GEN_RUN) -package coretypesv1 -generate types,skip-prune \
 		$(V10_API_PATH)/core/api.yaml > $(V10_API_PATH)/core/types/types.gen.go
-	$(API_GEN_RUN) $(V10_API_GEN_IMPORT_COMMON) -package swipegamesintegrationapiv1 -generate server,client,types,skip-prune,spec \
+	$(API_GEN_RUN) -package swipegamesintegrationapiv1 -generate server,client,types,skip-prune,spec \
 		$(V10_API_PATH)/swipegames-integration/api.yaml > $(V10_API_PATH)/swipegames-integration/api.gen.go
-	$(API_GEN_RUN) $(V10_TYPES_GEN_IMPORT_COMMON) -package swipegamesintegrationtypesv1 -generate types,skip-prune \
+	$(API_GEN_RUN) -package swipegamesintegrationtypesv1 -generate types,skip-prune \
 		$(V10_API_PATH)/swipegames-integration/api.yaml > $(V10_API_PATH)/swipegames-integration/types/types.gen.go
 	yarn gen-api-ts
 
@@ -36,19 +24,10 @@ PHP_OUT := packages/php
 .PHONY: gen-api-php
 gen-api-php:
 	rm -rf $(PHP_OUT)/src
-	$(PHP_GEN) -c $(PHP_GEN_CONFIG) -i $(V10_API_PATH)/common/common.yaml \
-		--additional-properties=modelPackage=Common -o $(PHP_OUT)
 	$(PHP_GEN) -c $(PHP_GEN_CONFIG) -i $(V10_API_PATH)/core/api.yaml \
 		--additional-properties=modelPackage=Core -o $(PHP_OUT)
 	$(PHP_GEN) -c $(PHP_GEN_CONFIG) -i $(V10_API_PATH)/swipegames-integration/api.yaml \
 		--additional-properties=modelPackage=Integration -o $(PHP_OUT)
-	# Remove duplicate models – canonical versions live in Common/
-	rm -f $(PHP_OUT)/src/Core/ErrorResponse.php $(PHP_OUT)/src/Core/User.php
-	rm -f $(PHP_OUT)/src/Integration/ErrorResponse.php
-	# Fix namespace references to point to Common/ versions (perl -pi works on both macOS and Linux)
-	find $(PHP_OUT)/src/Core -name '*.php' -exec perl -pi -e 's|\\SwipeGames\\PublicApi\\Core\\ErrorResponse|\\SwipeGames\\PublicApi\\Common\\ErrorResponse|g' {} +
-	find $(PHP_OUT)/src/Core -name '*.php' -exec perl -pi -e 's|\\SwipeGames\\PublicApi\\Core\\User|\\SwipeGames\\PublicApi\\Common\\User|g' {} +
-	find $(PHP_OUT)/src/Integration -name '*.php' -exec perl -pi -e 's|\\SwipeGames\\PublicApi\\Integration\\ErrorResponse|\\SwipeGames\\PublicApi\\Common\\ErrorResponse|g' {} +
 	# Clean up generator scaffolding
 	rm -rf $(PHP_OUT)/.openapi-generator $(PHP_OUT)/.openapi-generator-ignore
 	rm -f $(PHP_OUT)/.travis.yml $(PHP_OUT)/git_push.sh $(PHP_OUT)/phpunit.xml.dist
@@ -71,7 +50,7 @@ up:
 bump-version:
 	@test -n "$(v)" || (echo "Usage: make bump-version v=x.y.z" && exit 1)
 	sed -i '' 's/const API_VERSION = ".*"/const API_VERSION = "$(v)"/' docusaurus.config.ts
-	sed -i '' 's/^  version: .*/  version: $(v)/' api/v1.0/common/common.yaml api/v1.0/core/api.yaml api/v1.0/swipegames-integration/api.yaml
+	sed -i '' 's/^  version: .*/  version: $(v)/' api/v1.0/core/api.yaml api/v1.0/swipegames-integration/api.yaml
 	@# Update changes-log: replace last version header with new version
 	@LAST_VER=$$(sed -n 's/^## \(.*\)/\1/p' docs/changes-log.md | head -1); \
 	sed -i '' "s/^## $$LAST_VER/## $(v)/" docs/changes-log.md; \

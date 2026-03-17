@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.2.17
+ * OpenAPI spec version: 1.2.18
  */
 import * as zod from 'zod';
 
@@ -36,7 +36,7 @@ export const PostCreateNewGameBody = zod.object({
   "lastName": zod.string().optional(),
   "nickName": zod.string().optional(),
   "country": zod.string().optional().describe('Country code ISO 3166-1 alpha-2.')
-}).optional()
+}).optional().describe('User information we show in the game. User should be provided for real game.\n')
 })
 
 export const PostCreateNewGameResponse = zod.object({

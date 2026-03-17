@@ -155,7 +155,12 @@ type BetResponse struct {
 	TxID string `json:"txID"`
 }
 
-// ErrorResponseWithCodeAndAction defines model for ErrorResponseWithCodeAndAction.
+// ErrorResponseWithCodeAndAction Error response for Swipe Games Integration Adapter Public API. In additional to the common error response,
+// it contains an action field that describes the required client action (could be omit). If error code is provided in additional
+// client will handle it accordingly and with priority over action.
+// You can provide either message or message and code. Code always has
+// priority over message when both are provided. It means if you provide code, the client will handle it accordingly with some localized messaage,
+// related to the code. If you provide only message, the client will show it to the player as is.
 type ErrorResponseWithCodeAndAction struct {
 	// Action Required client action.
 	// - `refresh` - shows a refresh button to the player. Player cannot continue without refreshing the game page.
