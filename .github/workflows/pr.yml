@@ -34,20 +34,34 @@ jobs:
 
       - name: Check if version is different
         shell: bash
+        env:
+          CURRENT: ${{ steps.current.outputs.current_version }}
         run: |
           set -euo pipefail
 
-          CURRENT="${{ steps.current.outputs.current_version }}"
           LATEST="$(git tag -l --sort=-v:refname | head -n 1)"
 
           # Continue only if CURRENT > LATEST (SemVer order)
           HIGHEST="$(printf '%s\n%s\n' "$LATEST" "$CURRENT" | sort -V | tail -n 1)"
 
           if [ "$HIGHEST" = "$LATEST" ]; then
-            echo "Tag in docusaurus.config.ts is the same as the latest tag ${LATEST}. Stop workflow."
-            echo "Please update the version in docusaurus.config.ts to a higher version."
+            echo "::error::Tag in docusaurus.config.ts is the same as the latest tag ${LATEST}. Please bump the version."
             exit 1
           fi
+
+          # Check that sub-module tags don't already exist
+          SUBMODULES=(
+            "api/v1.0/core/types"
+            "api/v1.0/swipegames-integration/types"
+          )
+
+          for SUBMOD in "${SUBMODULES[@]}"; do
+            SUBTAG="${SUBMOD}/${CURRENT}"
+            if git rev-parse -q --verify "refs/tags/$SUBTAG" >/dev/null; then
+              echo "::error::Sub-module tag $SUBTAG already exists. Please bump the version."
+              exit 1
+            fi
+          done
 
           echo "Tag in docusaurus.config.ts is ${CURRENT} and the latest tag is ${LATEST}. Continue workflow."
 
