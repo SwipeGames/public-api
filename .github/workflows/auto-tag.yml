@@ -91,6 +91,24 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git tag -a "$DESIRED_TAG" -m "Release $DESIRED_TAG"
-          git push origin "$DESIRED_TAG"
 
-          echo "Created and pushed tag $DESIRED_TAG"
+          # Create sub-module tags so Go can resolve them by version
+          # (Go requires prefixed tags for nested modules in multi-module repos)
+          SUBMODULES=(
+            "api/v1.0/core/types"
+            "api/v1.0/swipegames-integration/types"
+          )
+
+          for SUBMOD in "${SUBMODULES[@]}"; do
+            SUBTAG="${SUBMOD}/${DESIRED_TAG}"
+            if git rev-parse -q --verify "refs/tags/$SUBTAG" >/dev/null; then
+              echo "Sub-module tag $SUBTAG already exists. Skipping."
+            else
+              git tag -a "$SUBTAG" -m "Release $SUBTAG"
+              echo "Created sub-module tag $SUBTAG"
+            fi
+          done
+
+          git push origin --tags
+
+          echo "Created and pushed tag $DESIRED_TAG (+ sub-module tags)"
