@@ -30,7 +30,8 @@ Types are generated from the OpenAPI specs and published as packages:
 |---------|----------|---------|
 | `@swipegames/public-api` | [npm](https://www.npmjs.com/package/@swipegames/public-api) | `npm install @swipegames/public-api` |
 | `swipegames/public-api` | [Packagist](https://packagist.org/packages/swipegames/public-api) | `composer require swipegames/public-api` |
-| Go types | GitHub | `go get github.com/swipegames/public-api/api/v1.0` |
+| Go (services) | GitHub | `go get github.com/swipegames/public-api` |
+| Go (types only) | GitHub | `go get github.com/swipegames/public-api/api/v1.0/core/types` |
 
 ## Commands
 
@@ -49,7 +50,7 @@ We use [semver](https://semver.org/). See `CLAUDE.md` for the full versioning wo
 To bump the version:
 
 ```bash
-make bump-version v=1.2.14
+make bump-version v=1.2.17
 ```
 
 This updates all version locations (API specs, docusaurus config) and regenerates all code and docs.

@@ -25,7 +25,7 @@ import Heading from "@theme/Heading";
 
 
 <Schema
-  schema={{"type":"object","required":["id","extID"],"properties":{"id":{"description":"Free rounds ID (internal).","type":"string","format":"uuid"},"extID":{"description":"Free rounds ID (external). This is provided in the request.","type":"string"}},"title":"CreateFreeRoundsResponse"}}
+  schema={{"type":"object","required":["id","extID"],"properties":{"id":{"description":"Free rounds ID (internal).","type":"string","format":"uuid","x-go-type":"uuid.UUID","x-go-type-import":{"name":"uuid","path":"github.com/google/uuid"}},"extID":{"description":"Free rounds ID (external). This is provided in the request.","type":"string"}},"title":"CreateFreeRoundsResponse"}}
   schemaType={"response"}
 >
   
