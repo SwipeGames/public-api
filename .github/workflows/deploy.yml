@@ -212,10 +212,12 @@ jobs:
         shell: bash
         run: |
           if [ "${{ github.event_name }}" = "release" ]; then
-            echo "tag=${{ github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+            TAG="${{ github.event.release.tag_name }}"
           else
-            echo "tag=${{ inputs.version_tag }}" >> "$GITHUB_OUTPUT"
+            TAG="${{ inputs.version_tag }}"
           fi
+          # Strip leading 'v' if present
+          echo "pkg_version=${TAG#v}" >> "$GITHUB_OUTPUT"
 
       - name: Trigger auto-update workflow
         uses: peter-evans/repository-dispatch@v3
