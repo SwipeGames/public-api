@@ -189,3 +189,31 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  notify-sdks:
+    needs: publish-package
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        repo:
+          - SwipeGames/integration-sdk-node
+          - SwipeGames/integration-sdk-go
+          - SwipeGames/integration-sdk-php
+    steps:
+      - name: Resolve version tag
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            echo "tag=${{ github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${{ inputs.version_tag }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Trigger auto-update workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.SDK_UPDATE_PAT }}
+          repository: ${{ matrix.repo }}
+          event-type: public-api-updated
+          client-payload: '{"version": "${{ steps.version.outputs.tag }}"}'
