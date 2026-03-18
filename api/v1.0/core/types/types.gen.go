@@ -9,6 +9,30 @@ import (
 	uuid "github.com/google/uuid"
 )
 
+// Defines values for ErrorResponseCode.
+const (
+	AccountBlocked       ErrorResponseCode = "account_blocked"
+	CurrencyNotSupported ErrorResponseCode = "currency_not_supported"
+	GameNotFound         ErrorResponseCode = "game_not_found"
+	LocaleNotSupported   ErrorResponseCode = "locale_not_supported"
+)
+
+// Valid indicates whether the value is a known member of the ErrorResponseCode enum.
+func (e ErrorResponseCode) Valid() bool {
+	switch e {
+	case AccountBlocked:
+		return true
+	case CurrencyNotSupported:
+		return true
+	case GameNotFound:
+		return true
+	case LocaleNotSupported:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PlatformType.
 const (
 	Desktop PlatformType = "desktop"
@@ -153,12 +177,18 @@ type DeleteFreeRoundsRequest struct {
 
 // ErrorResponse General error response for Swipe Games Core Public API.
 type ErrorResponse struct {
+	// Code Error code.
+	Code *ErrorResponseCode `json:"code,omitempty"`
+
 	// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
 	Details *string `json:"details,omitempty"`
 
 	// Message A brief description of the error in English. Could be shown to the player.
 	Message string `json:"message"`
 }
+
+// ErrorResponseCode Error code.
+type ErrorResponseCode string
 
 // GameInfo defines model for GameInfo.
 type GameInfo struct {

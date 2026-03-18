@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.2.19
+ * OpenAPI spec version: 1.2.20
  */
 /**
  * Platform type where the game can be launched
@@ -180,6 +180,19 @@ only if game has free spins. See more info in related section [Free Rounds Bet L
 export type GamesResponse = GameInfo[];
 
 /**
+ * Error code.
+ */
+export type ErrorResponseCode = typeof ErrorResponseCode[keyof typeof ErrorResponseCode];
+
+
+export const ErrorResponseCode = {
+  game_not_found: 'game_not_found',
+  currency_not_supported: 'currency_not_supported',
+  locale_not_supported: 'locale_not_supported',
+  account_blocked: 'account_blocked',
+} as const;
+
+/**
  * General error response for Swipe Games Core Public API.
  */
 export interface ErrorResponse {
@@ -187,6 +200,8 @@ export interface ErrorResponse {
   message: string;
   /** Technical details for the error. Could be used for debugging, should not be shown to the player. */
   details?: string;
+  /** Error code. */
+  code?: ErrorResponseCode;
 }
 
 export type GetGamesParams = {
