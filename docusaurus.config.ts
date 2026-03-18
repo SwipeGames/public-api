@@ -6,7 +6,7 @@ import type { Config } from "@docusaurus/types";
 import type * as Plugin from "@docusaurus/types/src/plugin";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 
-const API_VERSION = "1.2.20";
+const API_VERSION = "1.2.21";
 
 const config: Config = {
   title: "Swipe Games",
@@ -83,39 +83,24 @@ const config: Config = {
     },
     languageTabs: [
       {
-        highlight: "python",
-        language: "python",
-        logoClass: "python",
-      },
-      {
         highlight: "bash",
         language: "curl",
         logoClass: "curl",
       },
       {
-        highlight: "csharp",
-        language: "csharp",
-        logoClass: "csharp",
+        highlight: "python",
+        language: "python",
+        logoClass: "python",
       },
       {
-        highlight: "go",
-        language: "go",
-        logoClass: "go",
+        highlight: "javascript",
+        language: "javascript",
+        logoClass: "javascript",
       },
       {
         highlight: "javascript",
         language: "nodejs",
         logoClass: "nodejs",
-      },
-      {
-        highlight: "ruby",
-        language: "ruby",
-        logoClass: "ruby",
-      },
-      {
-        highlight: "php",
-        language: "php",
-        logoClass: "php",
       },
       {
         highlight: "java",
@@ -124,14 +109,29 @@ const config: Config = {
         variant: "unirest",
       },
       {
+        highlight: "csharp",
+        language: "csharp",
+        logoClass: "csharp",
+      },
+      {
+        highlight: "php",
+        language: "php",
+        logoClass: "php",
+      },
+      {
+        highlight: "go",
+        language: "go",
+        logoClass: "go",
+      },
+      {
+        highlight: "ruby",
+        language: "ruby",
+        logoClass: "ruby",
+      },
+      {
         highlight: "powershell",
         language: "powershell",
         logoClass: "powershell",
-      },
-      {
-        highlight: "javascript",
-        language: "javascript",
-        logoClass: "javascript",
       },
     ],
   } satisfies Preset.ThemeConfig,
