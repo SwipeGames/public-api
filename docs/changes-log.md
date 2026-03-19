@@ -6,7 +6,7 @@ slug: /changes-log
 
 # Changes Log
 
-## 1.2.24
+## 1.2.25
 
 - Remove the following languages from API snippets: Swift, Kotlin, Dart, Objective-C, C, OCaml, and R.
 
