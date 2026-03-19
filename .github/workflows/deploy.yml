@@ -196,9 +196,9 @@ jobs:
     strategy:
       matrix:
         repo:
-          - SwipeGames/integration-sdk-node
-          - SwipeGames/integration-sdk-go
-          - SwipeGames/integration-sdk-php
+          - integration-sdk-node
+          - integration-sdk-go
+          - integration-sdk-php
     steps:
       - name: Generate a token
         id: generate-token
