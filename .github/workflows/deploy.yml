@@ -227,6 +227,6 @@ jobs:
           github_token: ${{ steps.generate-token.outputs.token }}
           workflow_file_name: auto-update.yml
           ref: main
-          client_payload: '{"public_api_version": "${{ steps.version.outputs.tag }}"}'
+          client_payload: '{"public_api_version": "${{ steps.version.outputs.pkg_version }}"}'
           wait_interval: 15
           propagate_failure: true
