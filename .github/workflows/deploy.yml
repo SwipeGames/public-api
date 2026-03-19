@@ -196,9 +196,9 @@ jobs:
     strategy:
       matrix:
         repo:
-          - SwipeGames/integration-sdk-node
-          - SwipeGames/integration-sdk-go
-          - SwipeGames/integration-sdk-php
+          - integration-sdk-node
+          - integration-sdk-go
+          - integration-sdk-php
     steps:
       - name: Generate a token
         id: generate-token
@@ -220,9 +220,13 @@ jobs:
           echo "pkg_version=${TAG#v}" >> "$GITHUB_OUTPUT"
 
       - name: Trigger auto-update workflow
-        uses: peter-evans/repository-dispatch@v3
+        uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
-          token: ${{ steps.generate-token.outputs.token }}
-          repository: ${{ matrix.repo }}
-          event-type: public-api-updated
-          client-payload: '{"version": "${{ steps.version.outputs.tag }}"}'
+          owner: SwipeGames
+          repo: ${{ matrix.repo }}
+          github_token: ${{ steps.generate-token.outputs.token }}
+          workflow_file_name: auto-update.yml
+          ref: main
+          client_payload: '{"version": "${{ steps.version.outputs.tag }}"}'
+          wait_interval: 15
+          propagate_failure: true
