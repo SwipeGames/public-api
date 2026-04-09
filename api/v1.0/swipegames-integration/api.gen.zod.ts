@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.2.25
+ * OpenAPI spec version: 1.2.26
  */
 import * as zod from 'zod';
 
@@ -22,7 +22,7 @@ export const GetBalanceQueryParams = zod.object({
 })
 
 export const GetBalanceHeader = zod.object({
-  "X-REQUEST-SIGN": zod.string().describe('Request signature (see Authentication section for more details)')
+  "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Verifying Request Signatures](\/swipegames-integration#verifying-request-signatures) for more details)')
 })
 
 export const getBalanceResponseBalanceRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
@@ -45,7 +45,7 @@ In case we receive not 200 (OK) response or 5 seconds timeout we will send follo
  * @summary Bet
  */
 export const PostBetHeader = zod.object({
-  "X-REQUEST-SIGN": zod.string().describe('Request signature (see Authentication section for more details)')
+  "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Verifying Request Signatures](\/swipegames-integration#verifying-request-signatures) for more details)')
 })
 
 export const postBetBodyAmountRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
@@ -80,7 +80,7 @@ After timeout or any error this request will be retrying in the background until
  * @summary Win
  */
 export const PostWinHeader = zod.object({
-  "X-REQUEST-SIGN": zod.string().describe('Request signature (see Authentication section for more details)')
+  "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Verifying Request Signatures](\/swipegames-integration#verifying-request-signatures) for more details)')
 })
 
 export const postWinBodyAmountRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
@@ -114,7 +114,7 @@ After timeout or any error this request will be retrying until we receive 200(OK
  * @summary Refund
  */
 export const PostRefundHeader = zod.object({
-  "X-REQUEST-SIGN": zod.string().describe('Request signature (see Authentication section for more details)')
+  "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Verifying Request Signatures](\/swipegames-integration#verifying-request-signatures) for more details)')
 })
 
 export const postRefundBodyAmountRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');

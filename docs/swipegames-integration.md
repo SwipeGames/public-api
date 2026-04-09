@@ -11,13 +11,307 @@ It's located in our cluster and sends requests to your endpoints on every game a
 
 You need to provide us with the following information to set up the integration:
 
-- `ExtCID` - this is a unique identifier for your internal client (casino, operator, etc.).
-  You can use any string, but it should be unique across all integrations.
-- Base URL of your integration API (e.g., `https://example.com/api/v1.0`), we will setup all the endpoints for you according to the API specification.  
-  Please make sure that you provide exact endpoints for each action. You can use our OpenAPI specification to generate the server stubs for your API.
-- Your API key for authentication, we will use it to sign the requests to your API. Please read more in [Authentication](/authn) section.
+- `ExtCID` — a unique identifier for your internal client (casino, operator, etc.). You can use any string, but it should be unique across all integrations. If you have multiple clients on your side, you can provide us with a list of `ExtCID`s and we will set up all of them individually.
+- Base URL of your integration API (e.g., `https://example.com/api/v1.0`) — we will set up all the endpoints for you according to the API specification. Please make sure that you provide exact endpoints for each action. You can use our OpenAPI specification to generate the server stubs for your API. If you need different base URLs for different clients, you can provide a separate base URL per `ExtCID`.
+- Your `Integration API key` for authentication — we use it to sign all reverse calls to your API. You use this key to [verify request signatures](/swipegames-integration#verifying-request-signatures) on incoming requests from us.
 
-All settings are done against every `ExtCID`. So if you have multiple clients (casinos, operators, etc.), you need to provide us with the `ExtCID` for each of them.
+All settings (base URL, configuration, etc.) are done per `ExtCID`. So if you have multiple clients (casinos, operators, etc.), you need to provide us with the `ExtCID` for each of them. Each `ExtCID` can have its own base URL for reverse calls.
+
+### Verifying Request Signatures
+
+Every request we send to your endpoints includes an `X-REQUEST-SIGN` header containing an HMAC-SHA256 signature. You must verify this signature to ensure the request is authentic and hasn't been tampered with.
+
+The verification process differs slightly between GET and POST requests:
+
+#### POST requests (Bet, Win, Refund)
+
+POST request bodies are **already sent in [canonical JSON format](/authn#json-canonical-form)** (keys sorted alphabetically, no whitespace). You can use the raw request body directly to compute the signature — no additional transformation is needed.
+
+**Verification steps:**
+
+1. Read the raw request body (do not parse and re-serialize — use the raw bytes)
+2. Compute HMAC-SHA256 of the raw body using your `Integration API key`
+3. Compare the result with the `X-REQUEST-SIGN` header value
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs groupId="language">
+<TabItem value="js" label="JavaScript" default>
+
+```javascript
+const crypto = require('crypto');
+
+function verifySignature(rawBody, signature, integrationApiKey) {
+    const expected = crypto
+        .createHmac('sha256', integrationApiKey)
+        .update(rawBody)
+        .digest('hex');
+    return expected === signature;
+}
+
+// In your HTTP handler:
+app.post('/bet', (req, res) => {
+    const rawBody = req.rawBody; // make sure your framework preserves raw body
+    const signature = req.headers['x-request-sign'];
+
+    if (!verifySignature(rawBody, signature, integrationApiKey)) {
+        return res.status(401).json({ message: 'Invalid signature' });
+    }
+
+    const request = JSON.parse(rawBody);
+    // process bet...
+});
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import hmac
+import hashlib
+
+def verify_signature(raw_body: bytes, signature: str, integration_api_key: str) -> bool:
+    expected = hmac.new(
+        integration_api_key.encode('utf-8'),
+        raw_body,
+        hashlib.sha256
+    ).hexdigest()
+    return hmac.compare_digest(expected, signature)
+
+# In your HTTP handler (Flask example):
+@app.route('/bet', methods=['POST'])
+def bet():
+    raw_body = request.get_data()
+    signature = request.headers.get('X-REQUEST-SIGN')
+
+    if not verify_signature(raw_body, signature, integration_api_key):
+        return jsonify({'message': 'Invalid signature'}), 401
+
+    data = json.loads(raw_body)
+    # process bet...
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+import (
+    "crypto/hmac"
+    "crypto/sha256"
+    "encoding/hex"
+    "io"
+    "net/http"
+)
+
+func verifySignature(rawBody []byte, signature, integrationApiKey string) bool {
+    mac := hmac.New(sha256.New, []byte(integrationApiKey))
+    mac.Write(rawBody)
+    expected := hex.EncodeToString(mac.Sum(nil))
+    return hmac.Equal([]byte(expected), []byte(signature))
+}
+
+// In your HTTP handler:
+func betHandler(w http.ResponseWriter, r *http.Request) {
+    rawBody, _ := io.ReadAll(r.Body)
+    signature := r.Header.Get("X-REQUEST-SIGN")
+
+    if !verifySignature(rawBody, signature, integrationApiKey) {
+        http.Error(w, `{"message":"Invalid signature"}`, http.StatusUnauthorized)
+        return
+    }
+
+    // parse rawBody and process bet...
+}
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+function verifySignature(string $rawBody, string $signature, string $integrationApiKey): bool {
+    $expected = hash_hmac('sha256', $rawBody, $integrationApiKey);
+    return hash_equals($expected, $signature);
+}
+
+// In your HTTP handler:
+$rawBody = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_REQUEST_SIGN'] ?? '';
+
+if (!verifySignature($rawBody, $signature, $integrationApiKey)) {
+    http_response_code(401);
+    echo json_encode(['message' => 'Invalid signature']);
+    exit;
+}
+
+$request = json_decode($rawBody, true);
+// process bet...
+```
+
+</TabItem>
+</Tabs>
+
+#### GET requests (Balance)
+
+GET requests don't have a body. To verify the signature, you need to convert the query parameters into a [canonical JSON](/authn#json-canonical-form) object first.
+
+**Verification steps:**
+
+1. Collect all query parameters from the request URL
+2. Create a JSON object from the parameters with **keys sorted alphabetically** and **no whitespace** (canonical JSON)
+3. Compute HMAC-SHA256 of the canonical JSON string using your `Integration API key`
+4. Compare the result with the `X-REQUEST-SIGN` header value
+
+<Tabs groupId="language">
+<TabItem value="js" label="JavaScript" default>
+
+```javascript
+const crypto = require('crypto');
+
+function queryParamsToCanonicalJSON(queryParams) {
+    // Sort keys and create compact JSON
+    const sorted = Object.keys(queryParams).sort().reduce((obj, key) => {
+        obj[key] = queryParams[key];
+        return obj;
+    }, {});
+    return JSON.stringify(sorted);
+}
+
+function verifySignature(payload, signature, integrationApiKey) {
+    const expected = crypto
+        .createHmac('sha256', integrationApiKey)
+        .update(payload)
+        .digest('hex');
+    return expected === signature;
+}
+
+// In your HTTP handler:
+app.get('/balance', (req, res) => {
+    const canonicalJSON = queryParamsToCanonicalJSON(req.query);
+    const signature = req.headers['x-request-sign'];
+
+    if (!verifySignature(canonicalJSON, signature, integrationApiKey)) {
+        return res.status(401).json({ message: 'Invalid signature' });
+    }
+
+    const sessionID = req.query.sessionID;
+    // return balance...
+});
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import hmac
+import hashlib
+import json
+
+def query_params_to_canonical_json(params: dict) -> str:
+    return json.dumps(params, sort_keys=True, separators=(',', ':'))
+
+def verify_signature(payload: str, signature: str, integration_api_key: str) -> bool:
+    expected = hmac.new(
+        integration_api_key.encode('utf-8'),
+        payload.encode('utf-8'),
+        hashlib.sha256
+    ).hexdigest()
+    return hmac.compare_digest(expected, signature)
+
+# In your HTTP handler (Flask example):
+@app.route('/balance', methods=['GET'])
+def balance():
+    canonical_json = query_params_to_canonical_json(dict(request.args))
+    signature = request.headers.get('X-REQUEST-SIGN')
+
+    if not verify_signature(canonical_json, signature, integration_api_key):
+        return jsonify({'message': 'Invalid signature'}), 401
+
+    session_id = request.args.get('sessionID')
+    # return balance...
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+import (
+    "crypto/hmac"
+    "crypto/sha256"
+    "encoding/hex"
+    "encoding/json"
+    "net/http"
+    "net/url"
+)
+
+func queryParamsToCanonicalJSON(values url.Values) (string, error) {
+    flattened := make(map[string]string)
+    for key, vals := range values {
+        if len(vals) > 0 {
+            flattened[key] = vals[0]
+        }
+    }
+    jsonData, err := json.Marshal(flattened)
+    if err != nil {
+        return "", err
+    }
+    return string(jsonData), nil
+}
+
+func verifySignature(payload []byte, signature, integrationApiKey string) bool {
+    mac := hmac.New(sha256.New, []byte(integrationApiKey))
+    mac.Write(payload)
+    expected := hex.EncodeToString(mac.Sum(nil))
+    return hmac.Equal([]byte(expected), []byte(signature))
+}
+
+// In your HTTP handler:
+func balanceHandler(w http.ResponseWriter, r *http.Request) {
+    canonicalJSON, _ := queryParamsToCanonicalJSON(r.URL.Query())
+    signature := r.Header.Get("X-REQUEST-SIGN")
+
+    if !verifySignature([]byte(canonicalJSON), signature, integrationApiKey) {
+        http.Error(w, `{"message":"Invalid signature"}`, http.StatusUnauthorized)
+        return
+    }
+
+    sessionID := r.URL.Query().Get("sessionID")
+    // return balance...
+}
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+function queryParamsToCanonicalJSON(array $params): string {
+    ksort($params); // sort keys alphabetically
+    return json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+}
+
+function verifySignature(string $payload, string $signature, string $integrationApiKey): bool {
+    $expected = hash_hmac('sha256', $payload, $integrationApiKey);
+    return hash_equals($expected, $signature);
+}
+
+// In your HTTP handler:
+$canonicalJSON = queryParamsToCanonicalJSON($_GET);
+$signature = $_SERVER['HTTP_X_REQUEST_SIGN'] ?? '';
+
+if (!verifySignature($canonicalJSON, $signature, $integrationApiKey)) {
+    http_response_code(401);
+    echo json_encode(['message' => 'Invalid signature']);
+    exit;
+}
+
+$sessionID = $_GET['sessionID'];
+// return balance...
+```
+
+</TabItem>
+</Tabs>
+
+> **Tip:** If you're using one of our [Integration SDKs](/sdks), signature verification is handled automatically by the `parseAndVerify*` methods — you don't need to implement it manually.
 
 ### Please whitelist our IP addresses to allow requests from our servers to your API.
 

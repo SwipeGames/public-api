@@ -6,7 +6,7 @@ info:
     It is used to make reverse calls to integrations working through Public API.
     Please implement this API on your side to support Swipe Games Public API.
 
-  version: 1.2.25
+  version: 1.2.26
 
 paths:
   /balance:
@@ -23,7 +23,7 @@ paths:
         - name: X-REQUEST-SIGN
           in: header
           required: true
-          description: Request signature (see Authentication section for more details)
+          description: Request signature (see [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for more details)
           schema:
             type: string
         - name: sessionID
@@ -81,13 +81,13 @@ paths:
         - name: X-REQUEST-SIGN
           in: header
           required: true
-          description: Request signature (see Authentication section for more details)
+          description: Request signature (see [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for more details)
           schema:
             type: string
 
       requestBody:
         required: true
-        description: Request body must be sent in JSON canonical format (see Authentication section for more details)
+        description: Request body is sent in [JSON Canonical Form](/authn#json-canonical-form)
         content:
           application/json:
             schema:
@@ -140,13 +140,13 @@ paths:
         - name: X-REQUEST-SIGN
           in: header
           required: true
-          description: Request signature (see Authentication section for more details)
+          description: Request signature (see [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for more details)
           schema:
             type: string
 
       requestBody:
         required: true
-        description: Request body must be sent in JSON canonical format (see Authentication section for more details)
+        description: Request body is sent in [JSON Canonical Form](/authn#json-canonical-form)
         content:
           application/json:
             schema:
@@ -198,13 +198,13 @@ paths:
         - name: X-REQUEST-SIGN
           in: header
           required: true
-          description: Request signature (see Authentication section for more details)
+          description: Request signature (see [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for more details)
           schema:
             type: string
 
       requestBody:
         required: true
-        description: Request body must be sent in JSON canonical format (see Authentication section for more details)
+        description: Request body is sent in [JSON Canonical Form](/authn#json-canonical-form)
         content:
           application/json:
             schema:

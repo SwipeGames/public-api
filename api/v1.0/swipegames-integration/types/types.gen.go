@@ -275,25 +275,25 @@ type GetBalanceParams struct {
 	// This is your Session ID. We use it in all reverse calls to you.
 	SessionID string `form:"sessionID" json:"sessionID"`
 
-	// XREQUESTSIGN Request signature (see Authentication section for more details)
+	// XREQUESTSIGN Request signature (see [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 
 // PostBetParams defines parameters for PostBet.
 type PostBetParams struct {
-	// XREQUESTSIGN Request signature (see Authentication section for more details)
+	// XREQUESTSIGN Request signature (see [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 
 // PostRefundParams defines parameters for PostRefund.
 type PostRefundParams struct {
-	// XREQUESTSIGN Request signature (see Authentication section for more details)
+	// XREQUESTSIGN Request signature (see [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 
 // PostWinParams defines parameters for PostWin.
 type PostWinParams struct {
-	// XREQUESTSIGN Request signature (see Authentication section for more details)
+	// XREQUESTSIGN Request signature (see [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 

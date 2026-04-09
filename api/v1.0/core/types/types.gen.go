@@ -132,7 +132,7 @@ type CreateNewGameRequest struct {
 	// how you identify your clients. We use it in all callbacks to you.
 	ExtCID string `json:"extCID"`
 
-	// GameID Game's ID. This is Swipe Games's game identifier. See the list of supported games in `Game IDs` section.
+	// GameID Game's ID. This is Swipe Games's game identifier. See the list of supported games in [Games](/games) section.
 	GameID string `json:"gameID"`
 
 	// InitDemoBalance Initial demo balance for the user (in currency units). Only used in demo mode, ignored in real mode.
@@ -257,19 +257,19 @@ type User struct {
 
 // PostCreateNewGameParams defines parameters for PostCreateNewGame.
 type PostCreateNewGameParams struct {
-	// XREQUESTSIGN Request signature (see Authentication section for more details)
+	// XREQUESTSIGN Request signature (see [Authentication](/authn) for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 
 // DeleteFreeRoundsParams defines parameters for DeleteFreeRounds.
 type DeleteFreeRoundsParams struct {
-	// XREQUESTSIGN Request signature (see Authentication section for more details)
+	// XREQUESTSIGN Request signature (see [Authentication](/authn) for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 
 // PostFreeRoundsParams defines parameters for PostFreeRounds.
 type PostFreeRoundsParams struct {
-	// XREQUESTSIGN Request signature (see Authentication section for more details)
+	// XREQUESTSIGN Request signature (see [Authentication](/authn) for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 
@@ -281,7 +281,7 @@ type GetGamesParams struct {
 	// ExtCID External Client's ID
 	ExtCID string `form:"extCID" json:"extCID"`
 
-	// XREQUESTSIGN Request signature (see Authentication section for more details)
+	// XREQUESTSIGN Request signature (see [Authentication](/authn) for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 

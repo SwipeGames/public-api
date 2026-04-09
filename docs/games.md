@@ -15,14 +15,16 @@ To retrieve the actual list of games available for your integration, you should 
 
 The available game IDs are:  
 
-| Game Name | RTP % | Game ID |
-| --- | --- | --- |
-| Cash Garage   | 97% | sg_catch_97 |
-| Cash Garage   | 95% | sg_catch_95 |
-| Smash or Cash | 97% | sg_swipe_97 |
-| Smash or Cash | 95% | sg_swipe_95 |
-| Tripple Nipple | 97% | sg_swipeaigirls_97 |
-| Tripple Nipple | 95% | sg_swipeaigirls_95 |
+| Game Name | Game Type | RTP % | Game ID |
+| --- | --- | --- | --- |
+| Cash Garage   | catch | 97% | sg_catch_97 |
+| Cash Garage   | catch | 95% | sg_catch_95 |
+| Smash or Cash | swipe | 97% | sg_swipe_97 |
+| Smash or Cash | swipe | 95% | sg_swipe_95 |
+| Tripple Nipple | swipe | 97% | sg_swipeaigirls_97 |
+| Tripple Nipple | swipe | 95% | sg_swipeaigirls_95 |
+
+**Game Type** is used to identify the game mechanics (e.g., `catch` or `swipe`). It is not the same as the Game ID or Game Name — multiple games with different names and IDs can share the same game type.
 
 _*_ for other RTP values please contact support.
 # Customized Games

@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.2.25
+ * OpenAPI spec version: 1.2.26
  */
 /**
  * Platform type where the game can be launched
@@ -35,7 +35,7 @@ export interface CreateNewGameRequest {
 how you identify your clients. We use it in all callbacks to you.
  */
   extCID: string;
-  /** Game's ID. This is Swipe Games's game identifier. See the list of supported games in `Game IDs` section.
+  /** Game's ID. This is Swipe Games's game identifier. See the list of supported games in [Games](/games) section.
  */
   gameID: string;
   /** Session ID (external).This is your Session ID. We use it in all callbacks to you.
