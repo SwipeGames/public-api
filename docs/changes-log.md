@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.3.0
+
+- Add new games to the games list: `Catch Ahegao`, `Tuna Bomber`, `Swipe Football`.
+
 ## 1.2.26
 
 - Remove the following languages from API snippets: Swift, Kotlin, Dart, Objective-C, C, OCaml, and R.

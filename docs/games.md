@@ -19,10 +19,16 @@ The available game IDs are:
 | --- | --- | --- | --- |
 | Cash Garage   | catch | 97% | sg_catch_97 |
 | Cash Garage   | catch | 95% | sg_catch_95 |
+| Catch Ahegao  | catch | 97% | sg_catchahegao_97 |
+| Catch Ahegao  | catch | 95% | sg_catchahegao_95 |
+| Tuna Bomber   | catch | 97% | sg_catchtuna_97 |
+| Tuna Bomber   | catch | 95% | sg_catchtuna_95 |
 | Smash or Cash | swipe | 97% | sg_swipe_97 |
 | Smash or Cash | swipe | 95% | sg_swipe_95 |
 | Tripple Nipple | swipe | 97% | sg_swipeaigirls_97 |
 | Tripple Nipple | swipe | 95% | sg_swipeaigirls_95 |
+| Swipe Football | swipe | 97% | sg_swipefootball_97 |
+| Swipe Football | swipe | 95% | sg_swipefootball_95 |
 
 **Game Type** is used to identify the game mechanics (e.g., `catch` or `swipe`). It is not the same as the Game ID or Game Name — multiple games with different names and IDs can share the same game type.
 

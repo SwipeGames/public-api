@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.2.26
+ * OpenAPI spec version: 1.3.0
  */
 /**
  * Error code. Could be handled by client accordingly (with localized message and related action).
