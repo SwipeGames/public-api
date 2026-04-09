@@ -3,21 +3,12 @@ import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 const sidebars: SidebarsConfig = {
   main: [
-    {
-      type: "category",
-      label: "Getting Started",
-      link: {
-        type: "doc",
-        id: "getting-started",
-      },
-      items: ["terms", "game-session"],
-    },
-
-    "sdks",
+    "getting-started",
+    "terms",
+    "game-session",
     "games",
     "currencies",
     "locales",
-    "authn",
 
     {
       type: "category",
@@ -28,6 +19,7 @@ const sidebars: SidebarsConfig = {
       },
       items: ["free-rounds-bet-lines"],
     },
+    "authn",
     {
       type: "category",
       label: "Core API",
@@ -46,6 +38,7 @@ const sidebars: SidebarsConfig = {
       },
       items: [require("./docs/swipegames-integration/sidebar.ts")],
     },
+    "sdks",
     "changes-log",
   ],
 };

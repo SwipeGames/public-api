@@ -4,14 +4,16 @@ title: Authentication
 slug: /authn
 ---
 
-During the registration process you will receive an API `token key`.
-This key is used to sign your requests to our APIs.
+During the registration process you will receive two keys:
 
-In all requests (both `Core Public API` and `Swipe Games Integration Adapter API`) we use the `X-REQUEST-SIGN` header which must contain the signature of the request.
+- **API key** — used to sign your requests to the [Core Public API](/core).
+- **Integration API key** — used by us to sign reverse calls to your back end via the [Integration Adapter API](/swipegames-integration). See [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for how to verify these incoming requests.
+
+All requests use the `X-REQUEST-SIGN` header which must contain the HMAC-SHA256 signature.
 
 ## Overview
 
-Authentication uses HMAC-SHA256 signature generation with your API `token key` as the secret key.
+This section describes how to sign your outbound requests to the **Core Public API** using your `API key`.
 
 **CRITICAL: All request payloads MUST be converted to canonical JSON form before signing.**
 

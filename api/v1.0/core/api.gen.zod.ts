@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.2.25
+ * OpenAPI spec version: 1.2.26
  */
 import * as zod from 'zod';
 
@@ -15,13 +15,13 @@ for the game. You can redirect the user to this URL to start playing the game or
  * @summary Create new game
  */
 export const PostCreateNewGameHeader = zod.object({
-  "X-REQUEST-SIGN": zod.string().describe('Request signature (see Authentication section for more details)')
+  "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Authentication](\/authn) for more details)')
 })
 
 export const PostCreateNewGameBody = zod.object({
   "cID": zod.string().uuid().describe('Client\'s ID. It\'s provided by Swipe Games and is used as your identifier.\n'),
   "extCID": zod.string().describe('External Client\'s ID (client\/platform\/game aggregator\/integrator or casino on your side). This is provided from your side, and this is\nhow you identify your clients. We use it in all callbacks to you.\n'),
-  "gameID": zod.string().describe('Game\'s ID. This is Swipe Games\'s game identifier. See the list of supported games in `Game IDs` section.\n'),
+  "gameID": zod.string().describe('Game\'s ID. This is Swipe Games\'s game identifier. See the list of supported games in [Games](\/games) section.\n'),
   "sessionID": zod.string().optional().describe('Session ID (external).This is your Session ID. We use it in all callbacks to you.\nNot required for demo games, since we don\'t use callbacks for demo games.\n'),
   "returnURL": zod.string().optional().describe('Return URL which we could use to redirect the user after the game is finished\/exited. If you don\'t provide this URL, return button in the game will be disabled. Please make sure you provide this URL when using redirect to open the game, otherwise player cannot go back to your site.'),
   "depositURL": zod.string().optional().describe('Deposit URL which we could use to open a deposit page for the user. If you don\'t provide this URL, deposit flow in the game will be disabled.'),
@@ -50,7 +50,7 @@ export const PostCreateNewGameResponse = zod.object({
  * @summary Create new free rounds campaign
  */
 export const PostFreeRoundsHeader = zod.object({
-  "X-REQUEST-SIGN": zod.string().describe('Request signature (see Authentication section for more details)')
+  "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Authentication](\/authn) for more details)')
 })
 
 export const postFreeRoundsBodyQuantityMax = 99;
@@ -85,7 +85,7 @@ all `in-progress` free rounds will be continued, but no new free rounds will be 
  * @summary Cancel/Delete free rounds campaign
  */
 export const DeleteFreeRoundsHeader = zod.object({
-  "X-REQUEST-SIGN": zod.string().describe('Request signature (see Authentication section for more details)')
+  "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Authentication](\/authn) for more details)')
 })
 
 export const DeleteFreeRoundsBody = zod.object({
@@ -106,7 +106,7 @@ export const GetGamesQueryParams = zod.object({
 })
 
 export const GetGamesHeader = zod.object({
-  "X-REQUEST-SIGN": zod.string().describe('Request signature (see Authentication section for more details)')
+  "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Authentication](\/authn) for more details)')
 })
 
 export const GetGamesResponseItem = zod.object({

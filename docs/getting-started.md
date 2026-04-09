@@ -43,13 +43,14 @@ Integration process consists of the following steps:
 To start using our Public API, you need to register an account on our portal (or request via any communication channel)
 and provide us the following details:
 
--   your IP addresses or range of IP addresses that will be used to access the Public API (for both environments: staging and production)
--   base URL to your back end that will be used for reverse integration with Swipe Games Integration Adapter API (our calls to your). URL should support HTTPS and be accessible from our servers (if you have white lists).
--   API key that we should use to authenticate our requests to your back end (for reverse integration with Swipe Games Integration Adapter API).
-    (see [Authentication](/authn) for more details).
+-   Your IP addresses or range of IP addresses that will be used to access the Public API (for both environments: staging and production).
+-   Base URL to your back end that will be used for reverse integration with Swipe Games Integration Adapter API (our calls to you). URL should support HTTPS and be accessible from our servers (if you have white lists).
+-   List of External Client IDs (`ExtCID`) — each `ExtCID` is a unique identifier for your internal client (casino, operator, etc.). You can provide multiple `ExtCID`s if you want to split calls for different clients on your side. All configurations and settings are done per `ExtCID`. If you need different base URLs for reverse calls per client, you can provide a separate base URL for each `ExtCID` and we will configure them individually. See [Terms](/terms) and [Integration Adapter API — Setup](/swipegames-integration#setup-and-configuration) for more details.
 
 From our side, we will provide you with the following details:
 
--   client ID (CID) - this is your unique identifier in our system that will be used to identify your integration.
--   your API key that will be used to authenticate your requests to the Public API (see [Authentication](/authn) for more details).
--   list of our IP addresses or range of IP addresses that will be used to access your back end (for reverse integration with Swipe Games Integration Adapter API). You can find this information also in [IP Addresses](/swipegames-integration#please-whitelist-our-ip-addresses-to-allow-requests-from-our-servers-to-your-api) section.
+-   **Client ID (CID)** — your unique identifier in our system, used to identify your integration.
+-   **ExtCID** — we will register all the `ExtCID`s you provided. If you don't provide any, we will set up a default `ExtCID` and share it with you. Each `ExtCID` can have its own base URL for reverse calls and its own configuration.
+-   **API key** — used to authenticate your requests to the [Core Public API](/core). You sign your outbound requests with this key (see [Authentication](/authn) for more details).
+-   **Integration API key** — used by us to sign our reverse calls to your back end via the [Integration Adapter API](/swipegames-integration). You verify incoming requests with this key (see [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for more details).
+-   List of our IP addresses or range of IP addresses that will be used to access your back end (for reverse integration with Swipe Games Integration Adapter API). You can find this information also in [IP Addresses](/swipegames-integration#please-whitelist-our-ip-addresses-to-allow-requests-from-our-servers-to-your-api) section.
