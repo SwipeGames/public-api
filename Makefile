@@ -51,10 +51,24 @@ bump-version:
 	@test -n "$(v)" || (echo "Usage: make bump-version v=x.y.z" && exit 1)
 	sed -i '' 's/const API_VERSION = ".*"/const API_VERSION = "$(v)"/' docusaurus.config.ts
 	sed -i '' 's/^  version: .*/  version: $(v)/' api/v1.0/core/api.yaml api/v1.0/swipegames-integration/api.yaml
-	@# Update changes-log: replace last version header with new version
-	@LAST_VER=$$(sed -n 's/^## \(.*\)/\1/p' docs/changes-log.md | head -1); \
-	sed -i '' "s/^## $$LAST_VER/## $(v)/" docs/changes-log.md; \
-	echo "Changes log: $$LAST_VER -> $(v)"
+	@# Changes-log: prepend a new "## $(v)" section with a "- no changes"
+	@# placeholder so prior version history is preserved. Edit the bullet
+	@# after the bump if the release actually has notes.
+	@awk -v ver="$(v)" ' \
+	  BEGIN { inserted = 0 } \
+	  !inserted && /^# Changes Log/ { \
+	    print; \
+	    if ((getline nextline) > 0) print nextline; \
+	    print "## " ver; \
+	    print ""; \
+	    print "- no changes"; \
+	    print ""; \
+	    inserted = 1; \
+	    next \
+	  } \
+	  { print } \
+	' docs/changes-log.md > docs/changes-log.md.tmp && mv docs/changes-log.md.tmp docs/changes-log.md
+	@echo "Changes log: prepended ## $(v) (edit '- no changes' if needed)"
 	@echo "Version updated to $(v)"
 	$(MAKE) gen-api
 	$(MAKE) gen-docs
