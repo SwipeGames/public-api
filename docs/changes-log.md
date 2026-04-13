@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.3.1
+
+- no changes
+
 ## 1.3.0
 
 - Add new games to the games list: `Catch Ahegao`, `Tuna Bomber`, `Swipe Football`.
@@ -14,25 +18,101 @@ slug: /changes-log
 
 - Remove the following languages from API snippets: Swift, Kotlin, Dart, Objective-C, C, OCaml, and R.
 
+## 1.2.25
+
+- no changes
+
+## 1.2.24
+
+- no changes
+
+## 1.2.23
+
+- no changes
+
+## 1.2.22
+
+- no changes
+
+## 1.2.21
+
+- no changes
+
+## 1.2.20
+
+- no changes
+
 ## 1.2.19
 
 - Add [Integration SDKs](https://swipegames.github.io/public-api/sdks) page to the documentation.
+
+## 1.2.18
+
+- no changes
 
 ## 1.2.17
 
 - Update the "Refund" section in [Swipe Games Public Integration Adapter API page](https://swipegames.github.io/public-api/swipegames-integration#refund). The documentation clarify that when sending a 200 OK response to a `/refund` request, this should always have a valid body.
 
+## 1.2.16
+
+- no changes
+
 ## 1.2.15
 
 - Add new game `Tripple Nipple` to the games list.
+
+## 1.2.14
+
+- no changes
+
+## 1.2.13
+
+- no changes
+
+## 1.2.12
+
+- no changes
 
 ## 1.2.11
 
 - Update regEx pattern for the `amount` field in `BetRequest` to allow decimals.
 
+## 1.2.10
+
+- no changes
+
+## 1.2.9
+
+- no changes
+
 ## 1.2.8
 
 - Add documentation about 30-day limit for finite free rounds campaigns. Free rounds with a `validUntil` date must not exceed 30 days. Infinite free rounds (no `validUntil`) are still supported.
+
+## 1.2.7
+
+- no changes
+
+## 1.2.6
+
+- no changes
+
+## 1.2.5
+
+- no changes
+
+## 1.2.4
+
+- no changes
+
+## 1.2.3
+
+- no changes
+
+## 1.2.2
+
+- no changes
 
 ## 1.2.1
 
