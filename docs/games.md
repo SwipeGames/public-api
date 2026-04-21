@@ -29,6 +29,8 @@ The available game IDs are:
 | Tripple Nipple | swipe | 95% | sg_swipeaigirls_95 |
 | Swipe Football | swipe | 97% | sg_swipefootball_97 |
 | Swipe Football | swipe | 95% | sg_swipefootball_95 |
+| Chicken Fryer | swipe | 97% | sg_swipechicken_97 |
+| Chicken Fryer | swipe | 95% | sg_swipechicken_95 |
 
 **Game Type** is used to identify the game mechanics (e.g., `catch` or `swipe`). It is not the same as the Game ID or Game Name — multiple games with different names and IDs can share the same game type.
 
