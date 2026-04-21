@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.4.0
+
+- Add new game to the games list: `Chicken Fryer`.
+
 ## 1.3.1
 
 - no changes
