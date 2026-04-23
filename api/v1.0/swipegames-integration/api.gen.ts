@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.4.0
+ * OpenAPI spec version: 1.5.0
  */
 /**
  * Error code. Could be handled by client accordingly (with localized message and related action).
@@ -114,8 +114,10 @@ We support 2 decimal places for all fiat currencies.
    * @pattern ^(0|[1-9]\d*)(\.\d+)?$
    */
   amount: string;
-  /** Unique ID for the bet (internal) on Swipe Games' side.
-Could be used as idempotency key.
+  /** Globally unique identifier (UUID v4) for the bet transaction on Swipe Games' side.
+Must be used as an idempotency key on your side.
+Uniqueness is guaranteed by Swipe Games for a rolling 3-month window.
+For uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).
  */
   txID: string;
   /** Non unique ID for the round (internal) on Swipe Games' side.
@@ -171,8 +173,10 @@ export interface WinRequest {
    * @pattern ^(0|[1-9]\d*)(\.\d+)?$
    */
   amount: string;
-  /** Unique ID for the win (internal) on Swipe Games' side.
-Could be used as idempotency key.
+  /** Globally unique identifier (UUID v4) for the win transaction on Swipe Games' side.
+Must be used as an idempotency key on your side.
+Uniqueness is guaranteed by Swipe Games for a rolling 3-month window.
+For uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).
  */
   txID: string;
   /** Non unique ID for the round (internal) on Swipe Games' side.
@@ -203,8 +207,10 @@ export interface RefundRequest {
   /** The Game Session's ID (external). Provided by client via `Create New Game` call.
  */
   sessionID: string;
-  /** Unique ID for the refund (internal) on Swipe Games' side.
-Could be used as idempotency key.
+  /** Globally unique identifier (UUID v4) for the refund transaction on Swipe Games' side.
+Must be used as an idempotency key on your side.
+Uniqueness is guaranteed by Swipe Games for a rolling 3-month window.
+For uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).
  */
   txID: string;
   /** Original transaction ID (internal) on Swipe Games' side.
@@ -212,6 +218,11 @@ This is the ID of the transaction that should be refunded.
 In some cases this original transaction ID might be not recorded on your side (timeout, server side error, etc).
  */
   origTxID: string;
+  /** Non unique ID for the round (internal) on Swipe Games' side.
+Could be the same for different games.
+Added in version 1.5.0. This field is optional for backward compatibility.
+ */
+  roundID?: string;
   /**
    * The amount of the refund in currency **main** units (note: not cents).
 Currency selected by the client during the `Create New Game` call.

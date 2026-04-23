@@ -6,6 +6,12 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.5.0
+
+- Add optional `roundID` field to `RefundRequest` in the Integration Adapter API. This field identifies the game round associated with the refund and is optional for backward compatibility.
+- Clarify `txID` uniqueness guarantees across all Integration Adapter API endpoints (bet, win, refund). `txID` is a UUID v4 with a 3-month rolling uniqueness window; use composite key (`txID` + `roundID`) for longer guarantees.
+- Remove BETA label from documentation. Add support contact email to the navigation header.
+
 ## 1.4.0
 
 - Add new game to the games list: `Chicken Fryer`.

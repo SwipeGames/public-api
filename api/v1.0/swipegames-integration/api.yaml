@@ -6,7 +6,7 @@ info:
     It is used to make reverse calls to integrations working through Public API.
     Please implement this API on your side to support Swipe Games Public API.
 
-  version: 1.4.0
+  version: 1.5.0
 
 paths:
   /balance:
@@ -339,8 +339,10 @@ components:
           example: "100.10"
         txID:
           description: |
-            Unique ID for the bet (internal) on Swipe Games' side.
-            Could be used as idempotency key.
+            Globally unique identifier (UUID v4) for the bet transaction on Swipe Games' side.
+            Must be used as an idempotency key on your side.
+            Uniqueness is guaranteed by Swipe Games for a rolling 3-month window.
+            For uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).
           type: string
           format: uuid
           x-go-type: uuid.UUID
@@ -418,8 +420,10 @@ components:
           example: "100.10"
         txID:
           description: |
-            Unique ID for the win (internal) on Swipe Games' side.
-            Could be used as idempotency key.
+            Globally unique identifier (UUID v4) for the win transaction on Swipe Games' side.
+            Must be used as an idempotency key on your side.
+            Uniqueness is guaranteed by Swipe Games for a rolling 3-month window.
+            For uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).
           type: string
           format: uuid
           x-go-type: uuid.UUID
@@ -480,8 +484,10 @@ components:
           example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         txID:
           description: |
-            Unique ID for the refund (internal) on Swipe Games' side.
-            Could be used as idempotency key.
+            Globally unique identifier (UUID v4) for the refund transaction on Swipe Games' side.
+            Must be used as an idempotency key on your side.
+            Uniqueness is guaranteed by Swipe Games for a rolling 3-month window.
+            For uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).
           type: string
           format: uuid
           x-go-type: uuid.UUID
@@ -501,6 +507,18 @@ components:
             name: uuid
             path: github.com/google/uuid
           example: "c27ccade-5a45-4157-a85f-7d023a689ea5"
+        roundID:
+          description: |
+            Non unique ID for the round (internal) on Swipe Games' side.
+            Could be the same for different games.
+            Added in version 1.5.0. This field is optional for backward compatibility.
+          type: string
+          format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
+          example: "b78e42f8-2041-482d-9c4b-f2ca79fc75e3"
         amount:
           description: |
             The amount of the refund in currency **main** units (note: not cents).
