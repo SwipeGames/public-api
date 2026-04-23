@@ -6,7 +6,7 @@ import type { Config } from "@docusaurus/types";
 import type * as Plugin from "@docusaurus/types/src/plugin";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 
-const API_VERSION = "1.4.0";
+const API_VERSION = "1.5.0";
 
 const config: Config = {
   title: "Swipe Games",
@@ -60,6 +60,11 @@ const config: Config = {
         src: "img/logo.svg",
       },
       items: [
+        {
+          href: "mailto:tech@swipegames.io",
+          label: "Contact Us",
+          position: "right",
+        },
         {
           href: "https://github.com/swipegames/public-api",
           label: "GitHub",

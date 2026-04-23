@@ -333,13 +333,17 @@ Every game round usually consists of the sequence of actions:
 
 Every round has a single `RoundID` identifier, which is used to identify the round across all actions. `RoundID` could be not unique across different games, so you should use it only in the context of the game.
 
-Every action request contains the `TxID` - transaction ID, which is used to identify the specific action in the round, and also related
-to money processing. We requre integrations to send us back the `TxID` in the response, which is `transaction ID` on the integration side, related to this action/ transaction. `TxID` could be used as idempotency key, means if we retry the same `win` it will contain the same `TxID` as previous request, so you can safely ignore it if already processed this transaction. Please notice in this case you have to reply with 200(OK) status code, so we know that you processed the request and don't retry it again.
+Every action request contains a `txID` — a globally unique transaction identifier (UUID v4) generated on Swipe Games' side. It identifies the specific action (bet, win, or refund) within the round and is directly tied to money processing. We require integrations to send back their own `txID` in the response, representing the corresponding transaction ID on the integration side, for tracking and debugging purposes.
 
-All requests from our platform to your should be processed in an idempotent way.
-This means that if we send the same request multiple times, the result should be the same as if we sent the request only once.
-This is crucial to avoid any issues within our integration in case of network problems or other issues.
-We use `txID` field to ensure idempotency.
+`txID` must be used as an idempotency key on your side. If we retry a request (e.g., a `win` or `refund`), it will contain the same `txID` as the previous attempt. If you have already processed this transaction, return the same successful response with a 200 (OK) status code so we stop retrying.
+
+**Uniqueness guarantees:**
+
+- Swipe Games generates `txID` as UUID v4, which provides a near-zero probability of collision.
+- We enforce uniqueness internally for a **rolling 3-month window** via a unique constraint.
+- If you require a uniqueness guarantee beyond 3 months, use the **composite key (`txID` + `roundID`)** for all bet, win, and refund transactions on your side.
+
+All requests from our platform must be processed in an idempotent way. This means that if we send the same request multiple times, the result should be the same as if we sent the request only once. This is crucial to avoid any issues within our integration in case of network problems or other issues.
 
 ### Retry and refund policies
 
@@ -437,7 +441,7 @@ sequenceDiagram
     Swipe Games-->>Player: Show error to player
 
     loop Retry until 200 OK
-        Swipe Games->>Integrator: POST /refund (sessionID, txID, origTxID, amount)
+        Swipe Games->>Integrator: POST /refund (sessionID, txID, origTxID, roundID, amount)
         Note over Integrator: Refund balance
         Integrator-->>Swipe Games: 200 OK (balance, txID)
     end

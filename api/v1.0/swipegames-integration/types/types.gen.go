@@ -129,8 +129,10 @@ type BetRequest struct {
 	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
 	SessionID string `json:"sessionID"`
 
-	// TxID Unique ID for the bet (internal) on Swipe Games' side.
-	// Could be used as idempotency key.
+	// TxID Globally unique identifier (UUID v4) for the bet transaction on Swipe Games' side.
+	// Must be used as an idempotency key on your side.
+	// Uniqueness is guaranteed by Swipe Games for a rolling 3-month window.
+	// For uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).
 	TxID uuid.UUID `json:"txID"`
 
 	// Type The type of the bet.
@@ -206,11 +208,18 @@ type RefundRequest struct {
 	// In some cases this original transaction ID might be not recorded on your side (timeout, server side error, etc).
 	OrigTxID uuid.UUID `json:"origTxID"`
 
+	// RoundID Non unique ID for the round (internal) on Swipe Games' side.
+	// Could be the same for different games.
+	// Added in version 1.5.0. This field is optional for backward compatibility.
+	RoundID *uuid.UUID `json:"roundID,omitempty"`
+
 	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
 	SessionID string `json:"sessionID"`
 
-	// TxID Unique ID for the refund (internal) on Swipe Games' side.
-	// Could be used as idempotency key.
+	// TxID Globally unique identifier (UUID v4) for the refund transaction on Swipe Games' side.
+	// Must be used as an idempotency key on your side.
+	// Uniqueness is guaranteed by Swipe Games for a rolling 3-month window.
+	// For uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).
 	TxID uuid.UUID `json:"txID"`
 }
 
@@ -243,8 +252,10 @@ type WinRequest struct {
 	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
 	SessionID string `json:"sessionID"`
 
-	// TxID Unique ID for the win (internal) on Swipe Games' side.
-	// Could be used as idempotency key.
+	// TxID Globally unique identifier (UUID v4) for the win transaction on Swipe Games' side.
+	// Must be used as an idempotency key on your side.
+	// Uniqueness is guaranteed by Swipe Games for a rolling 3-month window.
+	// For uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).
 	TxID uuid.UUID `json:"txID"`
 
 	// Type The type of the win.
