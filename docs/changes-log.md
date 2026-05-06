@@ -6,6 +6,14 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.6.0
+
+- Add optional `excludeBetLines` query parameter to `GET /games` (Core API). When set to `true`, the `betLines` field is omitted from each game in the response, significantly reducing payload size for clients that don't need free-rounds bet-lines data.
+
+## 1.5.1
+
+- Document `gzip` response compression support on `GET /games` (Core API). The endpoint accepts an optional `Accept-Encoding: gzip` header — strongly recommended because the response can exceed 1 MB and the request may take 10–20 seconds. No API behavior changes; documentation only.
+
 ## 1.5.0
 
 - Add optional `roundID` field to `RefundRequest` in the Integration Adapter API. This field identifies the game round associated with the refund and is optional for backward compatibility.

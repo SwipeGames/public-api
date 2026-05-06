@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.5.0
+ * OpenAPI spec version: 1.6.0
  */
 import * as zod from 'zod';
 
@@ -97,16 +97,25 @@ export const DeleteFreeRoundsBody = zod.object({
 
 
 /**
- * Get information about supported games
+ * Get information about supported games.
+
+**Response size and latency**: the response payload can be quite large (over 1 MB) and the request may take 10–20 seconds to complete. Plan client timeouts accordingly.
+
+**Compression**: the endpoint supports `gzip` response compression. We strongly recommend sending `Accept-Encoding: gzip` to significantly reduce payload size and transfer time.
+
  * @summary Get Games' Information
  */
+export const getGamesQueryExcludeBetLinesDefault = false;
+
 export const GetGamesQueryParams = zod.object({
   "cID": zod.string().uuid().describe('Client\'s ID'),
-  "extCID": zod.string().describe('External Client\'s ID')
+  "extCID": zod.string().describe('External Client\'s ID'),
+  "excludeBetLines": zod.boolean().default(getGamesQueryExcludeBetLinesDefault).describe('When `true`, the `betLines` field is omitted from each game in the response.\nBet lines data is only relevant for free rounds campaigns — exclude it to\nsignificantly reduce payload size if you don\'t need it.\nDefaults to `false`.\n')
 })
 
 export const GetGamesHeader = zod.object({
-  "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Authentication](\/authn) for more details)')
+  "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Authentication](\/authn) for more details)'),
+  "Accept-Encoding": zod.enum(['gzip']).optional().describe('Optional. Set to `gzip` to receive a gzip-compressed response.\nRecommended for this endpoint because the response can exceed 1 MB.\n')
 })
 
 export const GetGamesResponseItem = zod.object({
