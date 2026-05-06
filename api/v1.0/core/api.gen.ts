@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.5.0
+ * OpenAPI spec version: 1.6.0
  */
 /**
  * Platform type where the game can be launched
@@ -213,6 +213,14 @@ cID: string;
  * External Client's ID
  */
 extCID: string;
+/**
+ * When `true`, the `betLines` field is omitted from each game in the response.
+Bet lines data is only relevant for free rounds campaigns — exclude it to
+significantly reduce payload size if you don't need it.
+Defaults to `false`.
+
+ */
+excludeBetLines?: boolean;
 };
 
 /**
@@ -398,7 +406,12 @@ export const deleteFreeRounds = async (deleteFreeRoundsRequest: DeleteFreeRounds
 
 
 /**
- * Get information about supported games
+ * Get information about supported games.
+
+**Response size and latency**: the response payload can be quite large (over 1 MB) and the request may take 10–20 seconds to complete. Plan client timeouts accordingly.
+
+**Compression**: the endpoint supports `gzip` response compression. We strongly recommend sending `Accept-Encoding: gzip` to significantly reduce payload size and transfer time.
+
  * @summary Get Games' Information
  */
 export type getGamesResponse200 = {

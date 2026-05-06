@@ -9,9 +9,15 @@ slug: /games
 Notice all game IDs here start with `sg_` prefix which stands for `Swipe Games` (default).  
 
 The list below represents default game examples.
-To retrieve the actual list of games available for your integration, you should always use the API endpoint below:
+To retrieve the actual list of games available for your integration, you should always use the [Get Games](/core/get-games-information) API endpoint.
 
-:point_right: https://swipegames.github.io/public-api/core/get-games-information
+:::caution Response size and latency
+
+The `GET /games` response can be quite large — **over 1 MB** — and the request may take **10–20 seconds** to complete. Make sure your client timeouts are set accordingly.
+
+To significantly reduce payload size and transfer time, send the `Accept-Encoding: gzip` header. The endpoint supports gzip response compression and we strongly recommend using it.
+
+:::
 
 The available game IDs are:  
 
