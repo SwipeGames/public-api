@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.6.2
+
+- Remove hardcoded game ID table from the Games page. Available games are configured per integration — use the [Get Games](/core/get-games-information) API endpoint to retrieve the list for your specific integration.
+
 ## 1.6.1
 
 - Fix game name typo in the games list: `Tripple Nipple` → `Triple Nipple`.
