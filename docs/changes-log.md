@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.6.1
+
+- Fix game name typo in the games list: `Tripple Nipple` → `Triple Nipple`.
+
 ## 1.6.0
 
 - Add optional `excludeBetLines` query parameter to `GET /games` (Core API). When set to `true`, the `betLines` field is omitted from each game in the response, significantly reducing payload size for clients that don't need free-rounds bet-lines data.
@@ -78,7 +82,7 @@ slug: /changes-log
 
 ## 1.2.15
 
-- Add new game `Tripple Nipple` to the games list.
+- Add new game `Triple Nipple` to the games list.
 
 ## 1.2.14
 
