@@ -31,8 +31,8 @@ The available game IDs are:
 | Tuna Bomber   | catch | 95% | sg_catchtuna_95 |
 | Smash or Cash | swipe | 97% | sg_swipe_97 |
 | Smash or Cash | swipe | 95% | sg_swipe_95 |
-| Tripple Nipple | swipe | 97% | sg_swipeaigirls_97 |
-| Tripple Nipple | swipe | 95% | sg_swipeaigirls_95 |
+| Triple Nipple | swipe | 97% | sg_swipeaigirls_97 |
+| Triple Nipple | swipe | 95% | sg_swipeaigirls_95 |
 | Swipe Football | swipe | 97% | sg_swipefootball_97 |
 | Swipe Football | swipe | 95% | sg_swipefootball_95 |
 | Chicken Fryer | swipe | 97% | sg_swipechicken_97 |
