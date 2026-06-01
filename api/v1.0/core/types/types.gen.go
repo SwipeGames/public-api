@@ -242,6 +242,9 @@ type GameInfoImages struct {
 	// Horizontal Path to horizontal image. 4:3 aspect.
 	Horizontal string `json:"horizontal"`
 
+	// Horizontal337x181 Path to horizontal image. 337:181 aspect.
+	Horizontal337x181 *string `json:"horizontal_337x181,omitempty"`
+
 	// Square Path to square image. 1:1 aspect.
 	Square string `json:"square"`
 

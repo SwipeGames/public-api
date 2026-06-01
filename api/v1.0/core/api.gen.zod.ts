@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.6.1
+ * OpenAPI spec version: 1.7.0
  */
 import * as zod from 'zod';
 
@@ -128,6 +128,7 @@ export const GetGamesResponseItem = zod.object({
   "baseURL": zod.string().describe('Image\'s base URL'),
   "square": zod.string().describe('Path to square image. 1:1 aspect.'),
   "horizontal": zod.string().describe('Path to horizontal image. 4:3 aspect.'),
+  "horizontal_337x181": zod.string().optional().describe('Path to horizontal image. 337:181 aspect.'),
   "widescreen": zod.string().describe('Path to widescreen image. 16:9 aspect.'),
   "vertical": zod.string().describe('Path to vertical image. 3:4 aspect.')
 }).describe('Image URLs for the game'),
