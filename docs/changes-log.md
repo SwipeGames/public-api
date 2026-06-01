@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.7.0
+
+- Add optional `horizontal_337x181` image (337:181 aspect) to `GameInfoImages` in the [Get Games](/core/get-games-information) response (Core API). Backward compatible — the field is optional.
+
 ## 1.6.2
 
 - Remove hardcoded game ID table from the Games page. Available games are configured per integration — use the [Get Games](/core/get-games-information) API endpoint to retrieve the list for your specific integration.
