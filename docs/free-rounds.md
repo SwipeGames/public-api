@@ -25,6 +25,7 @@ Free Rounds duration should not exceed 30 days (you can create infinite free rou
 
 Before setting up Free Rounds you can share with us global `Bet Lines` configuration, per `game` or per `currency` - we will setup them for you and you can use
 then to issue Free Rounds. By default we setup initial configuration which is OK for most use cases.
+You only need to provide values in USD — all other currencies are automatically converted using daily exchange rates.
 More information about Bet Lines you can find in related section:
 [Bet Lines](/free-rounds-bet-lines).
 
