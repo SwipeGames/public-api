@@ -36,7 +36,7 @@ valid    = constantTimeEquals(expected, header["X-REQUEST-SIGN"])
 **GET `/balance`** — no body. Build canonical JSON from the query params (keys sorted, no whitespace), then sign that string:
 
 ```
-payload  = canonicalJSON({ ...queryParams })   // e.g. {"cID":"..","extCID":"..","sessionID":".."}
+payload  = canonicalJSON({ ...queryParams })   // build from ALL params received; the spec documents {"sessionID":".."}
 expected = hex( HMAC_SHA256(payload, integrationApiKey) )
 ```
 

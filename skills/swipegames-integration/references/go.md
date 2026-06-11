@@ -72,7 +72,7 @@ func handleBet(w http.ResponseWriter, r *http.Request) {
 	}
 	// idempotency: if bet.TxID is already processed, return the same 200 response
 	if !hasFunds(bet.SessionID, bet.Amount) {
-		writeJSON(w, 402, swipegames.NewErrorResponse(swipegames.ErrorResponseOpts{
+		writeJSON(w, 400, swipegames.NewErrorResponse(swipegames.ErrorResponseOpts{
 			Message: "Not enough balance", Code: swipegames.ErrorCodeInsufficientFunds,
 		}))
 		return

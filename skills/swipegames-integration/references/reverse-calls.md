@@ -41,7 +41,7 @@ There is a hard **5-second** limit on every reverse call. Keep handlers fast; de
 
 ## Free rounds
 
-During a free-rounds campaign, bet/win requests arrive with `type: "free"` and an `frID`. Handle per the free-rounds docs (typically: do not debit the player's real wallet on a free bet; credit wins normally). If you do not run free-rounds campaigns, treat `type` as always `"real"`.
+During a free-rounds campaign, bet/win requests arrive with `type: "free"` and an `frID`. Handle per the free-rounds docs (typically: do not debit the player's real wallet on a free bet; credit wins normally). If you do not run free-rounds campaigns, every request will carry `type: "regular"` (the only non-`free` value).
 
 Details: https://swipegames.github.io/public-api/free-rounds
 

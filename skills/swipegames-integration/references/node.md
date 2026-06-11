@@ -58,7 +58,7 @@ const bet = client.parseAndVerifyBetRequest(rawBody, req.headers["x-request-sign
 if (!bet.ok) return res.status(401).json(bet.error);
 // idempotency: if bet.body.txID already processed, return the same 200 response
 if (!hasFunds(bet.body.sessionID, bet.body.amount)) {
-  return res.status(402).json(createErrorResponse({ message: "Not enough balance", code: "insufficient_funds" }));
+  return res.status(400).json(createErrorResponse({ message: "Not enough balance", code: "insufficient_funds" }));
 }
 const balance = deductFromWallet(bet.body.sessionID, bet.body.amount);
 return res.json(createBetResponse(balance, yourTxID));

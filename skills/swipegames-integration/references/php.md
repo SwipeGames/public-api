@@ -63,7 +63,7 @@ if (!$result->ok) {
 $bet = $result->body; // BetRequest
 // idempotency: if $bet->getTxId() is already processed, return the same 200 response
 if (!hasFunds($bet->getSessionId(), $bet->getAmount())) {
-    http_response_code(402);
+    http_response_code(400);
     echo json_encode(ResponseBuilder::errorResponse(
         message: 'Not enough balance',
         code: 'insufficient_funds',

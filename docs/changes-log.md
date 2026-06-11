@@ -80,7 +80,7 @@ slug: /changes-log
 
 ## 1.2.19
 
-- Add [Integration SDKs](https://swipegames.github.io/public-api/tools) page to the documentation.
+- Add [Integration SDKs](https://swipegames.github.io/public-api/sdks) page to the documentation.
 
 ## 1.2.18
 
