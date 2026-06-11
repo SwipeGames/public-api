@@ -38,7 +38,7 @@ const sidebars: SidebarsConfig = {
       },
       items: [require("./docs/swipegames-integration/sidebar.ts")],
     },
-    "sdks",
+    "tools",
     "changes-log",
   ],
 };
