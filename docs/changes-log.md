@@ -6,11 +6,15 @@ slug: /changes-log
 
 # Changes Log
 
-## 1.7.1
+## 1.7.2
 
 - Publish the **Swipe Games Integration Skill** — an [Agent Skill](https://agentskills.io) that teaches an AI coding agent the whole integration (Core API + the four signed reverse calls), covering the official Node, Go, and PHP SDKs plus working directly against the HTTP API for any other language. Install with `npx skills add swipegames/public-api`.
 - **Correction:** Integration Adapter `amount`/`balance` fields are **decimal strings in the currency's main unit** (e.g. `"0.90"` = €0.90), **not** the smallest unit. The OpenAPI spec was always correct; this fixes the AI-integration guidance (skill + prompts) that previously described them as smallest-unit (`"1000"`). If you integrated against the old wording, re-check your money handling.
 - Rename the [Integration Tools](/tools) page (formerly "Integration SDKs", at `/sdks`) and reframe it so the Integration Skill is the recommended path, alongside the official SDKs and per-language AI prompts (now including a "No SDK / other language" prompt). No API changes.
+
+## 1.7.1
+
+- no changes
 
 ## 1.7.0
 

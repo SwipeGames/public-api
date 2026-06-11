@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.7.1
+ * OpenAPI spec version: 1.7.2
  */
 /**
  * Platform type where the game can be launched
@@ -218,7 +218,8 @@ extCID: string;
 /**
  * When `true`, the `betLines` field is omitted from each game in the response.
 Bet lines data is only relevant for free rounds campaigns — exclude it to
-significantly reduce payload size if you don't need it.
+significantly reduce payload size if you don't need it. In the response flag `hasFreeSpins`
+is always set to `false`` when `excludeBetLines` is `true`.
 Defaults to `false`.
 
  */

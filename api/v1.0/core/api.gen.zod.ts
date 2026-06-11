@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.7.1
+ * OpenAPI spec version: 1.7.2
  */
 import * as zod from 'zod';
 
@@ -110,7 +110,7 @@ export const getGamesQueryExcludeBetLinesDefault = false;
 export const GetGamesQueryParams = zod.object({
   "cID": zod.string().uuid().describe('Client\'s ID'),
   "extCID": zod.string().describe('External Client\'s ID'),
-  "excludeBetLines": zod.boolean().default(getGamesQueryExcludeBetLinesDefault).describe('When `true`, the `betLines` field is omitted from each game in the response.\nBet lines data is only relevant for free rounds campaigns — exclude it to\nsignificantly reduce payload size if you don\'t need it.\nDefaults to `false`.\n')
+  "excludeBetLines": zod.boolean().default(getGamesQueryExcludeBetLinesDefault).describe('When `true`, the `betLines` field is omitted from each game in the response.\nBet lines data is only relevant for free rounds campaigns — exclude it to\nsignificantly reduce payload size if you don\'t need it. In the response flag `hasFreeSpins`\nis always set to `false`` when `excludeBetLines` is `true`.\nDefaults to `false`.\n')
 })
 
 export const GetGamesHeader = zod.object({

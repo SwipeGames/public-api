@@ -301,7 +301,8 @@ type GetGamesParams struct {
 
 	// ExcludeBetLines When `true`, the `betLines` field is omitted from each game in the response.
 	// Bet lines data is only relevant for free rounds campaigns — exclude it to
-	// significantly reduce payload size if you don't need it.
+	// significantly reduce payload size if you don't need it. In the response flag `hasFreeSpins`
+	// is always set to `false`` when `excludeBetLines` is `true`.
 	// Defaults to `false`.
 	ExcludeBetLines *bool `form:"excludeBetLines,omitempty" json:"excludeBetLines,omitempty"`
 
