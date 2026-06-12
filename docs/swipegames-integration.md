@@ -311,7 +311,7 @@ $sessionID = $_GET['sessionID'];
 </TabItem>
 </Tabs>
 
-> **Tip:** If you're using one of our [Integration SDKs](/sdks), signature verification is handled automatically by the `parseAndVerify*` methods — you don't need to implement it manually.
+> **Tip:** If you're using one of our [Integration SDKs](/tools), signature verification is handled automatically by the `parseAndVerify*` methods — you don't need to implement it manually.
 
 ### Please whitelist our IP addresses to allow requests from our servers to your API.
 

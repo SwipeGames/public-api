@@ -316,7 +316,7 @@ type GetGamesParams struct {
 	// ExcludeBetLines When `true`, the `betLines` field is omitted from each game in the response.
 	// Bet lines data is only relevant for free rounds campaigns — exclude it to
 	// significantly reduce payload size if you don't need it. In the response flag `hasFreeSpins`
-	// is always set to `false`` when `excludeBetLines` is `true`.
+	// is always set to `false` when `excludeBetLines` is `true`.
 	// Defaults to `false`.
 	ExcludeBetLines *bool `form:"excludeBetLines,omitempty" json:"excludeBetLines,omitempty"`
 
@@ -1479,27 +1479,27 @@ var swaggerSpec = []string{
 	"699xzW9qu20U27GrDnsttWzzkM606Eng0yQsHuDpANOmctpYuN4VqmbldWeolbP6YHLjUC6q4n09NbZR",
 	"wlMatsJHO6ywrFiwcNebSc650ua9rRh+e1odREw92zpTW71td6+9W2fsgZ0Fj2+2vNycb23awRfb3517",
 	"pi81o3RGtgp5dTrZKE9alQlMmtaZBhRJIbkwunXzQeBd3d/JmbDzilalWE91tWvPUwJa1ZwuGgUPVEXO",
-	"1LXjexi9iIakGVmgYAUPxsFeNIj2qhLPWkbfsRQKvAvTSnmF1MZ7iC6hrmaeLXlYI5GVXWHKtUGl7eNp",
-	"grmcUjU7VciyqTNz6bp7GtUtKiunay06Lb9z1q8o7FyK9tRpdZ1ps71pq5GqrUh4aof/VJtQTtQ4mFSu",
-	"ueh6cvyNIqpWv+QxdjQ+SchLpTaddpNVG60m0WwDeb0h6/SieSqYKRXCjkaET69Ks0BB8EMLr3b6rDQL",
-	"8dxakK0uqiKQUlVOhBbIEtteq8ry/wrPXv/Hxevzj+H55O37oG3LLjt2kOSz+yu3GLU5ksnSQYEwKOz5",
-	"2qtvjqv+X7UUqxuSj2GfdwJsPcivkplMlk0bQ6Owqv/07+cf3sMxE9LVwm+kymvt/IX4CeP6XUhw+XxD",
-	"cuvWDratMe8OBt9KxCo4eGSUN+Rio8HwD9u62y/xbPmLkiJt2ZlUFpJu0Aaf/T9QC4+ycu4c2HUKZGyz",
-	"Vtfg02WeM4o5VdO2wQhCMpaSBwXOzy2UBVf0UbtadhCUofGE0GMmYsz6ri8KeM+1ISf3wegKMWL7kWeR",
-	"SCEpVY0Sza2aAhWXSc+NOex1G42XgmUZTLkICyVThVpPvfefSPtclJj0YFYaENKK71tpYapu6nUhaL3t",
-	"+y8EagxzW0f8uwGh7xwkRoPRP4+VNx63tP1L1339LjGrAzA+XGnBWKsLGFx96W1JoFowuIXeZgLyL9/f",
-	"Gpq/Y9//RlL+QDnIaHD4J8MLyxSyZOlyA/2950VfBTCUJ9ny0Y66fX9a8xZN54882EyWZv1aVHQpLsVP",
-	"P9VSgOa/oq3EMmbnkT/9NK7uuFYLCrbMJEvqFsXnkhuEjKkUYUeStEP4+eh5daesuRsLOVuCYTcIw8Hf",
-	"//a/uwPQGEsSlApImReEsBGcZpSh2ZkvGJ6jLI0GFsdSJVyk2bLi9ljmhXIXLGr+6gp7NUmYpr/yYrpi",
-	"PF59ZK9kaEPGmy1BYSzzHEVCmED7wPRVHGNhwtcilvRgDI4W1ZM8FXzOYyaM/TQp45VOGuUZxYSeUzXK",
-	"/XXlWzS2dP8RAb23zuSHaiQRwTnajsC0UZfCGPktArMaDOszwKQ5l+hSnNUH0J7YNQc6w5jZy0xtKyTr",
-	"q+6qk72t33qhzbZJvna2QVvUZjJM31/1Hhe9dT+h+xdj+wN8ORoMQtw9nIWjYTIK2YvhQTgaHRzs749G",
-	"g4G9YmcZ/FyiWq74c5P07cfxZ97XsDSqj44nJ8GmQnw3Nx64D+pTQHNR6Mkm2WWs+n6Tt18WKGBKtKbu",
-	"svK0nipPYc4xs3fNZc6NqS/JIosX1TU50THA6FIcNfPmhBlmPxUWEjK8ZdWfMXo7evD3v/0fGW9WJvZS",
-	"mJGX4nFY4e07eYIMn5sIJl22YJ6xFKbtodD0UnANLLtjSw268k97YXs6dffuphUvR40yuK7UFF2K6gKp",
-	"bn235m3ucPwn2SHccbXE0Q3G7vL4xnDX5Y3fKK3qNvt/jFzqn1iqua7y912bUXbj7oLDZJXktNKlZgEl",
-	"S/Y+JxH1Bdlzw9K6Cx30glJlrdmmNizlIo3qoWs0WBt1soL3b4ceuDlVMindFZEttAslkxXh4RbCV1/+",
-	"PwAA//8=",
+	"1LXjexi9iHZJM7JAwQoejIO9aBDtVSWetYy+YykUeBemlfIKqY33EF1CXc08W/KwRiIru8KUa4NK28fT",
+	"BHM5pWp2qpBlU2fm0nX3NKpbVFZO11p0Wn7nrF9R2LkU7anT6jrTZnvTViNVW5Hw1A7/qTahnKhxMKlc",
+	"c9H15PgbRVStfslj7Gh8kpCXSm067SarNlpNotkG8npD1ulF81QwUyqEHY0In16VZoGC4IcWXu30WWkW",
+	"4rm1IFtdVEUgpaqcCC2QJba9VpXl/xWevf6Pi9fnH8Pzydv3QduWXXbsIMln91duMWpzJJOlgwJhUNjz",
+	"tVffHFf9v2opVjckH8M+7wTYepBfJTOZLJs2hkZhVf/p388/vIdjJqSrhd9Ildfa+QvxE8b1u5Dg8vmG",
+	"5NatHWxbY94dDL6ViFVw8Mgob8jFRoPhH7Z1t1/i2fIXJUXasjOpLCTdoA0++3+gFh5l5dw5sOsUyNhm",
+	"ra7Bp8s8ZxRzqqZtgxGEZCwlDwqcn1soC67oo3a17CAoQ+MJocdMxJj1XV8U8J5rQ07ug9EVYsT2I88i",
+	"kUJSqholmls1BSouk54bc9jrNhovBcsymHIRFkqmCrWeeu8/kfa5KDHpwaw0IKQV37fSwlTd1OtC0Hrb",
+	"918I1Bjmto74dwNC3zlIjAajfx4rbzxuafuXrvv6XWJWB2B8uNKCsVYXMLj60tuSQLVgcAu9zQTkX76/",
+	"NTR/x77/jaT8gXKQ0eDwT4YXlilkydLlBvp7z4u+CmAoT7Llox11+/605i2azh95sJkszfq1qOhSXIqf",
+	"fqqlAM1/RVuJZczOI3/6aVzdca0WFGyZSZbULYrPJTcIGVMpwo4kaYfw89Hz6k5ZczcWcrYEw24QhoO/",
+	"/+1/dwegMZYkKBWQMi8IYSM4zShDszNfMDxHWRoNLI6lSrhIs2XF7bHMC+UuWNT81RX2apIwTX/lxXTF",
+	"eLz6yF7J0IaMN1uCwljmOYqEMIH2gemrOMbChK9FLOnBGBwtqid5Kvicx0wY+2lSxiudNMozigk9p2qU",
+	"++vKt2hs6f4jAnpvnckP1UgignO0HYFpoy6FMfJbBGY1GNZngElzLtGlOKsPoD2xaw50hjGzl5naVkjW",
+	"V91VJ3tbv/VCm22TfO1sg7aozWSYvr/qPS56635C9y/G9gf4cjQYhLh7OAtHw2QUshfDg3A0OjjY3x+N",
+	"BgN7xc4y+LlEtVzx5ybp24/jz7yvYWlUHx1PToJNhfhubjxwH9SngOai0JNNsstY9f0mb78sUMCUaE3d",
+	"ZeVpPVWewpxjZu+ay5wbU1+SRRYvqmtyomOA0aU4aubNCTPMfiosJGR4y6o/Y/R29ODvf/s/Mt6sTOyl",
+	"MCMvxeOwwtt38gQZPjcRTLpswTxjKUzbQ6HppeAaWHbHlhp05Z/2wvbUXbubVqwcNbrgutJSdCmq+6O6",
+	"9dmas7mz8R9kh3DH0xJHNxi7u+Mbs12XNn6jrKrb6/8xUql/YqXmmsrfd2lGyY27Cg6TVY7TypaaBZQr",
+	"2eucRNQXY88NS+smdNALSpW1RpvasJSLNKpnrtFgbdLJCt6/HXrQ5lTJpHQ3RLbQLpRMVoSHWwhfffn/",
+	"AAAA//8=",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,
