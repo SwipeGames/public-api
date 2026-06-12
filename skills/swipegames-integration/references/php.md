@@ -6,6 +6,8 @@ Package `swipegames/integration-sdk`. Requires PHP >= 8.1 and Guzzle 7.x. Wire t
 composer require swipegames/integration-sdk
 ```
 
+This installs the **latest** SDK — there is a single live API version. If it's already installed, run `composer update swipegames/integration-sdk` to upgrade.
+
 ## Client
 
 Two keys: `apiKey` signs outbound Core API calls; `integrationApiKey` verifies inbound reverse calls.

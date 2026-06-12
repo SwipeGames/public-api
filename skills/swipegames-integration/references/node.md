@@ -3,8 +3,10 @@
 Package `@swipegames/integration-sdk`. **ESM only** (`"type": "module"`) — cannot be `require()`'d from CommonJS; use `import` or a dynamic `await import()`. Requires Node >= 18.
 
 ```bash
-npm install @swipegames/integration-sdk
+npm install @swipegames/integration-sdk@latest
 ```
+
+Always install the **latest** SDK — there is a single live API version. The same command upgrades an existing install.
 
 ## Client
 

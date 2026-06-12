@@ -3,8 +3,10 @@
 Package `github.com/swipegames/integration-sdk-go`. Requires Go >= 1.13. The reverse-call handlers are plain `net/http` — wire them into whatever router you use (`net/http`, chi, gin, Echo, ...).
 
 ```bash
-go get github.com/swipegames/integration-sdk-go
+go get github.com/swipegames/integration-sdk-go@latest
 ```
+
+Always pull the **latest** SDK — there is a single live API version. The same `@latest` upgrades an existing dependency.
 
 ## Client
 

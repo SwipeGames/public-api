@@ -20,7 +20,7 @@ Integrate Swipe Games with the help of an AI coding agent — install the skill 
 We recommend the **Swipe Games Integration Skill** — an [Agent Skill](https://agentskills.io) that teaches your AI coding agent the whole integration. Install it once and:
 
 - it **loads automatically** whenever you work on Swipe Games — no prompt to find or re-paste;
-- it **stays current** with the platform as the API evolves;
+- it **gets the tricky parts right** — request signing, `txID` idempotency, money-as-decimal-strings, and the retry/refund rules;
 - it **adapts to your project** — using our official SDK for Node, Go, or PHP, or working directly against the HTTP API for any other language (Python, Ruby, C#, Java, …).
 
 It wires up the Core API and the four signed reverse-call endpoints (`GET /balance`, `POST /bet`, `POST /win`, `POST /refund`) with correct signature verification, idempotency, and error handling. Install with:

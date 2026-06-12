@@ -53,9 +53,16 @@ If the project's purpose is unclear, ask before proceeding.
 - Run any added tests.
 - Surface any decisions or ambiguities for the human to resolve.
 
+## If the SDK or API doesn't match these instructions
+
+This skill is a fixed snapshot and can fall behind the live SDKs and API. If you hit a contradiction — a method or type named here doesn't exist in the installed SDK, signature verification keeps failing despite a correct implementation, the platform returns an error code not in `references/error-codes.md`, or a response shape differs — **stop and tell the user the skill may be out of date** instead of working around it or inventing names:
+
+> The installed Swipe Games skill doesn't match the current SDK/API (`<what differed>`). It may be stale — run `npx skills update` to get the latest, then I'll retry.
+
 ## Hard rules — never
 
 - **Never** roll your own signature verification when an SDK is available — use `parseAndVerify*`.
+- **Never** use an outdated SDK — there is a single live API version, so always install or upgrade to the **latest** SDK (the language reference has the command).
 - **Never** do floating-point math on money. Amounts and balances are **decimal strings in the currency's main unit** — *not* cents (e.g. `"0.90"` = €0.90, `"100.10"` = €100.10). Keep them as strings; if your wallet stores another unit (e.g. integer cents), convert at the boundary with integer/string arithmetic, never `parseFloat`/divide.
 - **Never** generate your own `txID` for a reverse call — the platform's `txID` is the idempotency key; return your own transaction id in the response body.
 - **Never** hardcode credentials.
