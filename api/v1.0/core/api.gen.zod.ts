@@ -110,7 +110,7 @@ export const getGamesQueryExcludeBetLinesDefault = false;
 export const GetGamesQueryParams = zod.object({
   "cID": zod.string().uuid().describe('Client\'s ID'),
   "extCID": zod.string().describe('External Client\'s ID'),
-  "excludeBetLines": zod.boolean().default(getGamesQueryExcludeBetLinesDefault).describe('When `true`, the `betLines` field is omitted from each game in the response.\nBet lines data is only relevant for free rounds campaigns — exclude it to\nsignificantly reduce payload size if you don\'t need it. In the response flag `hasFreeSpins`\nis always set to `false`` when `excludeBetLines` is `true`.\nDefaults to `false`.\n')
+  "excludeBetLines": zod.boolean().default(getGamesQueryExcludeBetLinesDefault).describe('When `true`, the `betLines` field is omitted from each game in the response.\nBet lines data is only relevant for free rounds campaigns — exclude it to\nsignificantly reduce payload size if you don\'t need it. In the response flag `hasFreeSpins`\nis always set to `false` when `excludeBetLines` is `true`.\nDefaults to `false`.\n')
 })
 
 export const GetGamesHeader = zod.object({

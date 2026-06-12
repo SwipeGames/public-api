@@ -316,7 +316,7 @@ type GetGamesParams struct {
 	// ExcludeBetLines When `true`, the `betLines` field is omitted from each game in the response.
 	// Bet lines data is only relevant for free rounds campaigns — exclude it to
 	// significantly reduce payload size if you don't need it. In the response flag `hasFreeSpins`
-	// is always set to `false`` when `excludeBetLines` is `true`.
+	// is always set to `false` when `excludeBetLines` is `true`.
 	// Defaults to `false`.
 	ExcludeBetLines *bool `form:"excludeBetLines,omitempty" json:"excludeBetLines,omitempty"`
 
@@ -1496,10 +1496,10 @@ var swaggerSpec = []string{
 	"V91VJ3tbv/VCm22TfO1sg7aozWSYvr/qPS56635C9y/G9gf4cjQYhLh7OAtHw2QUshfDg3A0OjjY3x+N",
 	"BgN7xc4y+LlEtVzx5ybp24/jz7yvYWlUHx1PToJNhfhubjxwH9SngOai0JNNsstY9f0mb78sUMCUaE3d",
 	"ZeVpPVWewpxjZu+ay5wbU1+SRRYvqmtyomOA0aU4aubNCTPMfiosJGR4y6o/Y/R29ODvf/s/Mt6sTOyl",
-	"MCMvxeOwwtt38gQZPjcRTLpswTxjKUzbQ6HppeAaWHbHlhp05Z/2wvZ06u7dTStejhplcF2pKboU1QVS",
-	"3fpuzdvc4fhPskO442qJoxuM3eXxjeGuyxu/UVrVbfb/GLnUP7FUc13l77s2o+zG3QWHySrJaaVLzQJK",
-	"lux9TiLqC7LnhqV1FzroBaXKWrNNbVjKRRrVQ9dosDbqZAXv3w49cHOqZFK6KyJbaBdKJivCwy2Er778",
-	"fwAAAP//",
+	"MCMvxeOwwtt38gQZPjcRTLpswTxjKUzbQ6HppeAaWHbHlhp05Z/2wvbUXbubVqwcNbrgutJSdCmq+6O6",
+	"9dmas7mz8R9kh3DH0xJHNxi7u+Mbs12XNn6jrKrb6/8xUql/YqXmmsrfd2lGyY27Cg6TVY7TypaaBZQr",
+	"2eucRNQXY88NS+smdNALSpW1RpvasJSLNKpnrtFgbdLJCt6/HXrQ5lTJpHQ3RLbQLpRMVoSHWwhfffn/",
+	"AAAA//8=",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,
