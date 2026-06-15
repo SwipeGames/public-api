@@ -2,10 +2,7 @@
 /node_modules
 /build
 
-# Ignore personal Claude Code settings, but keep team-shared config + hooks checked in
-.claude/*
-!.claude/settings.json
-!.claude/hooks/
+.claude/
 
 # Generated files
 .docusaurus

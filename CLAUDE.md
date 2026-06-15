@@ -61,10 +61,6 @@ Each spec is fully self-contained — no shared common.yaml. SDK consumers impor
 > 2. Replace the auto-inserted `- no changes` line for the new version in
 >    `docs/changes-log.md` with a short summary of the changes (leave
 >    `- no changes` only if nothing notable changed — e.g. like `1.7.1`).
->
-> A committed `Stop` hook (`.claude/hooks/check-version-bump.sh`) enforces step 1
-> locally — it blocks finishing a turn until the version is bumped (and is in
-> sync with the CI carve-out above).
 
 We use [semver](https://semver.org/) for both API and docs:
 
