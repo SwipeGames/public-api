@@ -36,8 +36,21 @@ jobs:
         shell: bash
         env:
           CURRENT: ${{ steps.current.outputs.current_version }}
+          BASE_REF: ${{ github.base_ref }}
         run: |
           set -euo pipefail
+
+          # Skip the version-bump requirement when the PR touches ONLY internal
+          # paths (CI config, agent config, repo-only meta files) that never reach
+          # a published artifact. Keep this pattern in sync with the INTERNAL_RE in
+          # .claude/hooks/check-version-bump.sh.
+          git fetch --quiet --no-tags origin "$BASE_REF"
+          CHANGED="$(git diff --name-only "origin/${BASE_REF}...HEAD" || true)"
+          RELEASE_CHANGED="$(printf '%s\n' "$CHANGED" | grep -vE '^(\.github/|\.claude/|\.gitignore$|CLAUDE\.md$)' | grep -vE '^[[:space:]]*$' || true)"
+          if [ -z "$RELEASE_CHANGED" ]; then
+            echo "Only internal files changed (.github/**, .claude/**, .gitignore, CLAUDE.md); skipping version-bump requirement."
+            exit 0
+          fi
 
           LATEST="$(git tag -l --sort=-v:refname | head -n 1)"
 
