@@ -48,6 +48,20 @@ Each spec is fully self-contained — no shared common.yaml. SDK consumers impor
 
 ## Versioning
 
+> **MANDATORY ON EVERY RELEASE PR — including agentic edits.** The PR CI
+> (`.github/workflows/pr.yml`) fails any PR to `main` whose `API_VERSION` is not
+> strictly higher than the latest released version — **unless** the PR touches
+> *only* repo-internal paths (`.github/**`, `.claude/**`, `.gitignore`,
+> `CLAUDE.md`), which are exempt.
+> Everything else (API specs, generated code, docs, packages, root files)
+> requires a bump. For such a PR:
+>
+> 1. Run `make bump-version v=x.y.z` (patch = bug fix / non-API change,
+>    minor = new backward-compatible API, major = breaking).
+> 2. Replace the auto-inserted `- no changes` line for the new version in
+>    `docs/changes-log.md` with a short summary of the changes (leave
+>    `- no changes` only if nothing notable changed — e.g. like `1.7.1`).
+
 We use [semver](https://semver.org/) for both API and docs:
 
 - **Major** — breaking changes
