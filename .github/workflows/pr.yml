@@ -42,8 +42,7 @@ jobs:
 
           # Skip the version-bump requirement when the PR touches ONLY internal
           # paths (CI config, agent config, repo-only meta files) that never reach
-          # a published artifact. Keep this pattern in sync with the INTERNAL_RE in
-          # .claude/hooks/check-version-bump.sh.
+          # a published artifact.
           git fetch --quiet --no-tags origin "$BASE_REF"
           CHANGED="$(git diff --name-only "origin/${BASE_REF}...HEAD" || true)"
           RELEASE_CHANGED="$(printf '%s\n' "$CHANGED" | grep -vE '^(\.github/|\.claude/|\.gitignore$|CLAUDE\.md$)' | grep -vE '^[[:space:]]*$' || true)"
