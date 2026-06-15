@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.7.2
+ * OpenAPI spec version: 1.7.3
  */
 import * as zod from 'zod';
 
@@ -18,7 +18,7 @@ so player's experience is not affected.
  * @summary Get balance
  */
 export const GetBalanceQueryParams = zod.object({
-  "sessionID": zod.string().describe('Session ID (external). Provided by client via `Create New Game` call.\nThis is your Session ID. We use it in all reverse calls to you.\n')
+  "sessionID": zod.string().describe('Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.\nWe store it and pass it back in all reverse calls to you.\n\nNote: this is NOT the `gsID` (Game Session ID) returned by `Create New Game`. `gsID` is Swipe Games\'s own identifier and is never sent in reverse calls.\n')
 })
 
 export const GetBalanceHeader = zod.object({
@@ -53,7 +53,7 @@ export const postBetBodyAmountRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
 
 export const PostBetBody = zod.object({
   "type": zod.enum(['regular', 'free']).describe('The type of the bet.\n- `regular` type means regular bet,\n- `free` type means free bet (see Free Rounds section).\n'),
-  "sessionID": zod.string().describe('The Game Session\'s ID (external). Provided by client via `Create New Game` call.\n'),
+  "sessionID": zod.string().describe('Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.\nIt is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games\'s own identifier and is never sent in reverse calls.\n'),
   "amount": zod.string().regex(postBetBodyAmountRegExp).describe('The amount of the bet in currency \*\*main\*\* units (\*\*not cents\*\*).\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n'),
   "txID": zod.string().uuid().describe('Globally unique identifier (UUID v4) for the bet transaction on Swipe Games\' side.\nMust be used as an idempotency key on your side.\nUniqueness is guaranteed by Swipe Games for a rolling 3-month window.\nFor uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).\n'),
   "roundID": zod.string().uuid().describe('Non unique ID for the round (internal) on Swipe Games\' side.\nCould be the same for different games.\n'),
@@ -88,7 +88,7 @@ export const postWinBodyAmountRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
 
 export const PostWinBody = zod.object({
   "type": zod.enum(['regular', 'free']).describe('The type of the win.\n- `regular` type means regular bet,\n- `free` type means free bet (see Free Rounds section).\n'),
-  "sessionID": zod.string().describe('The Game Session\'s ID (external). Provided by client via `Create New Game` call.\n'),
+  "sessionID": zod.string().describe('Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.\nIt is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games\'s own identifier and is never sent in reverse calls.\n'),
   "amount": zod.string().regex(postWinBodyAmountRegExp).describe('The amount of the bet in currency \*\*main\*\* units (note: not cents). Currency selected by the client during the\n`Create New Game` call. We support 2 decimal places for all fiat currencies.\n'),
   "txID": zod.string().uuid().describe('Globally unique identifier (UUID v4) for the win transaction on Swipe Games\' side.\nMust be used as an idempotency key on your side.\nUniqueness is guaranteed by Swipe Games for a rolling 3-month window.\nFor uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).\n'),
   "roundID": zod.string().uuid().describe('Non unique ID for the round (internal) on Swipe Games\' side.\nCould be the same for different games.\n'),
@@ -121,7 +121,7 @@ export const postRefundBodyAmountRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$
 
 
 export const PostRefundBody = zod.object({
-  "sessionID": zod.string().describe('The Game Session\'s ID (external). Provided by client via `Create New Game` call.\n'),
+  "sessionID": zod.string().describe('Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.\nIt is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games\'s own identifier and is never sent in reverse calls.\n'),
   "txID": zod.string().uuid().describe('Globally unique identifier (UUID v4) for the refund transaction on Swipe Games\' side.\nMust be used as an idempotency key on your side.\nUniqueness is guaranteed by Swipe Games for a rolling 3-month window.\nFor uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).\n'),
   "origTxID": zod.string().uuid().describe('Original transaction ID (internal) on Swipe Games\' side.\nThis is the ID of the transaction that should be refunded.\nIn some cases this original transaction ID might be not recorded on your side (timeout, server side error, etc).\n'),
   "roundID": zod.string().uuid().optional().describe('Non unique ID for the round (internal) on Swipe Games\' side.\nCould be the same for different games.\nAdded in version 1.5.0. This field is optional for backward compatibility.\n'),

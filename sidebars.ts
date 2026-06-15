@@ -5,7 +5,6 @@ const sidebars: SidebarsConfig = {
   main: [
     "getting-started",
     "terms",
-    "game-session",
     "games",
     "currencies",
     "locales",
