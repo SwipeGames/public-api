@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.7.2
+ * OpenAPI spec version: 1.7.3
  */
 /**
  * Error code. Could be handled by client accordingly (with localized message and related action).
@@ -103,7 +103,8 @@ export interface BetRequest {
 - `free` type means free bet (see Free Rounds section).
  */
   type: BetRequestType;
-  /** The Game Session's ID (external). Provided by client via `Create New Game` call.
+  /** Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
  */
   sessionID: string;
   /**
@@ -163,7 +164,8 @@ export interface WinRequest {
 - `free` type means free bet (see Free Rounds section).
  */
   type: WinRequestType;
-  /** The Game Session's ID (external). Provided by client via `Create New Game` call.
+  /** Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
  */
   sessionID: string;
   /**
@@ -204,7 +206,8 @@ We support 2 decimal places for all fiat currencies.
 }
 
 export interface RefundRequest {
-  /** The Game Session's ID (external). Provided by client via `Create New Game` call.
+  /** Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
  */
   sessionID: string;
   /** Globally unique identifier (UUID v4) for the refund transaction on Swipe Games' side.
@@ -249,8 +252,10 @@ We support 2 decimal places for all fiat currencies.
 
 export type GetBalanceParams = {
 /**
- * Session ID (external). Provided by client via `Create New Game` call.
-This is your Session ID. We use it in all reverse calls to you.
+ * Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+We store it and pass it back in all reverse calls to you.
+
+Note: this is NOT the `gsID` (Game Session ID) returned by `Create New Game`. `gsID` is Swipe Games's own identifier and is never sent in reverse calls.
 
  */
 sessionID: string;

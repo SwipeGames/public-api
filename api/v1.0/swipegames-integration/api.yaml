@@ -6,7 +6,7 @@ info:
     It is used to make reverse calls to integrations working through Public API.
     Please implement this API on your side to support Swipe Games Public API.
 
-  version: 1.7.2
+  version: 1.7.3
 
 paths:
   /balance:
@@ -30,8 +30,10 @@ paths:
           in: query
           required: true
           description: |
-            Session ID (external). Provided by client via `Create New Game` call.
-            This is your Session ID. We use it in all reverse calls to you.
+            Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+            We store it and pass it back in all reverse calls to you.
+
+            Note: this is NOT the `gsID` (Game Session ID) returned by `Create New Game`. `gsID` is Swipe Games's own identifier and is never sent in reverse calls.
           example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
           schema:
             type: string
@@ -327,7 +329,8 @@ components:
         sessionID:
           type: string
           description: |
-            The Game Session's ID (external). Provided by client via `Create New Game` call.
+            Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+            It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
           example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         amount:
           description: |
@@ -409,7 +412,8 @@ components:
         sessionID:
           type: string
           description: |
-            The Game Session's ID (external). Provided by client via `Create New Game` call.
+            Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+            It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
           example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         amount:
           description: |
@@ -480,7 +484,8 @@ components:
         sessionID:
           type: string
           description: |
-            The Game Session's ID (external). Provided by client via `Create New Game` call.
+            Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+            It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
           example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         txID:
           description: |

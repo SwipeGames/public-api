@@ -6,6 +6,12 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.7.3
+
+- Add a **Game Session** entry to the [Terms](/terms#game-session) glossary and remove the standalone Game Session page.
+- Document the `gameURL` and `gsID` fields of the [Create New Game](/core/create-new-game) response.
+- Clarify that the response `gsID` (Swipe Games's Game Session ID) is **not** the request `sessionID` (your external session reference) — in both the Core and Integration Adapter API specs and the integration docs.
+
 ## 1.7.2
 
 - Publish the **Swipe Games Integration Skill** — an [Agent Skill](https://agentskills.io) that teaches an AI coding agent the whole integration (Core API + the four signed reverse calls), covering the official Node, Go, and PHP SDKs plus working directly against the HTTP API for any other language. Install with `npx skills add swipegames/public-api`.
