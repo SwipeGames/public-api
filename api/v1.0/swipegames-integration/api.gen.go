@@ -141,7 +141,8 @@ type BetRequest struct {
 	// Could be the same for different games.
 	RoundID uuid.UUID `json:"roundID"`
 
-	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
+	// SessionID Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+	// It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
 	SessionID string `json:"sessionID"`
 
 	// TxID Globally unique identifier (UUID v4) for the bet transaction on Swipe Games' side.
@@ -228,7 +229,8 @@ type RefundRequest struct {
 	// Added in version 1.5.0. This field is optional for backward compatibility.
 	RoundID *uuid.UUID `json:"roundID,omitempty"`
 
-	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
+	// SessionID Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+	// It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
 	SessionID string `json:"sessionID"`
 
 	// TxID Globally unique identifier (UUID v4) for the refund transaction on Swipe Games' side.
@@ -264,7 +266,8 @@ type WinRequest struct {
 	// Could be the same for different games.
 	RoundID uuid.UUID `json:"roundID"`
 
-	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
+	// SessionID Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+	// It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
 	SessionID string `json:"sessionID"`
 
 	// TxID Globally unique identifier (UUID v4) for the win transaction on Swipe Games' side.
@@ -297,8 +300,10 @@ type WinResponse struct {
 
 // GetBalanceParams defines parameters for GetBalance.
 type GetBalanceParams struct {
-	// SessionID Session ID (external). Provided by client via `Create New Game` call.
-	// This is your Session ID. We use it in all reverse calls to you.
+	// SessionID Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+	// We store it and pass it back in all reverse calls to you.
+	//
+	// Note: this is NOT the `gsID` (Game Session ID) returned by `Create New Game`. `gsID` is Swipe Games's own identifier and is never sent in reverse calls.
 	SessionID string `form:"sessionID" json:"sessionID"`
 
 	// XREQUESTSIGN Request signature (see [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for more details)
@@ -1406,57 +1411,58 @@ func RegisterHandlersWithOptions(router EchoRouter, si ServerInterface, options 
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"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",
-	"t8MjHqOuJZGrq/8FAAD//w==",
+	"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",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

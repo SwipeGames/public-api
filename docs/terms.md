@@ -30,3 +30,18 @@ A Game Type identifies the game mechanics (e.g., `catch` or `swipe`). Multiple g
 ### Game ID
 
 A Game ID is a unique identifier for each game provided by Swipe Games. It is used to reference specific games in API requests and responses. Default games use the `sg_` prefix (e.g., `sg_catch_97`), while customized games use a client-specific prefix (e.g., `cv_catch_97`). To retrieve the list of games available for your integration, use the [Get Games](/core/get-games-information) API endpoint. See [Games](/games) for more details.
+
+### Game Session
+
+A Game Session represents a single player's play session for a specific game. A new game session is created every time you call the [Create New Game](/core/create-new-game) endpoint, and it is identified by a unique Game Session ID (`gsID`) returned in the response.
+
+A game session has a limited lifetime (4 hours by default) and captures the game settings that apply for its whole duration — such as the min/max bets and the player's currency. These settings are fixed when the session is created and do not change while the session is active, ensuring consistent behaviour throughout play.
+
+:::note `gsID` vs `sessionID`
+
+The `gsID` returned by [Create New Game](/core/create-new-game) is **not** the same as the `sessionID` you pass in the request:
+
+- **`sessionID`** — your own external session reference. You generate it, and Swipe Games echoes it back in all callbacks to you.
+- **`gsID`** — Swipe Games's own identifier for the game session. It is generated on our side and is unrelated to your `sessionID`.
+
+:::

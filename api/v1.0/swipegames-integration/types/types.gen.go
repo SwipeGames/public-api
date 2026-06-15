@@ -126,7 +126,8 @@ type BetRequest struct {
 	// Could be the same for different games.
 	RoundID uuid.UUID `json:"roundID"`
 
-	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
+	// SessionID Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+	// It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
 	SessionID string `json:"sessionID"`
 
 	// TxID Globally unique identifier (UUID v4) for the bet transaction on Swipe Games' side.
@@ -213,7 +214,8 @@ type RefundRequest struct {
 	// Added in version 1.5.0. This field is optional for backward compatibility.
 	RoundID *uuid.UUID `json:"roundID,omitempty"`
 
-	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
+	// SessionID Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+	// It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
 	SessionID string `json:"sessionID"`
 
 	// TxID Globally unique identifier (UUID v4) for the refund transaction on Swipe Games' side.
@@ -249,7 +251,8 @@ type WinRequest struct {
 	// Could be the same for different games.
 	RoundID uuid.UUID `json:"roundID"`
 
-	// SessionID The Game Session's ID (external). Provided by client via `Create New Game` call.
+	// SessionID Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+	// It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games's own identifier and is never sent in reverse calls.
 	SessionID string `json:"sessionID"`
 
 	// TxID Globally unique identifier (UUID v4) for the win transaction on Swipe Games' side.
@@ -282,8 +285,10 @@ type WinResponse struct {
 
 // GetBalanceParams defines parameters for GetBalance.
 type GetBalanceParams struct {
-	// SessionID Session ID (external). Provided by client via `Create New Game` call.
-	// This is your Session ID. We use it in all reverse calls to you.
+	// SessionID Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
+	// We store it and pass it back in all reverse calls to you.
+	//
+	// Note: this is NOT the `gsID` (Game Session ID) returned by `Create New Game`. `gsID` is Swipe Games's own identifier and is never sent in reverse calls.
 	SessionID string `form:"sessionID" json:"sessionID"`
 
 	// XREQUESTSIGN Request signature (see [Verifying Request Signatures](/swipegames-integration#verifying-request-signatures) for more details)

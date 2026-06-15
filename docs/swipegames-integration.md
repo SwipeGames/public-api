@@ -17,6 +17,14 @@ You need to provide us with the following information to set up the integration:
 
 All settings (base URL, configuration, etc.) are done per `ExtCID`. So if you have multiple clients (casinos, operators, etc.), you need to provide us with the `ExtCID` for each of them. Each `ExtCID` can have its own base URL for reverse calls.
 
+:::note `sessionID` vs `gsID`
+
+Every reverse call (`/balance`, `/bet`, `/win`, `/refund`, …) identifies the player session by **`sessionID`** — the external Session ID **you** provided in the `Create New Game` request. This is the value to match against your own records.
+
+Do not confuse it with the **`gsID`** returned by `Create New Game`: that is Swipe Games's own Game Session ID and is **never** sent in reverse calls. See [Terms → Game Session](/terms#game-session).
+
+:::
+
 ### Verifying Request Signatures
 
 Every request we send to your endpoints includes an `X-REQUEST-SIGN` header containing an HMAC-SHA256 signature. You must verify this signature to ensure the request is authentic and hasn't been tampered with.
