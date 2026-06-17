@@ -21,6 +21,8 @@ You can set up free rounds and also cancel them at any time. Please note that if
 You can setup Free Rounds for specific games and for specific users. Also for all games and all users.
 Free Rounds duration should not exceed 30 days (you can create infinite free rounds though - which never ends).
 
+When a campaign is available in more than one game, the `quantity` is a single allotment — it is **not** multiplied per game. The player may start the campaign in any one of the listed games, but once it is started in a game the campaign is locked to that game, and the remaining rounds cannot be played in the other games.
+
 ## Free Rounds Bet Lines Configuration
 
 Before setting up Free Rounds you can share with us global `Bet Lines` configuration, per `game` or per `currency` - we will setup them for you and you can use
