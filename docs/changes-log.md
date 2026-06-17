@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.7.4
+
+- no changes
+
 ## 1.7.3
 
 - Add a **Game Session** entry to the [Terms](/terms#game-session) glossary and remove the standalone Game Session page.

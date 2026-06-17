@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.7.3
+ * OpenAPI spec version: 1.7.4
  */
 /**
  * Platform type where the game can be launched
@@ -88,14 +88,22 @@ export interface CreateFreeRoundsRequest {
   cID: string;
   /** External Client's ID (game aggregator or casino) */
   extCID: string;
-  /** List of game IDs. If not provided, free rounds will be available for all games. */
+  /** List of game IDs the campaign can be started in. If not provided, the campaign can be started in any game.
+
+The `quantity` is a single allotment, not multiplied across games. The player may start the campaign in
+any one of the listed games, but once it is started in a game, the campaign is locked to that game — the
+remaining rounds can no longer be played in the other games.
+ */
   gameIDs?: string[];
   /** List of player IDs (external). If not provided, free rounds will be available for all players. */
   userIDs?: string[];
   /** Currency code in ISO4217 */
   currency: string;
   /**
-   * Number of free rounds.
+   * Number of free rounds. This is a single allotment for the campaign — when multiple `gameIDs` are
+provided it is not multiplied per game. The player spends this allotment in the one game the campaign
+is started in.
+
    * @minimum 1
    * @maximum 99
    */

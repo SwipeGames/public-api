@@ -102,10 +102,16 @@ type CreateFreeRoundsRequest struct {
 	// ExtID Free rounds ID (external). Used as idempotency key. Same ID can be used to create free rounds only once.
 	ExtID string `json:"extID"`
 
-	// GameIDs List of game IDs. If not provided, free rounds will be available for all games.
+	// GameIDs List of game IDs the campaign can be started in. If not provided, the campaign can be started in any game.
+	//
+	// The `quantity` is a single allotment, not multiplied across games. The player may start the campaign in
+	// any one of the listed games, but once it is started in a game, the campaign is locked to that game — the
+	// remaining rounds can no longer be played in the other games.
 	GameIDs *[]string `json:"gameIDs,omitempty"`
 
-	// Quantity Number of free rounds.
+	// Quantity Number of free rounds. This is a single allotment for the campaign — when multiple `gameIDs` are
+	// provided it is not multiplied per game. The player spends this allotment in the one game the campaign
+	// is started in.
 	Quantity int32 `json:"quantity"`
 
 	// UserIDs List of player IDs (external). If not provided, free rounds will be available for all players.
