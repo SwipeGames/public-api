@@ -6,6 +6,12 @@ slug: /games
 
 # Games
 
+:::tip Try Live Demos
+
+To browse all available games and try them in your browser, visit the [Swipe Games website](https://www.swipegames.io/games/). Each game includes a playable demo.
+
+:::
+
 To check which games are available for your integration, use the [Get Games](/core/get-games-information) API endpoint directly.
 
 Each game is available in multiple RTP configurations: 85%, 87%, 90%, 92%, 95%, and 97%. For other RTP values, please contact support.

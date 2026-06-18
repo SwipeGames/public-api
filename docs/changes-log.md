@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.7.5
+
+- Games: added live demo reference to swipegames.io/games
+
 ## 1.7.4
 
 - no changes
