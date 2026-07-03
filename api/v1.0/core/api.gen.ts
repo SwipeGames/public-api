@@ -4,8 +4,23 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.7.5
+ * OpenAPI spec version: 1.8.0
  */
+/**
+ * Currency filter for the games list
+ */
+export type CurrencyFilter = typeof CurrencyFilter[keyof typeof CurrencyFilter];
+
+
+export const CurrencyFilter = {
+  main: 'main',
+  main_fiat: 'main_fiat',
+  main_crypto: 'main_crypto',
+  sub_fiat: 'sub_fiat',
+  sub_crypto: 'sub_crypto',
+  virtual: 'virtual',
+} as const;
+
 /**
  * Platform type where the game can be launched
  */
@@ -242,6 +257,28 @@ Defaults to `false`.
 
  */
 excludeBetLines?: boolean;
+/**
+ * Optional comma-separated list of currency filters. When provided, each game's
+`currencies` and `betLines` contain only the currency codes matching any of the
+filters (plus the `additionalCurrencies`, if given):
+- `main` — all main currencies (`main_fiat` + `main_crypto`)
+- `main_fiat` — main fiat currencies (USD, EUR, …)
+- `main_crypto` — main crypto currencies (BTC, ETH, USDT, …)
+- `sub_fiat` — denomination-scaled fiat units (COP#, PHPT, TWD2, …)
+- `sub_crypto` — crypto sub-units (mBTC, uETH, …)
+- `virtual` — virtual currencies (DEMO, FUN)
+
+When omitted, all supported currencies are returned (virtual excluded), as before.
+
+ */
+currencyFilters?: CurrencyFilter[];
+/**
+ * Optional comma-separated list of currency codes to include in addition to the
+codes matched by `currencyFilters`. Only meaningful together with `currencyFilters`.
+Unknown codes result in a `400` response.
+
+ */
+additionalCurrencies?: string[];
 };
 
 /**
