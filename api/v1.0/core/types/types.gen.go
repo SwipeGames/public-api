@@ -9,6 +9,36 @@ import (
 	uuid "github.com/google/uuid"
 )
 
+// Defines values for CurrencyFilter.
+const (
+	Main       CurrencyFilter = "main"
+	MainCrypto CurrencyFilter = "main_crypto"
+	MainFiat   CurrencyFilter = "main_fiat"
+	SubCrypto  CurrencyFilter = "sub_crypto"
+	SubFiat    CurrencyFilter = "sub_fiat"
+	Virtual    CurrencyFilter = "virtual"
+)
+
+// Valid indicates whether the value is a known member of the CurrencyFilter enum.
+func (e CurrencyFilter) Valid() bool {
+	switch e {
+	case Main:
+		return true
+	case MainCrypto:
+		return true
+	case MainFiat:
+		return true
+	case SubCrypto:
+		return true
+	case SubFiat:
+		return true
+	case Virtual:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ErrorResponseCode.
 const (
 	AccountBlocked       ErrorResponseCode = "account_blocked"
@@ -190,6 +220,9 @@ type CreateNewGameResponse struct {
 	GsID uuid.UUID `json:"gsID"`
 }
 
+// CurrencyFilter Currency filter for the games list
+type CurrencyFilter string
+
 // DeleteFreeRoundsRequest defines model for DeleteFreeRoundsRequest.
 type DeleteFreeRoundsRequest struct {
 	// CID Client's ID (internal)
@@ -320,6 +353,24 @@ type GetGamesParams struct {
 	// is always set to `false` when `excludeBetLines` is `true`.
 	// Defaults to `false`.
 	ExcludeBetLines *bool `form:"excludeBetLines,omitempty" json:"excludeBetLines,omitempty"`
+
+	// CurrencyFilters Optional comma-separated list of currency filters. When provided, each game's
+	// `currencies` and `betLines` contain only the currency codes matching any of the
+	// filters (plus the `additionalCurrencies`, if given):
+	// - `main` — all main currencies (`main_fiat` + `main_crypto`)
+	// - `main_fiat` — main fiat currencies (USD, EUR, …)
+	// - `main_crypto` — main crypto currencies (BTC, ETH, USDT, …)
+	// - `sub_fiat` — denomination-scaled fiat units (COP#, PHPT, TWD2, …)
+	// - `sub_crypto` — crypto sub-units (mBTC, uETH, …)
+	// - `virtual` — virtual currencies (DEMO, FUN)
+	//
+	// When omitted, all supported currencies are returned (virtual excluded), as before.
+	CurrencyFilters *[]CurrencyFilter `form:"currencyFilters,omitempty" json:"currencyFilters,omitempty"`
+
+	// AdditionalCurrencies Optional comma-separated list of currency codes to include in addition to the
+	// codes matched by `currencyFilters`. Only meaningful together with `currencyFilters`.
+	// Unknown codes result in a `400` response.
+	AdditionalCurrencies *[]string `form:"additionalCurrencies,omitempty" json:"additionalCurrencies,omitempty"`
 
 	// XREQUESTSIGN Request signature (see [Authentication](/authn) for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
