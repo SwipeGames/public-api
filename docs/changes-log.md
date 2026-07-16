@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.8.1
+
+- Go: dropped the unused `github.com/swipegames/platform-lib-common` dependency, so importing the Go packages no longer requires access to a private module.
+
 ## 1.7.5
 
 - Games: added live demo reference to swipegames.io/games

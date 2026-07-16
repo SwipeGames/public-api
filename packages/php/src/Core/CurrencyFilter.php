@@ -1,6 +1,6 @@
 <?php
 /**
- * PlatformType
+ * CurrencyFilter
  *
  * PHP version 8.1
  *
@@ -30,22 +30,30 @@ namespace SwipeGames\PublicApi\Core;
 use \SwipeGames\PublicApi\ObjectSerializer;
 
 /**
- * PlatformType Class Doc Comment
+ * CurrencyFilter Class Doc Comment
  *
  * @category Class
- * @description Platform type where the game can be launched
+ * @description Currency filter for the games list
  * @package  SwipeGames\PublicApi
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class PlatformType
+class CurrencyFilter
 {
     /**
      * Possible values of this enum
      */
-    public const DESKTOP = 'desktop';
+    public const MAIN = 'main';
 
-    public const MOBILE = 'mobile';
+    public const MAIN_FIAT = 'main_fiat';
+
+    public const MAIN_CRYPTO = 'main_crypto';
+
+    public const SUB_FIAT = 'sub_fiat';
+
+    public const SUB_CRYPTO = 'sub_crypto';
+
+    public const VIRTUAL = 'virtual';
 
     /**
      * Gets allowable values of the enum
@@ -54,8 +62,12 @@ class PlatformType
     public static function getAllowableEnumValues()
     {
         return [
-            self::DESKTOP,
-            self::MOBILE
+            self::MAIN,
+            self::MAIN_FIAT,
+            self::MAIN_CRYPTO,
+            self::SUB_FIAT,
+            self::SUB_CRYPTO,
+            self::VIRTUAL
         ];
     }
 }

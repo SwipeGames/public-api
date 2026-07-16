@@ -50,6 +50,12 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
+          id: "core/schemas/currencyfilter",
+          label: "CurrencyFilter",
+          className: "schema",
+        },
+        {
+          type: "doc",
           id: "core/schemas/platformtype",
           label: "PlatformType",
           className: "schema",
