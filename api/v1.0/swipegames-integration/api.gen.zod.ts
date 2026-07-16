@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.8.0
+ * OpenAPI spec version: 1.8.1
  */
 import * as zod from 'zod';
 
