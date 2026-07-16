@@ -264,7 +264,7 @@ filters (plus the `additionalCurrencies`, if given):
 - `main` — all main currencies (`main_fiat` + `main_crypto`)
 - `main_fiat` — main fiat currencies (USD, EUR, …)
 - `main_crypto` — main crypto currencies (BTC, ETH, USDT, …)
-- `sub_fiat` — operator-specific denomination-scaled fiat units, enabled per agreement
+- `sub_fiat` — denomination-scaled fiat units (COP#, PHPT, TWD2, …)
 - `sub_crypto` — crypto sub-units (mBTC, uETH, …)
 - `virtual` — virtual currencies (DEMO, FUN)
 
