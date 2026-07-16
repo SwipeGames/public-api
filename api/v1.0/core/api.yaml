@@ -3,7 +3,7 @@ info:
   title: Swipe Games Core Public API
   description: |
     This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
-  version: 1.8.1
+  version: 1.8.2
 
 servers:
   - url: https://staging.platform.0.swipegames.io/api/v1
@@ -228,7 +228,7 @@ paths:
             - `main` — all main currencies (`main_fiat` + `main_crypto`)
             - `main_fiat` — main fiat currencies (USD, EUR, …)
             - `main_crypto` — main crypto currencies (BTC, ETH, USDT, …)
-            - `sub_fiat` — denomination-scaled fiat units (COP#, PHPT, TWD2, …)
+            - `sub_fiat` — operator-specific denomination-scaled fiat units, enabled per agreement
             - `sub_crypto` — crypto sub-units (mBTC, uETH, …)
             - `virtual` — virtual currencies (DEMO, FUN)
 

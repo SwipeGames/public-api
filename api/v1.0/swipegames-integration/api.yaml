@@ -6,7 +6,7 @@ info:
     It is used to make reverse calls to integrations working through Public API.
     Please implement this API on your side to support Swipe Games Public API.
 
-  version: 1.8.1
+  version: 1.8.2
 
 paths:
   /balance:
@@ -303,7 +303,7 @@ components:
           description: |
             The player's balance in selected currency **main** units (**not cents**).
             Currency selected by the client during the `Create New Game` call.
-            We support 2 decimal places for all fiat currencies.
+            Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
           type: string
           pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
@@ -336,7 +336,7 @@ components:
           description: |
             The amount of the bet in currency **main** units (**not cents**).
             Currency selected by the client during the `Create New Game` call.
-            We support 2 decimal places for all fiat currencies.
+            Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
           type: string
           pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
@@ -381,7 +381,7 @@ components:
           description: |
             The player's balance in selected currency **main** units (note: not cents) after the bet is applied.
             Currency selected by the client during the `Create New Game` call.
-            We support 2 decimal places for all fiat currencies.
+            Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
           type: string
           pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
@@ -418,7 +418,7 @@ components:
         amount:
           description: |
             The amount of the bet in currency **main** units (note: not cents). Currency selected by the client during the
-            `Create New Game` call. We support 2 decimal places for all fiat currencies.
+            `Create New Game` call. Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
           type: string
           pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
@@ -464,7 +464,7 @@ components:
           description: |
             The player's balance in selected currency **main** units (note: not cents) after the win is applied.
             Currency selected by the client during the `Create New Game` call.
-            We support 2 decimal places for all fiat currencies.
+            Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
           type: string
           pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"
@@ -528,7 +528,7 @@ components:
           description: |
             The amount of the refund in currency **main** units (note: not cents).
             Currency selected by the client during the `Create New Game` call.
-            We support 2 decimal places for all fiat currencies.
+            Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
             Refunds are always done for the whole bet amount.
           type: string
           pattern: '^(0|[1-9]\d*)(\.\d+)?$'
@@ -544,7 +544,7 @@ components:
           description: |
             The user's balance in selected currency **main** units (note: not cents) after the refund is applied.
             Currency selected by the client during the `Create New Game` call.
-            We support 2 decimal places for all fiat currencies.
+            Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
           type: string
           pattern: '^(0|[1-9]\d*)(\.\d+)?$'
           example: "100.10"

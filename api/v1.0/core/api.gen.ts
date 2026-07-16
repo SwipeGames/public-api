@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.8.1
+ * OpenAPI spec version: 1.8.2
  */
 /**
  * Currency filter for the games list
@@ -264,7 +264,7 @@ filters (plus the `additionalCurrencies`, if given):
 - `main` — all main currencies (`main_fiat` + `main_crypto`)
 - `main_fiat` — main fiat currencies (USD, EUR, …)
 - `main_crypto` — main crypto currencies (BTC, ETH, USDT, …)
-- `sub_fiat` — denomination-scaled fiat units (COP#, PHPT, TWD2, …)
+- `sub_fiat` — operator-specific denomination-scaled fiat units, enabled per agreement
 - `sub_crypto` — crypto sub-units (mBTC, uETH, …)
 - `virtual` — virtual currencies (DEMO, FUN)
 

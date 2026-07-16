@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.8.1
+ * OpenAPI spec version: 1.8.2
  */
 import * as zod from 'zod';
 
@@ -111,7 +111,7 @@ export const GetGamesQueryParams = zod.object({
   "cID": zod.string().uuid().describe('Client\'s ID'),
   "extCID": zod.string().describe('External Client\'s ID'),
   "excludeBetLines": zod.boolean().default(getGamesQueryExcludeBetLinesDefault).describe('When `true`, the `betLines` field is omitted from each game in the response.\nBet lines data is only relevant for free rounds campaigns — exclude it to\nsignificantly reduce payload size if you don\'t need it. In the response flag `hasFreeSpins`\nis always set to `false` when `excludeBetLines` is `true`.\nDefaults to `false`.\n'),
-  "currencyFilters": zod.array(zod.enum(['main', 'main_fiat', 'main_crypto', 'sub_fiat', 'sub_crypto', 'virtual']).describe('Currency filter for the games list')).optional().describe('Optional comma-separated list of currency filters. When provided, each game\'s\n`currencies` and `betLines` contain only the currency codes matching any of the\nfilters (plus the `additionalCurrencies`, if given):\n- `main` — all main currencies (`main_fiat` + `main_crypto`)\n- `main_fiat` — main fiat currencies (USD, EUR, …)\n- `main_crypto` — main crypto currencies (BTC, ETH, USDT, …)\n- `sub_fiat` — denomination-scaled fiat units (COP#, PHPT, TWD2, …)\n- `sub_crypto` — crypto sub-units (mBTC, uETH, …)\n- `virtual` — virtual currencies (DEMO, FUN)\n\nWhen omitted, all supported currencies are returned (virtual excluded), as before.\n'),
+  "currencyFilters": zod.array(zod.enum(['main', 'main_fiat', 'main_crypto', 'sub_fiat', 'sub_crypto', 'virtual']).describe('Currency filter for the games list')).optional().describe('Optional comma-separated list of currency filters. When provided, each game\'s\n`currencies` and `betLines` contain only the currency codes matching any of the\nfilters (plus the `additionalCurrencies`, if given):\n- `main` — all main currencies (`main_fiat` + `main_crypto`)\n- `main_fiat` — main fiat currencies (USD, EUR, …)\n- `main_crypto` — main crypto currencies (BTC, ETH, USDT, …)\n- `sub_fiat` — operator-specific denomination-scaled fiat units, enabled per agreement\n- `sub_crypto` — crypto sub-units (mBTC, uETH, …)\n- `virtual` — virtual currencies (DEMO, FUN)\n\nWhen omitted, all supported currencies are returned (virtual excluded), as before.\n'),
   "additionalCurrencies": zod.array(zod.string()).optional().describe('Optional comma-separated list of currency codes to include in addition to the\ncodes matched by `currencyFilters`. Only meaningful together with `currencyFilters`.\nUnknown codes result in a `400` response.\n')
 })
 

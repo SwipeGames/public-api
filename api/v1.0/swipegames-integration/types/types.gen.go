@@ -107,7 +107,7 @@ func (e WinRequestType) Valid() bool {
 type BalanceResponse struct {
 	// Balance The player's balance in selected currency **main** units (**not cents**).
 	// Currency selected by the client during the `Create New Game` call.
-	// We support 2 decimal places for all fiat currencies.
+	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 	Balance string `json:"balance"`
 }
 
@@ -115,7 +115,7 @@ type BalanceResponse struct {
 type BetRequest struct {
 	// Amount The amount of the bet in currency **main** units (**not cents**).
 	// Currency selected by the client during the `Create New Game` call.
-	// We support 2 decimal places for all fiat currencies.
+	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 	Amount string `json:"amount"`
 
 	// FrID Free Rounds ID (external).
@@ -151,7 +151,7 @@ type BetRequestType string
 type BetResponse struct {
 	// Balance The player's balance in selected currency **main** units (note: not cents) after the bet is applied.
 	// Currency selected by the client during the `Create New Game` call.
-	// We support 2 decimal places for all fiat currencies.
+	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 	Balance string `json:"balance"`
 
 	// TxID Unique ID for the bet on your side. This is required for further tracking/debugging purposes.
@@ -200,7 +200,7 @@ type ErrorResponseWithCodeAndActionCode string
 type RefundRequest struct {
 	// Amount The amount of the refund in currency **main** units (note: not cents).
 	// Currency selected by the client during the `Create New Game` call.
-	// We support 2 decimal places for all fiat currencies.
+	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 	// Refunds are always done for the whole bet amount.
 	Amount string `json:"amount"`
 
@@ -229,7 +229,7 @@ type RefundRequest struct {
 type RefundResponse struct {
 	// Balance The user's balance in selected currency **main** units (note: not cents) after the refund is applied.
 	// Currency selected by the client during the `Create New Game` call.
-	// We support 2 decimal places for all fiat currencies.
+	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 	Balance string `json:"balance"`
 
 	// TxID Unique ID for the refund on your side. This is required for further tracking/debugging purposes.
@@ -239,7 +239,7 @@ type RefundResponse struct {
 // WinRequest defines model for WinRequest.
 type WinRequest struct {
 	// Amount The amount of the bet in currency **main** units (note: not cents). Currency selected by the client during the
-	// `Create New Game` call. We support 2 decimal places for all fiat currencies.
+	// `Create New Game` call. Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 	Amount string `json:"amount"`
 
 	// FrID Free Rounds ID (external).
@@ -276,7 +276,7 @@ type WinRequestType string
 type WinResponse struct {
 	// Balance The player's balance in selected currency **main** units (note: not cents) after the win is applied.
 	// Currency selected by the client during the `Create New Game` call.
-	// We support 2 decimal places for all fiat currencies.
+	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 	Balance string `json:"balance"`
 
 	// TxID Unique ID for the win on your side. This is required for further tracking/debugging purposes.

@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.8.1
+ * OpenAPI spec version: 1.8.2
  */
 /**
  * Error code. Could be handled by client accordingly (with localized message and related action).
@@ -76,7 +76,7 @@ export interface BalanceResponse {
   /**
    * The player's balance in selected currency **main** units (**not cents**).
 Currency selected by the client during the `Create New Game` call.
-We support 2 decimal places for all fiat currencies.
+Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 
    * @pattern ^(0|[1-9]\d*)(\.\d+)?$
    */
@@ -110,7 +110,7 @@ It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is S
   /**
    * The amount of the bet in currency **main** units (**not cents**).
 Currency selected by the client during the `Create New Game` call.
-We support 2 decimal places for all fiat currencies.
+Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 
    * @pattern ^(0|[1-9]\d*)(\.\d+)?$
    */
@@ -135,7 +135,7 @@ export interface BetResponse {
   /**
    * The player's balance in selected currency **main** units (note: not cents) after the bet is applied.
 Currency selected by the client during the `Create New Game` call.
-We support 2 decimal places for all fiat currencies.
+Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 
    * @pattern ^(0|[1-9]\d*)(\.\d+)?$
    */
@@ -170,7 +170,7 @@ It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is S
   sessionID: string;
   /**
    * The amount of the bet in currency **main** units (note: not cents). Currency selected by the client during the
-`Create New Game` call. We support 2 decimal places for all fiat currencies.
+`Create New Game` call. Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 
    * @pattern ^(0|[1-9]\d*)(\.\d+)?$
    */
@@ -196,7 +196,7 @@ export interface WinResponse {
   /**
    * The player's balance in selected currency **main** units (note: not cents) after the win is applied.
 Currency selected by the client during the `Create New Game` call.
-We support 2 decimal places for all fiat currencies.
+Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 
    * @pattern ^(0|[1-9]\d*)(\.\d+)?$
    */
@@ -229,7 +229,7 @@ Added in version 1.5.0. This field is optional for backward compatibility.
   /**
    * The amount of the refund in currency **main** units (note: not cents).
 Currency selected by the client during the `Create New Game` call.
-We support 2 decimal places for all fiat currencies.
+Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 Refunds are always done for the whole bet amount.
 
    * @pattern ^(0|[1-9]\d*)(\.\d+)?$
@@ -241,7 +241,7 @@ export interface RefundResponse {
   /**
    * The user's balance in selected currency **main** units (note: not cents) after the refund is applied.
 Currency selected by the client during the `Create New Game` call.
-We support 2 decimal places for all fiat currencies.
+Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 
    * @pattern ^(0|[1-9]\d*)(\.\d+)?$
    */

@@ -6,9 +6,18 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.8.2
+
+- Updated the list of [supported currencies](/currencies).
+- **Correction:** fiat currencies carry **up to** 2 decimal places — some (`JPY`, `KRW`, `VND`, …) carry none. The Integration Adapter spec previously said we support 2 decimal places for all fiat currencies. If you assumed exactly 2 everywhere, re-check your rounding.
+
 ## 1.8.1
 
 - Go: dropped the unused `github.com/swipegames/platform-lib-common` dependency, so importing the Go packages no longer requires access to a private module.
+
+## 1.8.0
+
+- Added the `currencyFilters` and `additionalCurrencies` query parameters to [Get Games Information](/core/get-games-information), letting you narrow each game's `currencies` and `betLines` to the currency types you support. Omitting `currencyFilters` returns all non-virtual currencies, as before.
 
 ## 1.7.5
 
