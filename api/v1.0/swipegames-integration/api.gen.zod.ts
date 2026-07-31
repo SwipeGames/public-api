@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.8.1
+ * OpenAPI spec version: 1.8.2
  */
 import * as zod from 'zod';
 
@@ -29,7 +29,7 @@ export const getBalanceResponseBalanceRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\
 
 
 export const GetBalanceResponse = zod.object({
-  "balance": zod.string().regex(getBalanceResponseBalanceRegExp).describe('The player\'s balance in selected currency \*\*main\*\* units (\*\*not cents\*\*).\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n')
+  "balance": zod.string().regex(getBalanceResponseBalanceRegExp).describe('The player\'s balance in selected currency \*\*main\*\* units (\*\*not cents\*\*).\nCurrency selected by the client during the `Create New Game` call.\nFiat currencies carry \*\*up to\*\* 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.\n')
 })
 
 
@@ -54,7 +54,7 @@ export const postBetBodyAmountRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
 export const PostBetBody = zod.object({
   "type": zod.enum(['regular', 'free']).describe('The type of the bet.\n- `regular` type means regular bet,\n- `free` type means free bet (see Free Rounds section).\n'),
   "sessionID": zod.string().describe('Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.\nIt is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games\'s own identifier and is never sent in reverse calls.\n'),
-  "amount": zod.string().regex(postBetBodyAmountRegExp).describe('The amount of the bet in currency \*\*main\*\* units (\*\*not cents\*\*).\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n'),
+  "amount": zod.string().regex(postBetBodyAmountRegExp).describe('The amount of the bet in currency \*\*main\*\* units (\*\*not cents\*\*).\nCurrency selected by the client during the `Create New Game` call.\nFiat currencies carry \*\*up to\*\* 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.\n'),
   "txID": zod.string().uuid().describe('Globally unique identifier (UUID v4) for the bet transaction on Swipe Games\' side.\nMust be used as an idempotency key on your side.\nUniqueness is guaranteed by Swipe Games for a rolling 3-month window.\nFor uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).\n'),
   "roundID": zod.string().uuid().describe('Non unique ID for the round (internal) on Swipe Games\' side.\nCould be the same for different games.\n'),
   "frID": zod.string().optional().describe('Free Rounds ID (external).\nThis field is provided only for free rounds bets (where `type` is `free`).\n')
@@ -64,7 +64,7 @@ export const postBetResponseBalanceRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)
 
 
 export const PostBetResponse = zod.object({
-  "balance": zod.string().regex(postBetResponseBalanceRegExp).describe('The player\'s balance in selected currency \*\*main\*\* units (note: not cents) after the bet is applied.\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n'),
+  "balance": zod.string().regex(postBetResponseBalanceRegExp).describe('The player\'s balance in selected currency \*\*main\*\* units (note: not cents) after the bet is applied.\nCurrency selected by the client during the `Create New Game` call.\nFiat currencies carry \*\*up to\*\* 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.\n'),
   "txID": zod.string().describe('Unique ID for the bet on your side. This is required for further tracking\/debugging purposes.')
 })
 
@@ -89,7 +89,7 @@ export const postWinBodyAmountRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
 export const PostWinBody = zod.object({
   "type": zod.enum(['regular', 'free']).describe('The type of the win.\n- `regular` type means regular bet,\n- `free` type means free bet (see Free Rounds section).\n'),
   "sessionID": zod.string().describe('Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.\nIt is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games\'s own identifier and is never sent in reverse calls.\n'),
-  "amount": zod.string().regex(postWinBodyAmountRegExp).describe('The amount of the bet in currency \*\*main\*\* units (note: not cents). Currency selected by the client during the\n`Create New Game` call. We support 2 decimal places for all fiat currencies.\n'),
+  "amount": zod.string().regex(postWinBodyAmountRegExp).describe('The amount of the bet in currency \*\*main\*\* units (note: not cents). Currency selected by the client during the\n`Create New Game` call. Fiat currencies carry \*\*up to\*\* 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.\n'),
   "txID": zod.string().uuid().describe('Globally unique identifier (UUID v4) for the win transaction on Swipe Games\' side.\nMust be used as an idempotency key on your side.\nUniqueness is guaranteed by Swipe Games for a rolling 3-month window.\nFor uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).\n'),
   "roundID": zod.string().uuid().describe('Non unique ID for the round (internal) on Swipe Games\' side.\nCould be the same for different games.\n'),
   "frID": zod.string().optional().describe('Free Rounds ID (external).\nThis field is provided only for free rounds wins (where `type` is `free`),\nduring bonus balance withdrawal process (type is `regular`).\n')
@@ -99,7 +99,7 @@ export const postWinResponseBalanceRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)
 
 
 export const PostWinResponse = zod.object({
-  "balance": zod.string().regex(postWinResponseBalanceRegExp).describe('The player\'s balance in selected currency \*\*main\*\* units (note: not cents) after the win is applied.\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n'),
+  "balance": zod.string().regex(postWinResponseBalanceRegExp).describe('The player\'s balance in selected currency \*\*main\*\* units (note: not cents) after the win is applied.\nCurrency selected by the client during the `Create New Game` call.\nFiat currencies carry \*\*up to\*\* 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.\n'),
   "txID": zod.string().describe('Unique ID for the win on your side. This is required for further tracking\/debugging purposes.')
 })
 
@@ -125,13 +125,13 @@ export const PostRefundBody = zod.object({
   "txID": zod.string().uuid().describe('Globally unique identifier (UUID v4) for the refund transaction on Swipe Games\' side.\nMust be used as an idempotency key on your side.\nUniqueness is guaranteed by Swipe Games for a rolling 3-month window.\nFor uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).\n'),
   "origTxID": zod.string().uuid().describe('Original transaction ID (internal) on Swipe Games\' side.\nThis is the ID of the transaction that should be refunded.\nIn some cases this original transaction ID might be not recorded on your side (timeout, server side error, etc).\n'),
   "roundID": zod.string().uuid().optional().describe('Non unique ID for the round (internal) on Swipe Games\' side.\nCould be the same for different games.\nAdded in version 1.5.0. This field is optional for backward compatibility.\n'),
-  "amount": zod.string().regex(postRefundBodyAmountRegExp).describe('The amount of the refund in currency \*\*main\*\* units (note: not cents).\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\nRefunds are always done for the whole bet amount.\n')
+  "amount": zod.string().regex(postRefundBodyAmountRegExp).describe('The amount of the refund in currency \*\*main\*\* units (note: not cents).\nCurrency selected by the client during the `Create New Game` call.\nFiat currencies carry \*\*up to\*\* 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.\nRefunds are always done for the whole bet amount.\n')
 })
 
 export const postRefundResponseBalanceRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
 
 
 export const PostRefundResponse = zod.object({
-  "balance": zod.string().regex(postRefundResponseBalanceRegExp).describe('The user\'s balance in selected currency \*\*main\*\* units (note: not cents) after the refund is applied.\nCurrency selected by the client during the `Create New Game` call.\nWe support 2 decimal places for all fiat currencies.\n'),
+  "balance": zod.string().regex(postRefundResponseBalanceRegExp).describe('The user\'s balance in selected currency \*\*main\*\* units (note: not cents) after the refund is applied.\nCurrency selected by the client during the `Create New Game` call.\nFiat currencies carry \*\*up to\*\* 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.\n'),
   "txID": zod.string().describe('Unique ID for the refund on your side. This is required for further tracking\/debugging purposes.')
 })

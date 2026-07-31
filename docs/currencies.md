@@ -4,142 +4,66 @@ title: Currencies
 slug: /currencies
 ---
 
+import CurrencyTable from '@site/src/components/CurrencyTable';
+
 # Currencies
 
-## Currency Codes and Names
+We support the currencies listed below.
 
-At the moment we support the following currencies:
+A currency is identified by a short **currency code**, chosen by you in [Create New Game](/core/create-new-game) and fixed for the lifetime of the game session.
 
-| Currency Code | Currency Name                            |
-| ------------- | ---------------------------------------- |
-| AED           | United Arab Emirates Dirham              |
-| ALL           | Albania Lek                              |
-| AMD           | Armenia Dram                             |
-| ARS           | Argentina Peso                           |
-| AUD           | Australia Dollar                         |
-| AZN           | Azerbaijan New Manat                     |
-| BAM           | Bosnia and Herzegovina Convertible Marka |
-| BDT           | Bangladesh Taka                          |
-| BGN           | Bulgaria Lev                             |
-| BND           | Brunei Dollar                            |
-| BOB           | Bolivia Boliviano                        |
-| BRL           | Brazil Real                              |
-| BYN           | Belarus Ruble                            |
-| CAD           | Canada Dollar                            |
-| CDF           | Democratic Republic of the Congo Franc   |
-| CHF           | Switzerland Franc                        |
-| CLP           | Chile Peso                               |
-| CNY           | China Yuan Renminbi                      |
-| COP           | Colombia Peso                            |
-| CRC           | Costa Rican colon                        |
-| CZK           | Czech Koruna                             |
-| DKK           | Denmark Krone                            |
-| DOP           | Dominican Republic Peso                  |
-| EUR           | European member countries Euro           |
-| GBP           | United Kingdom Pound                     |
-| GEL           | Georgia Lari                             |
-| GHS           | Ghana Cedis                              |
-| GTQ           | Guatemalan quetzal                       |
-| HKD           | Hong Kong Dollar                         |
-| HUF           | Hungary Forint                           |
-| HTG           | Haiti Gourde                             |
-| IDR           | Indonesia Rupiah                         |
-| ILS           | Israel Shekel                            |
-| INR           | India Rupee                              |
-| IQD           | Iraq Dinar                               |
-| ISK           | Iceland Krona                            |
-| IRR           | Iran Rial                                |
-| JPY           | Japan Yen                                |
-| KES           | Kenya Shilling                           |
-| KGS           | Kyrgyzstan Som                           |
-| KHR           | Cambodia Riel                            |
-| KRW           | Korea (South) Won                        |
-| KZT           | Kazakhstan Tenge                         |
-| LAK           | Laos Kip                                 |
-| LKR           | Sri Lanka Rupee                          |
-| MAD           | Morocco Dirham                           |
-| MDL           | Moldova Leu                              |
-| MKD           | Macedonia Denar                          |
-| MMK           | Myanmar Kyat                             |
-| MXN           | Mexico Peso                              |
-| MNT           | Mongolia Tughrik                         |
-| MVR           | Maldives Rufiyaa                         |
-| MYR           | Malaysia Ringgit                         |
-| NGN           | Nigeria Naira                            |
-| NOK           | Norway Krone                             |
-| NPR           | Nepal Rupee                              |
-| NZD           | New Zealand Dollar                       |
-| PEN           | Peru Nuevo Sol                           |
-| PHP           | Philippines Peso                         |
-| PKR           | Pakistan Rupee                           |
-| PLN           | Poland Zloty                             |
-| PYG           | Paraguay Guarani                         |
-| RON           | Romania New Leu                          |
-| RSD           | Serbia Dinar                             |
-| RUB           | Russia Ruble                             |
-| RWF           | Rwanda Franc                             |
-| SAR           | Saudi Arabia Riyal                       |
-| SEK           | Sweden Krona                             |
-| SGD           | Singapore Dollar                         |
-| SZL           | Eswatini Lilangeni                       |
-| THB           | Thailand Baht                            |
-| TJS           | Tajikistan Somoni                        |
-| TMT           | Turkmenistan Manat                       |
-| TND           | Tunisia Dinar                            |
-| TRY           | Turkey Lira                              |
-| TTD           | Trinidad and Tobago Dollar               |
-| TWD           | Taiwan New Dollar                        |
-| TZS           | Tanzania Shilling                        |
-| UAH           | Ukraine Hryvna                           |
-| UGX           | Uganda Shilling                          |
-| USD           | United States Dollar                     |
-| UYU           | Uruguay Peso                             |
-| UZS           | Uzbekistan Som                           |
-| VND           | Vietnam Dong                             |
-| XAF           | Central African Republic Franc           |
-| XOF           | West African CFA Franc                   |
-| ZAR           | South Africa Rand                        |
-| ZMW           | Zambia Kwacha                            |
-| KWD           | Kuwaiti Dinar                            |
-| EGP           | Egyptian Pound                           |
-| JOD           | Jordanian Dinar                          |
-| HRK           | Croatian Kuna                            |
-| BHD           | Bahraini Dinar                           |
-| QAR           | Qatari Riyal                             |
-| BTN           | Bhutanese Ngultrum                       |
-| OMR           | Omani Rial                               |
-| AOA           | Angolan Kwanza                           |
-| BZD           | Belize Dollar                            |
-| DZD           | Algerian Dinar                           |
-| ETB           | Ethiopian Birr                           |
-| MZN           | Mozambican Metical                       |
-| SDG           | Sudanese Pound                           |
-| VES           | Venezuelan Bolívar                       |
-| BMD           | Bermudian dollar                         |
-| FUN           | (Virtual Currency)                       |
-| ADA           | Cardona Credits                          |
-| BCH           | Bitcoin Cash Coins                       |
-| mBCH          | Milli Bitcoin Cash Coins                 |
-| DOT           | Polkadot Points                          |
-| LUNA          | Luna Lumens                              |
-| UNI           | Uniswap Units                            |
-| XLM           | Stellar Sparks                           |
-| XRP           | Ripple Radiants                          |
-| LTC           | Litecoin                                 |
-| mLTC          | Milli Litecoin                           |
-| TRX           | TRON                                     |
-| USDT          | Tether USDt                              |
-| USDC          | USD Coin (USDC)                          |
-| DOGE          | Dogecoin                                 |
-| MATIC         | Polygon (MATIC)                          |
-| SOL           | Solana                                   |
-| BNB           | Binance Coin                             |
-| SHIB          | Shiba Inu                                |
-| ETH           | Ethereum                                 |
-| mETH          | Milliether                               |
-| BTC           | Bitcoin                                  |
-| uBTC          | Microbitcoin                             |
-| TON           | Toncoin                                  |
-| nanoTON       | Nano Toncoin                             |
-| microTON      | Micro Toncoin                            |
-| milliTON      | Milli Toncoin                            |
+<CurrencyTable />
+
+## Currency types
+
+Every currency has a type. These are the values accepted by the `currencyFilters` query parameter of [Get Games Information](/core/get-games-information), which controls the `currencies` and `betLines` returned for each game. Use the filter buttons above to see exactly which codes each one returns.
+
+| `currencyFilters` value | Meaning                                                      |
+| ----------------------- | ------------------------------------------------------------ |
+| `main`                  | `main_fiat` + `main_crypto`                                  |
+| `main_fiat`             | National fiat currencies                                     |
+| `main_crypto`           | Crypto currencies                                            |
+| `sub_fiat`              | Denomination-scaled fiat units                               |
+| `sub_crypto`            | Crypto sub-units                                             |
+| `virtual`               | Virtual currencies (no exchange rate)                        |
+
+Two behaviours worth knowing:
+
+- **Omitting `currencyFilters` returns all non-virtual currencies** — every type except `virtual`. This is the default, and matches the behaviour from before the parameter existed.
+- `additionalCurrencies` adds specific codes on top of whatever `currencyFilters` matched. An unknown code there is rejected with a `400`.
+
+### Scaled fiat (`sub_fiat`)
+
+A scaled unit is the **same money re-denominated**, for currencies whose everyday amounts run to large numbers. It is not a separate currency — its exchange rate is derived from its base currency, and it carries the same number of decimals as its base.
+
+- **`#` — kilo:** 1,000× larger than its base. `1 COP# = 1,000 COP`, so a balance of `COP# 5.00` is the same money as `COP 5,000.00`.
+- **`PHPT` — 1:1** with `PHP`. No scaling at all.
+- **`MYR2` and `MMK3` — hecto:** 100× larger than their base.
+- **`TWD2` — the other way:** 130× *smaller* than `TWD`, not larger.
+
+The code is not a reliable guide — always use the conversion shown under each code in the table above.
+
+Five units have **two codes for the same thing** — `IDR#`/`KIDR`, `IRR#`/`KIRR`, `LAK#`/`KLAK`, `UZS#`/`KUZS`, `VND#`/`KVND`. Both spellings are accepted, and **both are returned**, so deduplicate before rendering a currency picker or the same currency will appear twice.
+
+### Crypto sub-units (`sub_crypto`)
+
+A sub-unit is the **same coin re-denominated smaller**, so that everyday amounts stay readable: `1 BTC = 1,000 mBTC`. It is not a separate currency — its exchange rate is derived from its base coin. The conversion is shown under each sub-unit's name in the table above.
+
+### Virtual currencies (`virtual`)
+
+Virtual currencies have **no real exchange rate** and carry no monetary value. They are used for demo and fun-mode play, and are **not** returned by [Get Games Information](/core/get-games-information) unless you ask for them explicitly with `currencyFilters=virtual`.
+
+## Decimal places
+
+Amounts in the Core API and the Integration Adapter API are **decimal strings in the currency's main unit, not in cents** — `"0.90"` means €0.90, not €0.0090.
+
+- **Fiat carries up to 2 decimal places.** Up to, not exactly — see below.
+- **Crypto carries up to its own precision** (e.g. `BTC` 8, `ETH` 18).
+
+The **Decimals** column in the table above is the number of decimal places we actually honour. Two cases catch integrators out:
+
+**Zero-decimal fiat.** These 16 currencies carry **no** decimal places — a fractional amount is not meaningful and will be rounded away:
+
+`BIF` `CLP` `DJF` `GNF` `ISK` `JPY` `KMF` `KRW` `PYG` `RWF` `UGX` `VND` `VUV` `XAF` `XOF` `XPF`
+
+**Conventionally 3-decimal fiat is handled at 2.** `BHD`, `IQD`, `JOD`, `KWD`, `LYD`, `OMR` and `TND` have three decimal places by banking convention, but Swipe Games processes them at **2**. A third decimal you send will be rounded away.

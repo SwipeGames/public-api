@@ -6,7 +6,7 @@ import type { Config } from "@docusaurus/types";
 import type * as Plugin from "@docusaurus/types/src/plugin";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 
-const API_VERSION = "1.8.1";
+const API_VERSION = "1.8.2";
 
 const config: Config = {
   title: "Swipe Games",
