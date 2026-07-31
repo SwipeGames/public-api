@@ -1,6 +1,6 @@
 <?php
 /**
- * BetLineInfo
+ * FreeRoundsInfoResponse
  *
  * PHP version 8.1
  *
@@ -32,7 +32,7 @@ use \ArrayAccess;
 use \SwipeGames\PublicApi\ObjectSerializer;
 
 /**
- * BetLineInfo Class Doc Comment
+ * FreeRoundsInfoResponse Class Doc Comment
  *
  * @category Class
  * @package  SwipeGames\PublicApi
@@ -40,7 +40,7 @@ use \SwipeGames\PublicApi\ObjectSerializer;
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
+class FreeRoundsInfoResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -49,7 +49,7 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
       *
       * @var string
       */
-    protected static $openAPIModelName = 'BetLineInfo';
+    protected static $openAPIModelName = 'FreeRoundsInfoResponse';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -57,8 +57,16 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var string[]
       */
     protected static $openAPITypes = [
+        'id' => 'string',
+        'ext_id' => 'string',
+        'game_ids' => 'string[]',
+        'quantity' => 'int',
+        'max_bet' => 'string',
+        'max_mult' => 'float',
         'currency' => 'string',
-        'values' => '\SwipeGames\PublicApi\Core\BetLineValue[]'
+        'valid_from' => '\DateTime',
+        'valid_until' => '\DateTime',
+        'deleted_at' => '\DateTime'
     ];
 
     /**
@@ -69,8 +77,16 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
+        'id' => 'uuid',
+        'ext_id' => null,
+        'game_ids' => null,
+        'quantity' => 'int32',
+        'max_bet' => null,
+        'max_mult' => 'double',
         'currency' => null,
-        'values' => null
+        'valid_from' => 'date-time',
+        'valid_until' => 'date-time',
+        'deleted_at' => 'date-time'
     ];
 
     /**
@@ -79,8 +95,16 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var boolean[]
       */
     protected static array $openAPINullables = [
+        'id' => false,
+        'ext_id' => false,
+        'game_ids' => false,
+        'quantity' => false,
+        'max_bet' => false,
+        'max_mult' => false,
         'currency' => false,
-        'values' => false
+        'valid_from' => false,
+        'valid_until' => false,
+        'deleted_at' => false
     ];
 
     /**
@@ -169,8 +193,16 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
+        'id' => 'id',
+        'ext_id' => 'extID',
+        'game_ids' => 'gameIDs',
+        'quantity' => 'quantity',
+        'max_bet' => 'maxBet',
+        'max_mult' => 'maxMult',
         'currency' => 'currency',
-        'values' => 'values'
+        'valid_from' => 'validFrom',
+        'valid_until' => 'validUntil',
+        'deleted_at' => 'deletedAt'
     ];
 
     /**
@@ -179,8 +211,16 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
+        'id' => 'setId',
+        'ext_id' => 'setExtId',
+        'game_ids' => 'setGameIds',
+        'quantity' => 'setQuantity',
+        'max_bet' => 'setMaxBet',
+        'max_mult' => 'setMaxMult',
         'currency' => 'setCurrency',
-        'values' => 'setValues'
+        'valid_from' => 'setValidFrom',
+        'valid_until' => 'setValidUntil',
+        'deleted_at' => 'setDeletedAt'
     ];
 
     /**
@@ -189,8 +229,16 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
+        'id' => 'getId',
+        'ext_id' => 'getExtId',
+        'game_ids' => 'getGameIds',
+        'quantity' => 'getQuantity',
+        'max_bet' => 'getMaxBet',
+        'max_mult' => 'getMaxMult',
         'currency' => 'getCurrency',
-        'values' => 'getValues'
+        'valid_from' => 'getValidFrom',
+        'valid_until' => 'getValidUntil',
+        'deleted_at' => 'getDeletedAt'
     ];
 
     /**
@@ -250,8 +298,16 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
+        $this->setIfExists('id', $data ?? [], null);
+        $this->setIfExists('ext_id', $data ?? [], null);
+        $this->setIfExists('game_ids', $data ?? [], null);
+        $this->setIfExists('quantity', $data ?? [], null);
+        $this->setIfExists('max_bet', $data ?? [], null);
+        $this->setIfExists('max_mult', $data ?? [], null);
         $this->setIfExists('currency', $data ?? [], null);
-        $this->setIfExists('values', $data ?? [], null);
+        $this->setIfExists('valid_from', $data ?? [], null);
+        $this->setIfExists('valid_until', $data ?? [], null);
+        $this->setIfExists('deleted_at', $data ?? [], null);
     }
 
     /**
@@ -281,11 +337,26 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
+        if ($this->container['id'] === null) {
+            $invalidProperties[] = "'id' can't be null";
+        }
+        if ($this->container['ext_id'] === null) {
+            $invalidProperties[] = "'ext_id' can't be null";
+        }
+        if ($this->container['quantity'] === null) {
+            $invalidProperties[] = "'quantity' can't be null";
+        }
+        if ($this->container['max_bet'] === null) {
+            $invalidProperties[] = "'max_bet' can't be null";
+        }
+        if ($this->container['max_mult'] === null) {
+            $invalidProperties[] = "'max_mult' can't be null";
+        }
         if ($this->container['currency'] === null) {
             $invalidProperties[] = "'currency' can't be null";
         }
-        if ($this->container['values'] === null) {
-            $invalidProperties[] = "'values' can't be null";
+        if ($this->container['valid_from'] === null) {
+            $invalidProperties[] = "'valid_from' can't be null";
         }
         return $invalidProperties;
     }
@@ -303,6 +374,168 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
 
 
     /**
+     * Gets id
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
+
+    /**
+     * Sets id
+     *
+     * @param string $id Free rounds ID (internal). The provider-generated free bet identifier.
+     *
+     * @return self
+     */
+    public function setId($id)
+    {
+        if (is_null($id)) {
+            throw new \InvalidArgumentException('non-nullable id cannot be null');
+        }
+        $this->container['id'] = $id;
+
+        return $this;
+    }
+
+    /**
+     * Gets ext_id
+     *
+     * @return string
+     */
+    public function getExtId()
+    {
+        return $this->container['ext_id'];
+    }
+
+    /**
+     * Sets ext_id
+     *
+     * @param string $ext_id Free rounds ID (external). The id the campaign was registered under by the operator.
+     *
+     * @return self
+     */
+    public function setExtId($ext_id)
+    {
+        if (is_null($ext_id)) {
+            throw new \InvalidArgumentException('non-nullable ext_id cannot be null');
+        }
+        $this->container['ext_id'] = $ext_id;
+
+        return $this;
+    }
+
+    /**
+     * Gets game_ids
+     *
+     * @return string[]|null
+     */
+    public function getGameIds()
+    {
+        return $this->container['game_ids'];
+    }
+
+    /**
+     * Sets game_ids
+     *
+     * @param string[]|null $game_ids List of game IDs the campaign is configured for.
+     *
+     * @return self
+     */
+    public function setGameIds($game_ids)
+    {
+        if (is_null($game_ids)) {
+            throw new \InvalidArgumentException('non-nullable game_ids cannot be null');
+        }
+        $this->container['game_ids'] = $game_ids;
+
+        return $this;
+    }
+
+    /**
+     * Gets quantity
+     *
+     * @return int
+     */
+    public function getQuantity()
+    {
+        return $this->container['quantity'];
+    }
+
+    /**
+     * Sets quantity
+     *
+     * @param int $quantity Total number of free rounds granted for the campaign.
+     *
+     * @return self
+     */
+    public function setQuantity($quantity)
+    {
+        if (is_null($quantity)) {
+            throw new \InvalidArgumentException('non-nullable quantity cannot be null');
+        }
+        $this->container['quantity'] = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * Gets max_bet
+     *
+     * @return string
+     */
+    public function getMaxBet()
+    {
+        return $this->container['max_bet'];
+    }
+
+    /**
+     * Sets max_bet
+     *
+     * @param string $max_bet Maximum bet amount per attempt, in main currency units.
+     *
+     * @return self
+     */
+    public function setMaxBet($max_bet)
+    {
+        if (is_null($max_bet)) {
+            throw new \InvalidArgumentException('non-nullable max_bet cannot be null');
+        }
+        $this->container['max_bet'] = $max_bet;
+
+        return $this;
+    }
+
+    /**
+     * Gets max_mult
+     *
+     * @return float
+     */
+    public function getMaxMult()
+    {
+        return $this->container['max_mult'];
+    }
+
+    /**
+     * Sets max_mult
+     *
+     * @param float $max_mult Maximum target multiplier for the campaign.
+     *
+     * @return self
+     */
+    public function setMaxMult($max_mult)
+    {
+        if (is_null($max_mult)) {
+            throw new \InvalidArgumentException('non-nullable max_mult cannot be null');
+        }
+        $this->container['max_mult'] = $max_mult;
+
+        return $this;
+    }
+
+    /**
      * Gets currency
      *
      * @return string
@@ -315,7 +548,7 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets currency
      *
-     * @param string $currency Currency code in ISO4217
+     * @param string $currency Currency code in ISO4217.
      *
      * @return self
      */
@@ -330,28 +563,82 @@ class BetLineInfo implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets values
+     * Gets valid_from
      *
-     * @return \SwipeGames\PublicApi\Core\BetLineValue[]
+     * @return \DateTime
      */
-    public function getValues()
+    public function getValidFrom()
     {
-        return $this->container['values'];
+        return $this->container['valid_from'];
     }
 
     /**
-     * Sets values
+     * Sets valid_from
      *
-     * @param \SwipeGames\PublicApi\Core\BetLineValue[] $values List of bet line values (0-indexed array maps to 1-based bet lines).
+     * @param \DateTime $valid_from Start date when free rounds become available.
      *
      * @return self
      */
-    public function setValues($values)
+    public function setValidFrom($valid_from)
     {
-        if (is_null($values)) {
-            throw new \InvalidArgumentException('non-nullable values cannot be null');
+        if (is_null($valid_from)) {
+            throw new \InvalidArgumentException('non-nullable valid_from cannot be null');
         }
-        $this->container['values'] = $values;
+        $this->container['valid_from'] = $valid_from;
+
+        return $this;
+    }
+
+    /**
+     * Gets valid_until
+     *
+     * @return \DateTime|null
+     */
+    public function getValidUntil()
+    {
+        return $this->container['valid_until'];
+    }
+
+    /**
+     * Sets valid_until
+     *
+     * @param \DateTime|null $valid_until End date when free rounds become unavailable. Absent if the campaign never ends.
+     *
+     * @return self
+     */
+    public function setValidUntil($valid_until)
+    {
+        if (is_null($valid_until)) {
+            throw new \InvalidArgumentException('non-nullable valid_until cannot be null');
+        }
+        $this->container['valid_until'] = $valid_until;
+
+        return $this;
+    }
+
+    /**
+     * Gets deleted_at
+     *
+     * @return \DateTime|null
+     */
+    public function getDeletedAt()
+    {
+        return $this->container['deleted_at'];
+    }
+
+    /**
+     * Sets deleted_at
+     *
+     * @param \DateTime|null $deleted_at Date the campaign was cancelled. Absent if the campaign is not cancelled.
+     *
+     * @return self
+     */
+    public function setDeletedAt($deleted_at)
+    {
+        if (is_null($deleted_at)) {
+            throw new \InvalidArgumentException('non-nullable deleted_at cannot be null');
+        }
+        $this->container['deleted_at'] = $deleted_at;
 
         return $this;
     }

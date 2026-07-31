@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.8.2
+ * OpenAPI spec version: 1.9.0
  */
 import * as zod from 'zod';
 
@@ -75,6 +75,39 @@ export const PostFreeRoundsBody = zod.object({
 export const PostFreeRoundsResponse = zod.object({
   "id": zod.string().uuid().describe('Free rounds ID (internal).'),
   "extID": zod.string().describe('Free rounds ID (external). This is provided in the request.')
+})
+
+
+/**
+ * Get the current state of a free rounds campaign by its internal id or external id:
+the total number of granted rounds, bet value per attempt, currency, validity
+window, and whether the campaign was cancelled. One of `id` or `extID` must be
+provided.
+
+ * @summary Get free rounds campaign info
+ */
+export const GetFreeRoundsQueryParams = zod.object({
+  "cID": zod.string().uuid().describe('Client\'s ID (internal)'),
+  "extCID": zod.string().describe('External Client\'s ID (game aggregator or casino)'),
+  "id": zod.string().uuid().optional().describe('Free rounds ID (internal). One of id or extID must be provided.'),
+  "extID": zod.string().optional().describe('Free rounds ID (external). One of id or extID must be provided.')
+})
+
+export const GetFreeRoundsHeader = zod.object({
+  "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Authentication](\/authn) for more details)')
+})
+
+export const GetFreeRoundsResponse = zod.object({
+  "id": zod.string().uuid().describe('Free rounds ID (internal). The provider-generated free bet identifier.'),
+  "extID": zod.string().describe('Free rounds ID (external). The id the campaign was registered under by the operator.'),
+  "gameIDs": zod.array(zod.string()).optional().describe('List of game IDs the campaign is configured for.'),
+  "quantity": zod.number().describe('Total number of free rounds granted for the campaign.'),
+  "maxBet": zod.string().describe('Maximum bet amount per attempt, in main currency units.'),
+  "maxMult": zod.number().describe('Maximum target multiplier for the campaign.'),
+  "currency": zod.string().describe('Currency code in ISO4217.'),
+  "validFrom": zod.string().datetime({}).describe('Start date when free rounds become available.'),
+  "validUntil": zod.string().datetime({}).optional().describe('End date when free rounds become unavailable. Absent if the campaign never ends.'),
+  "deletedAt": zod.string().datetime({}).optional().describe('Date the campaign was cancelled. Absent if the campaign is not cancelled.')
 })
 
 

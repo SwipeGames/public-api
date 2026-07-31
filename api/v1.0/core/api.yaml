@@ -3,7 +3,7 @@ info:
   title: Swipe Games Core Public API
   description: |
     This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
-  version: 1.8.2
+  version: 1.9.0
 
 servers:
   - url: https://staging.platform.0.swipegames.io/api/v1
@@ -94,6 +94,94 @@ paths:
 
         409:
           description: Free rounds campaign already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        500:
+          description: Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    get:
+      summary: Get free rounds campaign info
+      tags:
+        - Free Rounds
+      description: |
+        Get the current state of a free rounds campaign by its internal id or external id:
+        the total number of granted rounds, bet value per attempt, currency, validity
+        window, and whether the campaign was cancelled. One of `id` or `extID` must be
+        provided.
+      parameters:
+        - name: X-REQUEST-SIGN
+          in: header
+          required: true
+          description: Request signature (see [Authentication](/authn) for more details)
+          schema:
+            type: string
+        - name: cID
+          in: query
+          required: true
+          description: Client's ID (internal)
+          x-go-name: CID
+          schema:
+            type: string
+            format: uuid
+            x-go-type: uuid.UUID
+            x-go-type-import:
+              name: uuid
+              path: github.com/google/uuid
+          example: 550e8400-e29b-41d4-a716-446655440000
+        - name: extCID
+          in: query
+          required: true
+          description: External Client's ID (game aggregator or casino)
+          x-go-name: extCID
+          schema:
+            type: string
+          example: your_ext_id
+        - name: id
+          in: query
+          required: false
+          description: Free rounds ID (internal). One of id or extID must be provided.
+          x-go-name: ID
+          schema:
+            type: string
+            format: uuid
+            x-go-type: uuid.UUID
+            x-go-type-import:
+              name: uuid
+              path: github.com/google/uuid
+          example: 550e8400-e29b-41d4-a716-446655440000
+        - name: extID
+          in: query
+          required: false
+          description: Free rounds ID (external). One of id or extID must be provided.
+          x-go-name: extID
+          schema:
+            type: string
+          example: free_rounds_id
+
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FreeRoundsInfoResponse"
+
+        401:
+          description: Wrong signature or API key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        404:
+          description: Free rounds campaign not found
           content:
             application/json:
               schema:
@@ -513,6 +601,69 @@ components:
         extID:
           description: Free rounds ID (external). This is provided in the request.
           type: string
+
+    FreeRoundsInfoResponse:
+      type: object
+      required:
+        - id
+        - extID
+        - quantity
+        - maxBet
+        - maxMult
+        - currency
+        - validFrom
+      properties:
+        id:
+          description: Free rounds ID (internal). The provider-generated free bet identifier.
+          type: string
+          format: uuid
+          x-go-type: uuid.UUID
+          x-go-type-import:
+            name: uuid
+            path: github.com/google/uuid
+        extID:
+          description: Free rounds ID (external). The id the campaign was registered under by the operator.
+          type: string
+        gameIDs:
+          description: List of game IDs the campaign is configured for.
+          type: array
+          items:
+            type: string
+          example: ["sg_catch_97"]
+        quantity:
+          description: Total number of free rounds granted for the campaign.
+          type: integer
+          format: int32
+          example: 10
+        maxBet:
+          description: Maximum bet amount per attempt, in main currency units.
+          type: string
+          example: "0.10"
+        maxMult:
+          description: Maximum target multiplier for the campaign.
+          type: number
+          format: double
+          x-go-type: float64
+          example: 5
+        currency:
+          description: Currency code in ISO4217.
+          type: string
+          example: USD
+        validFrom:
+          description: Start date when free rounds become available.
+          type: string
+          format: date-time
+          example: "2026-01-01T00:00:00.000Z"
+        validUntil:
+          description: End date when free rounds become unavailable. Absent if the campaign never ends.
+          type: string
+          format: date-time
+          example: "2026-02-28T23:59:59.999Z"
+        deletedAt:
+          description: Date the campaign was cancelled. Absent if the campaign is not cancelled.
+          type: string
+          format: date-time
+          example: "2026-01-15T12:00:00.000Z"
 
     DeleteFreeRoundsRequest:
       type: object

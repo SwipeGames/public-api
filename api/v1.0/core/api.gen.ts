@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.8.2
+ * OpenAPI spec version: 1.9.0
  */
 /**
  * Currency filter for the games list
@@ -146,6 +146,29 @@ export interface CreateFreeRoundsResponse {
   extID: string;
 }
 
+export interface FreeRoundsInfoResponse {
+  /** Free rounds ID (internal). The provider-generated free bet identifier. */
+  id: string;
+  /** Free rounds ID (external). The id the campaign was registered under by the operator. */
+  extID: string;
+  /** List of game IDs the campaign is configured for. */
+  gameIDs?: string[];
+  /** Total number of free rounds granted for the campaign. */
+  quantity: number;
+  /** Maximum bet amount per attempt, in main currency units. */
+  maxBet: string;
+  /** Maximum target multiplier for the campaign. */
+  maxMult: number;
+  /** Currency code in ISO4217. */
+  currency: string;
+  /** Start date when free rounds become available. */
+  validFrom: string;
+  /** End date when free rounds become unavailable. Absent if the campaign never ends. */
+  validUntil?: string;
+  /** Date the campaign was cancelled. Absent if the campaign is not cancelled. */
+  deletedAt?: string;
+}
+
 export interface DeleteFreeRoundsRequest {
   /** Free rounds ID (internal). Used as idempotency key. One of id or extID must be provided.
  */
@@ -238,6 +261,25 @@ export interface ErrorResponse {
   /** Error code. */
   code?: ErrorResponseCode;
 }
+
+export type GetFreeRoundsParams = {
+/**
+ * Client's ID (internal)
+ */
+cID: string;
+/**
+ * External Client's ID (game aggregator or casino)
+ */
+extCID: string;
+/**
+ * Free rounds ID (internal). One of id or extID must be provided.
+ */
+id?: string;
+/**
+ * Free rounds ID (external). One of id or extID must be provided.
+ */
+extID?: string;
+};
 
 export type GetGamesParams = {
 /**
@@ -396,6 +438,77 @@ export const postFreeRounds = async (createFreeRoundsRequest: CreateFreeRoundsRe
   
   const data: postFreeRoundsResponse['data'] = body ? JSON.parse(body) : {}
   return { data, status: res.status, headers: res.headers } as postFreeRoundsResponse
+}
+  
+
+
+/**
+ * Get the current state of a free rounds campaign by its internal id or external id:
+the total number of granted rounds, bet value per attempt, currency, validity
+window, and whether the campaign was cancelled. One of `id` or `extID` must be
+provided.
+
+ * @summary Get free rounds campaign info
+ */
+export type getFreeRoundsResponse200 = {
+  data: FreeRoundsInfoResponse
+  status: 200
+}
+
+export type getFreeRoundsResponse401 = {
+  data: ErrorResponse
+  status: 401
+}
+
+export type getFreeRoundsResponse404 = {
+  data: ErrorResponse
+  status: 404
+}
+
+export type getFreeRoundsResponse500 = {
+  data: ErrorResponse
+  status: 500
+}
+
+export type getFreeRoundsResponseSuccess = (getFreeRoundsResponse200) & {
+  headers: Headers;
+};
+export type getFreeRoundsResponseError = (getFreeRoundsResponse401 | getFreeRoundsResponse404 | getFreeRoundsResponse500) & {
+  headers: Headers;
+};
+
+export type getFreeRoundsResponse = (getFreeRoundsResponseSuccess | getFreeRoundsResponseError)
+
+export const getGetFreeRoundsUrl = (params: GetFreeRoundsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/free-rounds?${stringifiedParams}` : `/free-rounds`
+}
+
+export const getFreeRounds = async (params: GetFreeRoundsParams, options?: RequestInit): Promise<getFreeRoundsResponse> => {
+  
+  const res = await fetch(getGetFreeRoundsUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  
+  const data: getFreeRoundsResponse['data'] = body ? JSON.parse(body) : {}
+  return { data, status: res.status, headers: res.headers } as getFreeRoundsResponse
 }
   
 
