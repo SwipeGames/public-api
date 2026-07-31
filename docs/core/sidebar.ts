@@ -26,6 +26,12 @@ const sidebar: SidebarsConfig = {
         },
         {
           type: "doc",
+          id: "core/get-free-rounds-campaign-info",
+          label: "Get free rounds campaign info",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
           id: "core/cancel-delete-free-rounds-campaign",
           label: "Cancel/Delete free rounds campaign",
           className: "api-method delete",
@@ -82,6 +88,12 @@ const sidebar: SidebarsConfig = {
           type: "doc",
           id: "core/schemas/createfreeroundsresponse",
           label: "CreateFreeRoundsResponse",
+          className: "schema",
+        },
+        {
+          type: "doc",
+          id: "core/schemas/freeroundsinforesponse",
+          label: "FreeRoundsInfoResponse",
           className: "schema",
         },
         {

@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.9.0
+
+- Core: added `GET /free-rounds` to read a free-rounds campaign by its internal `id` or external `extID` — returns status source data (quantity, maxBet, maxMult, currency, validity window, and cancellation).
+
 ## 1.8.2
 
 - Updated the list of [supported currencies](/currencies).
