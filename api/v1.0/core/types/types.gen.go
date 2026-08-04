@@ -41,22 +41,22 @@ func (e CurrencyFilter) Valid() bool {
 
 // Defines values for ErrorResponseCode.
 const (
-	AccountBlocked       ErrorResponseCode = "account_blocked"
-	CurrencyNotSupported ErrorResponseCode = "currency_not_supported"
-	GameNotFound         ErrorResponseCode = "game_not_found"
-	LocaleNotSupported   ErrorResponseCode = "locale_not_supported"
+	ErrorResponseCodeAccountBlocked       ErrorResponseCode = "account_blocked"
+	ErrorResponseCodeCurrencyNotSupported ErrorResponseCode = "currency_not_supported"
+	ErrorResponseCodeGameNotFound         ErrorResponseCode = "game_not_found"
+	ErrorResponseCodeLocaleNotSupported   ErrorResponseCode = "locale_not_supported"
 )
 
 // Valid indicates whether the value is a known member of the ErrorResponseCode enum.
 func (e ErrorResponseCode) Valid() bool {
 	switch e {
-	case AccountBlocked:
+	case ErrorResponseCodeAccountBlocked:
 		return true
-	case CurrencyNotSupported:
+	case ErrorResponseCodeCurrencyNotSupported:
 		return true
-	case GameNotFound:
+	case ErrorResponseCodeGameNotFound:
 		return true
-	case LocaleNotSupported:
+	case ErrorResponseCodeLocaleNotSupported:
 		return true
 	default:
 		return false
@@ -75,6 +75,42 @@ func (e PlatformType) Valid() bool {
 	case Desktop:
 		return true
 	case Mobile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PostCreateNewGame400JSONResponseBodyCode.
+const (
+	PostCreateNewGame400JSONResponseBodyCodeCurrencyNotSupported PostCreateNewGame400JSONResponseBodyCode = "currency_not_supported"
+	PostCreateNewGame400JSONResponseBodyCodeLocaleNotSupported   PostCreateNewGame400JSONResponseBodyCode = "locale_not_supported"
+)
+
+// Valid indicates whether the value is a known member of the PostCreateNewGame400JSONResponseBodyCode enum.
+func (e PostCreateNewGame400JSONResponseBodyCode) Valid() bool {
+	switch e {
+	case PostCreateNewGame400JSONResponseBodyCodeCurrencyNotSupported:
+		return true
+	case PostCreateNewGame400JSONResponseBodyCodeLocaleNotSupported:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PostCreateNewGame403JSONResponseBodyCode.
+const (
+	PostCreateNewGame403JSONResponseBodyCodeAccountBlocked PostCreateNewGame403JSONResponseBodyCode = "account_blocked"
+	PostCreateNewGame403JSONResponseBodyCodeGameNotFound   PostCreateNewGame403JSONResponseBodyCode = "game_not_found"
+)
+
+// Valid indicates whether the value is a known member of the PostCreateNewGame403JSONResponseBodyCode enum.
+func (e PostCreateNewGame403JSONResponseBodyCode) Valid() bool {
+	switch e {
+	case PostCreateNewGame403JSONResponseBodyCodeAccountBlocked:
+		return true
+	case PostCreateNewGame403JSONResponseBodyCodeGameNotFound:
 		return true
 	default:
 		return false
@@ -219,6 +255,13 @@ type CreateNewGameRequest struct {
 	// Example: your_ext_id
 	ExtCID string `json:"extCID"`
 
+	// FallbackToDefaultLocale If `true` and the requested `locale` is not supported, the game is created with the default locale (`en_us`)
+	// instead of returning a `400 locale_not_supported` error. Defaults to `false`.
+	//
+	//
+	// Example: false
+	FallbackToDefaultLocale *bool `json:"fallbackToDefaultLocale,omitempty"`
+
 	// GameID Game's ID. This is Swipe Games's game identifier. See the list of supported games in [Games](/games) section.
 	//
 	//
@@ -233,6 +276,9 @@ type CreateNewGameRequest struct {
 	InitDemoBalance *string `json:"initDemoBalance,omitempty"`
 
 	// Locale Locale code in IETF BCP 47 format (ISO 639-1 language code with optional ISO 3166-1 country code), using underscore as separator.
+	// See [Locales](/locales) for the list of supported locales. If the requested locale is not supported the request fails with
+	// `400 locale_not_supported`, unless `fallbackToDefaultLocale` is set (see below).
+	//
 	//
 	// Example: en_us
 	Locale string `json:"locale"`
@@ -458,6 +504,12 @@ type PostCreateNewGameParams struct {
 	// XREQUESTSIGN Request signature (see [Authentication](/authn) for more details)
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
+
+// PostCreateNewGame400JSONResponseBodyCode defines parameters for PostCreateNewGame.
+type PostCreateNewGame400JSONResponseBodyCode string
+
+// PostCreateNewGame403JSONResponseBodyCode defines parameters for PostCreateNewGame.
+type PostCreateNewGame403JSONResponseBodyCode string
 
 // DeleteFreeRoundsParams defines parameters for DeleteFreeRounds.
 type DeleteFreeRoundsParams struct {

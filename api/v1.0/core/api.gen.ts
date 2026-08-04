@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.9.0
+ * OpenAPI spec version: 1.10.0
  */
 /**
  * Currency filter for the games list
@@ -66,8 +66,15 @@ identifier for the game session and is unrelated to the value you send here.
   depositURL?: string;
   /** Currency code in ISO4217. */
   currency: string;
-  /** Locale code in IETF BCP 47 format (ISO 639-1 language code with optional ISO 3166-1 country code), using underscore as separator. */
+  /** Locale code in IETF BCP 47 format (ISO 639-1 language code with optional ISO 3166-1 country code), using underscore as separator.
+See [Locales](/locales) for the list of supported locales. If the requested locale is not supported the request fails with
+`400 locale_not_supported`, unless `fallbackToDefaultLocale` is set (see below).
+ */
   locale: string;
+  /** If `true` and the requested `locale` is not supported, the game is created with the default locale (`en_us`)
+instead of returning a `400 locale_not_supported` error. Defaults to `false`.
+ */
+  fallbackToDefaultLocale?: boolean;
   /** Platform code. This is used to identify the platform where the game is launched. */
   platform: PlatformType;
   /** Demo mode. If true, the game will be launched in demo mode (means no callbacks will be fired on your side,
@@ -262,6 +269,72 @@ export interface ErrorResponse {
   code?: ErrorResponseCode;
 }
 
+/**
+ * Error code. Absent for generic validation errors.
+ */
+export type PostCreateNewGame400Code = typeof PostCreateNewGame400Code[keyof typeof PostCreateNewGame400Code];
+
+
+export const PostCreateNewGame400Code = {
+  currency_not_supported: 'currency_not_supported',
+  locale_not_supported: 'locale_not_supported',
+} as const;
+
+/**
+ * General error response for Swipe Games Core Public API.
+ */
+export type PostCreateNewGame400 = {
+  /** A brief description of the error in English. Could be shown to the player. */
+  message: string;
+  /** Technical details for the error. Could be used for debugging, should not be shown to the player. */
+  details?: string;
+  /** Error code. Absent for generic validation errors. */
+  code?: PostCreateNewGame400Code;
+};
+
+/**
+ * General error response for Swipe Games Core Public API.
+ */
+export type PostCreateNewGame401 = {
+  /** A brief description of the error in English. Could be shown to the player. */
+  message: string;
+  /** Technical details for the error. Could be used for debugging, should not be shown to the player. */
+  details?: string;
+};
+
+/**
+ * Error code.
+ */
+export type PostCreateNewGame403Code = typeof PostCreateNewGame403Code[keyof typeof PostCreateNewGame403Code];
+
+
+export const PostCreateNewGame403Code = {
+  account_blocked: 'account_blocked',
+  game_not_found: 'game_not_found',
+} as const;
+
+/**
+ * General error response for Swipe Games Core Public API.
+ */
+export type PostCreateNewGame403 = {
+  /** A brief description of the error in English. Could be shown to the player. */
+  message: string;
+  /** Technical details for the error. Could be used for debugging, should not be shown to the player. */
+  details?: string;
+  /** Error code. */
+  code?: PostCreateNewGame403Code;
+};
+
+/**
+ * General error response for Swipe Games Core Public API.
+ */
+export type PostCreateNewGame500 = {
+  /** A brief description of the error in English. Could be shown to the player. */
+  message: string;
+  /** Technical details for the error. Could be used for debugging, should not be shown to the player. */
+  details?: string;
+};
+
 export type GetFreeRoundsParams = {
 /**
  * Client's ID (internal)
@@ -327,6 +400,12 @@ additionalCurrencies?: string[];
  * Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
 for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
 
+The `currency` and `locale` are validated against the supported sets (see [Locales](/locales)). An unsupported value
+returns `400` with code `currency_not_supported` / `locale_not_supported`. For an unsupported locale you can set
+`fallbackToDefaultLocale: true` to create the game with the default locale (`en_us`) instead of receiving the error.
+If the user is blacklisted or the client has no access to the requested game, the request returns `403`
+(`account_blocked` / `game_not_found`).
+
  * @summary Create new game
  */
 export type postCreateNewGameResponse200 = {
@@ -334,20 +413,30 @@ export type postCreateNewGameResponse200 = {
   status: 200
 }
 
+export type postCreateNewGameResponse400 = {
+  data: PostCreateNewGame400
+  status: 400
+}
+
 export type postCreateNewGameResponse401 = {
-  data: ErrorResponse
+  data: PostCreateNewGame401
   status: 401
 }
 
+export type postCreateNewGameResponse403 = {
+  data: PostCreateNewGame403
+  status: 403
+}
+
 export type postCreateNewGameResponse500 = {
-  data: ErrorResponse
+  data: PostCreateNewGame500
   status: 500
 }
 
 export type postCreateNewGameResponseSuccess = (postCreateNewGameResponse200) & {
   headers: Headers;
 };
-export type postCreateNewGameResponseError = (postCreateNewGameResponse401 | postCreateNewGameResponse500) & {
+export type postCreateNewGameResponseError = (postCreateNewGameResponse400 | postCreateNewGameResponse401 | postCreateNewGameResponse403 | postCreateNewGameResponse500) & {
   headers: Headers;
 };
 

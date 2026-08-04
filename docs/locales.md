@@ -28,3 +28,11 @@ Currently we support the following locales:
 | de    | German                      |
 | id    | Indonesian                  |
 | uz    | Uzbek                       |
+
+The default locale is **`en_us`**.
+
+## Unsupported locales
+
+When you request a game with an unsupported `locale` in [Create new game](/core/create-new-game), the
+request fails with `400` and code `locale_not_supported`. To create the game with the default locale
+(`en_us`) instead of receiving the error, set `fallbackToDefaultLocale: true` in the request.
