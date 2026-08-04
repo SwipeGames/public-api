@@ -6,6 +6,11 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.0
+
+- Core: added the optional `fallbackToDefaultLocale` flag to [Create new game](/core/create-new-game). When `true` and the requested `locale` is not supported, the game is created with the default locale (`en_us`) instead of returning `400 locale_not_supported`. Documented the default locale on the [Locales](/locales) page.
+- Core: corrected the documented error responses of [Create new game](/core/create-new-game) to match the implementation — added the previously-undocumented `400` (`currency_not_supported` / `locale_not_supported`) and `403` (`account_blocked` / `game_not_found`) responses, each listing only the error codes it actually returns (the `401` / `500` responses no longer advertise business error codes).
+
 ## 1.9.0
 
 - Core: added `GET /free-rounds` to read a free-rounds campaign by its internal `id` or external `extID` — returns status source data (quantity, maxBet, maxMult, currency, validity window, and cancellation).

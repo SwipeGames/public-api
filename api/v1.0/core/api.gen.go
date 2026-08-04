@@ -55,22 +55,22 @@ func (e CurrencyFilter) Valid() bool {
 
 // Defines values for ErrorResponseCode.
 const (
-	AccountBlocked       ErrorResponseCode = "account_blocked"
-	CurrencyNotSupported ErrorResponseCode = "currency_not_supported"
-	GameNotFound         ErrorResponseCode = "game_not_found"
-	LocaleNotSupported   ErrorResponseCode = "locale_not_supported"
+	ErrorResponseCodeAccountBlocked       ErrorResponseCode = "account_blocked"
+	ErrorResponseCodeCurrencyNotSupported ErrorResponseCode = "currency_not_supported"
+	ErrorResponseCodeGameNotFound         ErrorResponseCode = "game_not_found"
+	ErrorResponseCodeLocaleNotSupported   ErrorResponseCode = "locale_not_supported"
 )
 
 // Valid indicates whether the value is a known member of the ErrorResponseCode enum.
 func (e ErrorResponseCode) Valid() bool {
 	switch e {
-	case AccountBlocked:
+	case ErrorResponseCodeAccountBlocked:
 		return true
-	case CurrencyNotSupported:
+	case ErrorResponseCodeCurrencyNotSupported:
 		return true
-	case GameNotFound:
+	case ErrorResponseCodeGameNotFound:
 		return true
-	case LocaleNotSupported:
+	case ErrorResponseCodeLocaleNotSupported:
 		return true
 	default:
 		return false
@@ -89,6 +89,42 @@ func (e PlatformType) Valid() bool {
 	case Desktop:
 		return true
 	case Mobile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PostCreateNewGame400JSONResponseBodyCode.
+const (
+	PostCreateNewGame400JSONResponseBodyCodeCurrencyNotSupported PostCreateNewGame400JSONResponseBodyCode = "currency_not_supported"
+	PostCreateNewGame400JSONResponseBodyCodeLocaleNotSupported   PostCreateNewGame400JSONResponseBodyCode = "locale_not_supported"
+)
+
+// Valid indicates whether the value is a known member of the PostCreateNewGame400JSONResponseBodyCode enum.
+func (e PostCreateNewGame400JSONResponseBodyCode) Valid() bool {
+	switch e {
+	case PostCreateNewGame400JSONResponseBodyCodeCurrencyNotSupported:
+		return true
+	case PostCreateNewGame400JSONResponseBodyCodeLocaleNotSupported:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PostCreateNewGame403JSONResponseBodyCode.
+const (
+	PostCreateNewGame403JSONResponseBodyCodeAccountBlocked PostCreateNewGame403JSONResponseBodyCode = "account_blocked"
+	PostCreateNewGame403JSONResponseBodyCodeGameNotFound   PostCreateNewGame403JSONResponseBodyCode = "game_not_found"
+)
+
+// Valid indicates whether the value is a known member of the PostCreateNewGame403JSONResponseBodyCode enum.
+func (e PostCreateNewGame403JSONResponseBodyCode) Valid() bool {
+	switch e {
+	case PostCreateNewGame403JSONResponseBodyCodeAccountBlocked:
+		return true
+	case PostCreateNewGame403JSONResponseBodyCodeGameNotFound:
 		return true
 	default:
 		return false
@@ -233,6 +269,13 @@ type CreateNewGameRequest struct {
 	// Example: your_ext_id
 	ExtCID string `json:"extCID"`
 
+	// FallbackToDefaultLocale If `true` and the requested `locale` is not supported, the game is created with the default locale (`en_us`)
+	// instead of returning a `400 locale_not_supported` error. Defaults to `false`.
+	//
+	//
+	// Example: false
+	FallbackToDefaultLocale *bool `json:"fallbackToDefaultLocale,omitempty"`
+
 	// GameID Game's ID. This is Swipe Games's game identifier. See the list of supported games in [Games](/games) section.
 	//
 	//
@@ -247,6 +290,9 @@ type CreateNewGameRequest struct {
 	InitDemoBalance *string `json:"initDemoBalance,omitempty"`
 
 	// Locale Locale code in IETF BCP 47 format (ISO 639-1 language code with optional ISO 3166-1 country code), using underscore as separator.
+	// See [Locales](/locales) for the list of supported locales. If the requested locale is not supported the request fails with
+	// `400 locale_not_supported`, unless `fallbackToDefaultLocale` is set (see below).
+	//
 	//
 	// Example: en_us
 	Locale string `json:"locale"`
@@ -473,6 +519,12 @@ type PostCreateNewGameParams struct {
 	XREQUESTSIGN string `json:"X-REQUEST-SIGN"`
 }
 
+// PostCreateNewGame400JSONResponseBodyCode defines parameters for PostCreateNewGame.
+type PostCreateNewGame400JSONResponseBodyCode string
+
+// PostCreateNewGame403JSONResponseBodyCode defines parameters for PostCreateNewGame.
+type PostCreateNewGame403JSONResponseBodyCode string
+
 // DeleteFreeRoundsParams defines parameters for DeleteFreeRounds.
 type DeleteFreeRoundsParams struct {
 	// XREQUESTSIGN Request signature (see [Authentication](/authn) for more details)
@@ -635,6 +687,12 @@ type ClientInterface interface {
 	// Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
 	// for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
 	//
+	// The `currency` and `locale` are validated against the supported sets (see [Locales](/locales)). An unsupported value
+	// returns `400` with code `currency_not_supported` / `locale_not_supported`. For an unsupported locale you can set
+	// `fallbackToDefaultLocale: true` to create the game with the default locale (`en_us`) instead of receiving the error.
+	// If the user is blacklisted or the client has no access to the requested game, the request returns `403`
+	// (`account_blocked` / `game_not_found`).
+	//
 	// Takes any type of body and a specified content type.
 	//
 	// Corresponds with POST /create-new-game (the `PostCreateNewGame` operationId).
@@ -644,6 +702,12 @@ type ClientInterface interface {
 	//
 	// Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
 	// for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
+	//
+	// The `currency` and `locale` are validated against the supported sets (see [Locales](/locales)). An unsupported value
+	// returns `400` with code `currency_not_supported` / `locale_not_supported`. For an unsupported locale you can set
+	// `fallbackToDefaultLocale: true` to create the game with the default locale (`en_us`) instead of receiving the error.
+	// If the user is blacklisted or the client has no access to the requested game, the request returns `403`
+	// (`account_blocked` / `game_not_found`).
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -711,6 +775,12 @@ type ClientInterface interface {
 // Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
 // for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
 //
+// The `currency` and `locale` are validated against the supported sets (see [Locales](/locales)). An unsupported value
+// returns `400` with code `currency_not_supported` / `locale_not_supported`. For an unsupported locale you can set
+// `fallbackToDefaultLocale: true` to create the game with the default locale (`en_us`) instead of receiving the error.
+// If the user is blacklisted or the client has no access to the requested game, the request returns `403`
+// (`account_blocked` / `game_not_found`).
+//
 // Takes any type of body and a specified content type.
 //
 // Corresponds with POST /create-new-game (the `PostCreateNewGame` operationId).
@@ -730,6 +800,12 @@ func (c *Client) PostCreateNewGameWithBody(ctx context.Context, params *PostCrea
 //
 // Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
 // for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
+//
+// The `currency` and `locale` are validated against the supported sets (see [Locales](/locales)). An unsupported value
+// returns `400` with code `currency_not_supported` / `locale_not_supported`. For an unsupported locale you can set
+// `fallbackToDefaultLocale: true` to create the game with the default locale (`en_us`) instead of receiving the error.
+// If the user is blacklisted or the client has no access to the requested game, the request returns `403`
+// (`account_blocked` / `game_not_found`).
 //
 // Takes a body of the `application/json` content type.
 //
@@ -1282,6 +1358,12 @@ type ClientWithResponsesInterface interface {
 	// Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
 	// for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
 	//
+	// The `currency` and `locale` are validated against the supported sets (see [Locales](/locales)). An unsupported value
+	// returns `400` with code `currency_not_supported` / `locale_not_supported`. For an unsupported locale you can set
+	// `fallbackToDefaultLocale: true` to create the game with the default locale (`en_us`) instead of receiving the error.
+	// If the user is blacklisted or the client has no access to the requested game, the request returns `403`
+	// (`account_blocked` / `game_not_found`).
+	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /create-new-game (the `PostCreateNewGame` operationId).
@@ -1291,6 +1373,12 @@ type ClientWithResponsesInterface interface {
 	//
 	// Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
 	// for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
+	//
+	// The `currency` and `locale` are validated against the supported sets (see [Locales](/locales)). An unsupported value
+	// returns `400` with code `currency_not_supported` / `locale_not_supported`. For an unsupported locale you can set
+	// `fallbackToDefaultLocale: true` to create the game with the default locale (`en_us`) instead of receiving the error.
+	// If the user is blacklisted or the client has no access to the requested game, the request returns `403`
+	// (`account_blocked` / `game_not_found`).
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -1362,10 +1450,44 @@ type PostCreateNewGameResponse struct {
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *CreateNewGameResponse
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *struct {
+		// Code Error code. Absent for generic validation errors.
+		Code *PostCreateNewGame400JSONResponseBodyCode `json:"code,omitempty"`
+
+		// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+		Details *string `json:"details,omitempty"`
+
+		// Message A brief description of the error in English. Could be shown to the player.
+		Message string `json:"message"`
+	}
 	// JSON401 the response for an HTTP 401 `application/json` response
-	JSON401 *ErrorResponse
+	JSON401 *struct {
+		// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+		Details *string `json:"details,omitempty"`
+
+		// Message A brief description of the error in English. Could be shown to the player.
+		Message string `json:"message"`
+	}
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *struct {
+		// Code Error code.
+		Code *PostCreateNewGame403JSONResponseBodyCode `json:"code,omitempty"`
+
+		// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+		Details *string `json:"details,omitempty"`
+
+		// Message A brief description of the error in English. Could be shown to the player.
+		Message string `json:"message"`
+	}
 	// JSON500 the response for an HTTP 500 `application/json` response
-	JSON500 *ErrorResponse
+	JSON500 *struct {
+		// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+		Details *string `json:"details,omitempty"`
+
+		// Message A brief description of the error in English. Could be shown to the player.
+		Message string `json:"message"`
+	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
@@ -1373,13 +1495,53 @@ func (r PostCreateNewGameResponse) GetJSON200() *CreateNewGameResponse {
 	return r.JSON200
 }
 
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r PostCreateNewGameResponse) GetJSON400() *struct {
+	// Code Error code. Absent for generic validation errors.
+	Code *PostCreateNewGame400JSONResponseBodyCode `json:"code,omitempty"`
+
+	// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+	Details *string `json:"details,omitempty"`
+
+	// Message A brief description of the error in English. Could be shown to the player.
+	Message string `json:"message"`
+} {
+	return r.JSON400
+}
+
 // GetJSON401 returns the response for an HTTP 401 `application/json` response
-func (r PostCreateNewGameResponse) GetJSON401() *ErrorResponse {
+func (r PostCreateNewGameResponse) GetJSON401() *struct {
+	// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+	Details *string `json:"details,omitempty"`
+
+	// Message A brief description of the error in English. Could be shown to the player.
+	Message string `json:"message"`
+} {
 	return r.JSON401
 }
 
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r PostCreateNewGameResponse) GetJSON403() *struct {
+	// Code Error code.
+	Code *PostCreateNewGame403JSONResponseBodyCode `json:"code,omitempty"`
+
+	// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+	Details *string `json:"details,omitempty"`
+
+	// Message A brief description of the error in English. Could be shown to the player.
+	Message string `json:"message"`
+} {
+	return r.JSON403
+}
+
 // GetJSON500 returns the response for an HTTP 500 `application/json` response
-func (r PostCreateNewGameResponse) GetJSON500() *ErrorResponse {
+func (r PostCreateNewGameResponse) GetJSON500() *struct {
+	// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+	Details *string `json:"details,omitempty"`
+
+	// Message A brief description of the error in English. Could be shown to the player.
+	Message string `json:"message"`
+} {
 	return r.JSON500
 }
 
@@ -1658,6 +1820,12 @@ func (r GetGamesResponse) ContentType() string {
 // Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
 // for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
 //
+// The `currency` and `locale` are validated against the supported sets (see [Locales](/locales)). An unsupported value
+// returns `400` with code `currency_not_supported` / `locale_not_supported`. For an unsupported locale you can set
+// `fallbackToDefaultLocale: true` to create the game with the default locale (`en_us`) instead of receiving the error.
+// If the user is blacklisted or the client has no access to the requested game, the request returns `403`
+// (`account_blocked` / `game_not_found`).
+//
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
 // Corresponds with POST /create-new-game (the `PostCreateNewGame` operationId).
@@ -1673,6 +1841,12 @@ func (c *ClientWithResponses) PostCreateNewGameWithBodyWithResponse(ctx context.
 //
 // Use this request to create a new game. It registers new `demo` or `real` game on the server and returns the Launcher URL
 // for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
+//
+// The `currency` and `locale` are validated against the supported sets (see [Locales](/locales)). An unsupported value
+// returns `400` with code `currency_not_supported` / `locale_not_supported`. For an unsupported locale you can set
+// `fallbackToDefaultLocale: true` to create the game with the default locale (`en_us`) instead of receiving the error.
+// If the user is blacklisted or the client has no access to the requested game, the request returns `403`
+// (`account_blocked` / `game_not_found`).
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -1801,15 +1975,59 @@ func ParsePostCreateNewGameResponse(rsp *http.Response) (*PostCreateNewGameRespo
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			// Code Error code. Absent for generic validation errors.
+			Code *PostCreateNewGame400JSONResponseBodyCode `json:"code,omitempty"`
+
+			// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+			Details *string `json:"details,omitempty"`
+
+			// Message A brief description of the error in English. Could be shown to the player.
+			Message string `json:"message"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest ErrorResponse
+		var dest struct {
+			// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+			Details *string `json:"details,omitempty"`
+
+			// Message A brief description of the error in English. Could be shown to the player.
+			Message string `json:"message"`
+		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON401 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			// Code Error code.
+			Code *PostCreateNewGame403JSONResponseBodyCode `json:"code,omitempty"`
+
+			// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+			Details *string `json:"details,omitempty"`
+
+			// Message A brief description of the error in English. Could be shown to the player.
+			Message string `json:"message"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest ErrorResponse
+		var dest struct {
+			// Details Technical details for the error. Could be used for debugging, should not be shown to the player.
+			Details *string `json:"details,omitempty"`
+
+			// Message A brief description of the error in English. Could be shown to the player.
+			Message string `json:"message"`
+		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2319,94 +2537,103 @@ func RegisterHandlersWithOptions(router EchoRouter, si ServerInterface, options 
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"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",
+	"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",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,
