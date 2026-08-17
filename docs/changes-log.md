@@ -6,6 +6,12 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.1
+
+- Integration: fix `Win` reverse call docs — `amount` and `type` described the bet instead of the win; corrected win/refund response `txID` examples.
+- Core: fix `GET /free-rounds` `id` description ("free bet" → "free rounds identifier").
+- Docs: fix `authn` signing examples to use a valid `locale` (`en_us` instead of `en-US`).
+
 ## 1.10.0
 
 - Core: added the optional `fallbackToDefaultLocale` flag to [Create new game](/core/create-new-game). When `true` and the requested `locale` is not supported, the game is created with the default locale (`en_us`) instead of returning `400 locale_not_supported`. Documented the default locale on the [Locales](/locales) page.

@@ -280,13 +280,13 @@ type RefundResponse struct {
 
 	// TxID Unique ID for the refund on your side. This is required for further tracking/debugging purposes.
 	//
-	// Example: some_external_bet_tx_id
+	// Example: some_external_refund_tx_id
 	TxID string `json:"txID"`
 }
 
 // WinRequest defines model for WinRequest.
 type WinRequest struct {
-	// Amount The amount of the bet in currency **main** units (note: not cents). Currency selected by the client during the
+	// Amount The amount of the win in currency **main** units (note: not cents). Currency selected by the client during the
 	// `Create New Game` call. Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 	//
 	//
@@ -325,8 +325,8 @@ type WinRequest struct {
 	TxID uuid.UUID `json:"txID"`
 
 	// Type The type of the win.
-	// - `regular` type means regular bet,
-	// - `free` type means free bet (see Free Rounds section).
+	// - `regular` type means regular win,
+	// - `free` type means free win (see Free Rounds section).
 	//
 	//
 	// Example: regular
@@ -334,8 +334,8 @@ type WinRequest struct {
 }
 
 // WinRequestType The type of the win.
-// - `regular` type means regular bet,
-// - `free` type means free bet (see Free Rounds section).
+// - `regular` type means regular win,
+// - `free` type means free win (see Free Rounds section).
 //
 // Example: regular
 type WinRequestType string
@@ -352,7 +352,7 @@ type WinResponse struct {
 
 	// TxID Unique ID for the win on your side. This is required for further tracking/debugging purposes.
 	//
-	// Example: some_external_bet_tx_id
+	// Example: some_external_win_tx_id
 	TxID string `json:"txID"`
 }
 

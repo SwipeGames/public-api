@@ -376,7 +376,7 @@ type FreeRoundsInfoResponse struct {
 	// Example: ["sg_catch_97"]
 	GameIDs *[]string `json:"gameIDs,omitempty"`
 
-	// Id Free rounds ID (internal). The provider-generated free bet identifier.
+	// Id Free rounds ID (internal). The provider-generated free rounds identifier.
 	Id uuid.UUID `json:"id"`
 
 	// MaxBet Maximum bet amount per attempt, in main currency units.
