@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.10.0
+ * OpenAPI spec version: 1.10.1
  */
 import * as zod from 'zod';
 
@@ -107,7 +107,7 @@ export const GetFreeRoundsHeader = zod.object({
 })
 
 export const GetFreeRoundsResponse = zod.object({
-  "id": zod.string().uuid().describe('Free rounds ID (internal). The provider-generated free bet identifier.'),
+  "id": zod.string().uuid().describe('Free rounds ID (internal). The provider-generated free rounds identifier.'),
   "extID": zod.string().describe('Free rounds ID (external). The id the campaign was registered under by the operator.'),
   "gameIDs": zod.array(zod.string()).optional().describe('List of game IDs the campaign is configured for.'),
   "quantity": zod.number().describe('Total number of free rounds granted for the campaign.'),

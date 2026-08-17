@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.10.0
+ * OpenAPI spec version: 1.10.1
  */
 /**
  * Currency filter for the games list
@@ -154,7 +154,7 @@ export interface CreateFreeRoundsResponse {
 }
 
 export interface FreeRoundsInfoResponse {
-  /** Free rounds ID (internal). The provider-generated free bet identifier. */
+  /** Free rounds ID (internal). The provider-generated free rounds identifier. */
   id: string;
   /** Free rounds ID (external). The id the campaign was registered under by the operator. */
   extID: string;

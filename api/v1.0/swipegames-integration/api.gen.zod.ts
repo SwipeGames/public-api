@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.10.0
+ * OpenAPI spec version: 1.10.1
  */
 import * as zod from 'zod';
 
@@ -87,9 +87,9 @@ export const postWinBodyAmountRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
 
 
 export const PostWinBody = zod.object({
-  "type": zod.enum(['regular', 'free']).describe('The type of the win.\n- `regular` type means regular bet,\n- `free` type means free bet (see Free Rounds section).\n'),
+  "type": zod.enum(['regular', 'free']).describe('The type of the win.\n- `regular` type means regular win,\n- `free` type means free win (see Free Rounds section).\n'),
   "sessionID": zod.string().describe('Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.\nIt is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is Swipe Games\'s own identifier and is never sent in reverse calls.\n'),
-  "amount": zod.string().regex(postWinBodyAmountRegExp).describe('The amount of the bet in currency \*\*main\*\* units (note: not cents). Currency selected by the client during the\n`Create New Game` call. Fiat currencies carry \*\*up to\*\* 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.\n'),
+  "amount": zod.string().regex(postWinBodyAmountRegExp).describe('The amount of the win in currency \*\*main\*\* units (note: not cents). Currency selected by the client during the\n`Create New Game` call. Fiat currencies carry \*\*up to\*\* 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.\n'),
   "txID": zod.string().uuid().describe('Globally unique identifier (UUID v4) for the win transaction on Swipe Games\' side.\nMust be used as an idempotency key on your side.\nUniqueness is guaranteed by Swipe Games for a rolling 3-month window.\nFor uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).\n'),
   "roundID": zod.string().uuid().describe('Non unique ID for the round (internal) on Swipe Games\' side.\nCould be the same for different games.\n'),
   "frID": zod.string().optional().describe('Free Rounds ID (external).\nThis field is provided only for free rounds wins (where `type` is `free`),\nduring bonus balance withdrawal process (type is `regular`).\n')

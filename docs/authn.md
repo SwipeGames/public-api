@@ -53,14 +53,14 @@ Without canonicalization, the same data would produce different signatures, caus
   "demo": true,
   "cID": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "extCID": "your_ext_id",
-  "locale": "en-US",
+  "locale": "en_us",
   "returnURL": "https://your-site.com/game-lobby"
 }
 ```
 
 **Canonical JSON (correct for signing):**
 ```json
-{"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
+{"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en_us","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 ```
 
 Notice:
@@ -146,13 +146,13 @@ const requestData = {
     returnURL: 'https://your-site.com/game-lobby',
     platform: 'desktop',
     currency: 'USD',
-    locale: 'en-US'
+    locale: 'en_us'
 };
 
 // Convert to canonical JSON
 const canonicalJSON = toCanonicalJSON(requestData);
 console.log('Canonical JSON:', canonicalJSON);
-// Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
+// Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en_us","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 
 // Generate signature
 const signature = sign(canonicalJSON, apiToken);
@@ -245,13 +245,13 @@ request_data = {
     'returnURL': 'https://your-site.com/game-lobby',
     'platform': 'desktop',
     'currency': 'USD',
-    'locale': 'en-US'
+    'locale': 'en_us'
 }
 
 # Convert to canonical JSON
 canonical_json = to_canonical_json(request_data)
 print(f'Canonical JSON: {canonical_json}')
-# Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
+# Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en_us","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 
 # Generate signature
 signature = sign(canonical_json, api_token)
@@ -362,12 +362,12 @@ func main() {
         "returnURL": "https://your-site.com/game-lobby",
         "platform":  "desktop",
         "currency":  "USD",
-        "locale":    "en-US",
+        "locale":    "en_us",
     }
 
     // Convert to canonical JSON
     canonicalJSON, _ := ToCanonicalJSON(requestData)
-    // Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
+    // Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en_us","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 
     // Generate signature
     signature := Sign(canonicalJSON, apiToken)
@@ -476,7 +476,7 @@ $requestData = [
     'returnURL' => 'https://your-site.com/game-lobby',
     'platform' => 'desktop',
     'currency' => 'USD',
-    'locale' => 'en-US'
+    'locale' => 'en_us'
 ];
 
 // PHP automatically sorts array keys when encoding to JSON
@@ -485,7 +485,7 @@ ksort($requestData); // Ensure alphabetical order
 // Convert to canonical JSON
 $canonicalJSON = toCanonicalJSON($requestData);
 echo "Canonical JSON: " . $canonicalJSON . "\n";
-// Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
+// Output: {"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en_us","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 
 // Generate signature
 $signature = sign($canonicalJSON, $apiToken);
@@ -537,7 +537,7 @@ console.log('Signing this exact string:', canonical);
 
 1. **Start with a simple test case:**
 ```json
-{"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en-US","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
+{"cID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","currency":"USD","demo":true,"extCID":"your_ext_id","gameID":"sg_catch_97","locale":"en_us","platform":"desktop","returnURL":"https://your-site.com/game-lobby"}
 ```
 
 2. **Verify the canonical form** - it should be exactly as shown above (compact, sorted keys)

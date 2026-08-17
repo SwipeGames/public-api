@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.10.0
+ * OpenAPI spec version: 1.10.1
  */
 /**
  * Error code. Could be handled by client accordingly (with localized message and related action).
@@ -146,8 +146,8 @@ Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`
 
 /**
  * The type of the win.
-- `regular` type means regular bet,
-- `free` type means free bet (see Free Rounds section).
+- `regular` type means regular win,
+- `free` type means free win (see Free Rounds section).
 
  */
 export type WinRequestType = typeof WinRequestType[keyof typeof WinRequestType];
@@ -160,8 +160,8 @@ export const WinRequestType = {
 
 export interface WinRequest {
   /** The type of the win.
-- `regular` type means regular bet,
-- `free` type means free bet (see Free Rounds section).
+- `regular` type means regular win,
+- `free` type means free win (see Free Rounds section).
  */
   type: WinRequestType;
   /** Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
@@ -169,7 +169,7 @@ It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is S
  */
   sessionID: string;
   /**
-   * The amount of the bet in currency **main** units (note: not cents). Currency selected by the client during the
+   * The amount of the win in currency **main** units (note: not cents). Currency selected by the client during the
 `Create New Game` call. Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 
    * @pattern ^(0|[1-9]\d*)(\.\d+)?$
