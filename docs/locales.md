@@ -12,22 +12,30 @@ Currently we support the following locales:
 
 | Code  | Locale                      |
 | ----- | --------------------------- |
-| pt_br | Portuguese (Brazil)         |
 | en_us | English (United States)     |
 | es    | Spanish                     |
 | es_mx | Spanish (Mexico)            |
-| ru    | Russian                     |
-| zh_tw | Chinese Traditional         |
-| ko    | Korean                      |
-| th    | Thai                        |
-| vi    | Vietnamese                  |
+| pt_br | Portuguese (Brazil)         |
 | hi    | Hindi                       |
-| ja    | Japanese                    |
+| zh_cn | Chinese Simplified          |
+| zh_tw | Chinese Traditional         |
+| ru    | Russian                     |
 | fr    | French                      |
-| tr    | Turkish                     |
 | de    | German                      |
 | id    | Indonesian                  |
+| ja    | Japanese                    |
+| vi    | Vietnamese                  |
+| tr    | Turkish                     |
+| ko    | Korean                      |
+| th    | Thai                        |
+| it    | Italian                     |
+| pl    | Polish                      |
 | uz    | Uzbek                       |
+| cs    | Czech                       |
+| hu    | Hungarian                   |
+| el    | Greek                       |
+| fi    | Finnish                     |
+| no    | Norwegian                   |
 
 The default locale is **`en_us`**.
 

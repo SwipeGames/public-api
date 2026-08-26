@@ -6,6 +6,11 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.2
+
+- Docs: sync the [Locales](/locales) list with the backend — added `zh_cn`, `cs`, `fi`, `el`, `hu`, `it`, `no`, `pl`.
+- Core: document the `initDemoBalance` lifecycle in `POST /create-new-game` — it is applied only when the demo balance is first created for a (`cID`, `extCID`, `user.id`, `currency`) combination, it is ignored for a user that already has a demo balance, and no Public API operation updates the demo balance after creation.
+
 ## 1.10.1
 
 - Integration: fix `Win` reverse call docs — `amount` and `type` described the bet instead of the win; corrected win/refund response `txID` examples.

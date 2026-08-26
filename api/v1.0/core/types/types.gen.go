@@ -268,8 +268,21 @@ type CreateNewGameRequest struct {
 	// Example: sg_catch_97
 	GameID string `json:"gameID"`
 
-	// InitDemoBalance Initial demo balance for the user (in currency units). Only used in demo mode, ignored in real mode.
-	// Must be greater than the minimum bet. Default is 10 000 USD equivalent.
+	// InitDemoBalance Initial demo balance for the user (in currency units). Only used in demo mode (`demo: true`),
+	// ignored in real mode. Must be greater than the game's minimum bet, otherwise the request fails
+	// with `400`. If omitted, the demo balance defaults to 10 000 USD converted into the requested `currency`.
+	//
+	// **Applied once, when the demo balance is created.** The demo balance is stored per
+	// (`cID`, `extCID`, `user.id`, `currency`). `initDemoBalance` is used only when no demo balance
+	// exists yet for that combination.
+	//
+	// **For an existing user the value is ignored.** If the user already has a demo balance for the same
+	// `cID`, `extCID` and `currency`, the game starts with the balance left from the previous demo games.
+	// Sending a different `initDemoBalance` does not reset, top up, or overwrite that balance.
+	//
+	// **There is no Public API operation to change the demo balance after it is created.** To start a demo
+	// game from a specific balance, send a `user.id` that has no demo balance yet for this `currency`, or
+	// omit `user` — for demo games we generate a new user ID on every call, so `initDemoBalance` always applies.
 	//
 	//
 	// Example: 10000.00
