@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.10.1
+ * OpenAPI spec version: 1.10.2
  */
 import * as zod from 'zod';
 
@@ -38,7 +38,7 @@ export const PostCreateNewGameBody = zod.object({
   "fallbackToDefaultLocale": zod.boolean().default(postCreateNewGameBodyFallbackToDefaultLocaleDefault).describe('If `true` and the requested `locale` is not supported, the game is created with the default locale (`en_us`)\ninstead of returning a `400 locale_not_supported` error. Defaults to `false`.\n'),
   "platform": zod.enum(['desktop', 'mobile']).describe('Platform type where the game can be launched').describe('Platform code. This is used to identify the platform where the game is launched.'),
   "demo": zod.boolean().describe('Demo mode. If true, the game will be launched in demo mode (means no callbacks will be fired on your side,\nand we use our demo balance for the game). If false, the game will be launched in real mode.\n'),
-  "initDemoBalance": zod.string().optional().describe('Initial demo balance for the user (in currency units). Only used in demo mode, ignored in real mode.\nMust be greater than the minimum bet. Default is 10 000 USD equivalent.\n'),
+  "initDemoBalance": zod.string().optional().describe('Initial demo balance for the user (in currency units). Only used in demo mode (`demo: true`),\nignored in real mode. Must be greater than the game\'s minimum bet, otherwise the request fails\nwith `400`. If omitted, the demo balance defaults to 10 000 USD converted into the requested `currency`.\n\n\*\*Applied once, when the demo balance is created.\*\* The demo balance is stored per\n(`cID`, `extCID`, `user.id`, `currency`). `initDemoBalance` is used only when no demo balance\nexists yet for that combination.\n\n\*\*For an existing user the value is ignored.\*\* If the user already has a demo balance for the same\n`cID`, `extCID` and `currency`, the game starts with the balance left from the previous demo games.\nSending a different `initDemoBalance` does not reset, top up, or overwrite that balance.\n\n\*\*There is no Public API operation to change the demo balance after it is created.\*\* To start a demo\ngame from a specific balance, send a `user.id` that has no demo balance yet for this `currency`, or\nomit `user` — for demo games we generate a new user ID on every call, so `initDemoBalance` always applies.\n'),
   "user": zod.object({
   "id": zod.string().describe('User\'s ID (external). This is User\'s ID on your side.'),
   "firstName": zod.string().optional(),
