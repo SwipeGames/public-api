@@ -1,6 +1,6 @@
 module github.com/swipegames/public-api
 
-go 1.25.3
+go 1.26
 
 require (
 	github.com/getkin/kin-openapi v0.132.0
