@@ -1,10 +1,9 @@
 // Supported currencies, mirroring the backend currency registry.
 //
 // Source of truth: platform-lib-common `domain/currency.go` (`currencyInfo`).
-// Read from v0.0.0-20260708132137-d36d93a8a3bb.
 //
 // Not every backend code is listed here: withdrawn codes (HRK/SLL/ANG), non-ISO
-// aliases (RMB/PRB) and a few others are deliberately excluded from the public docs.
+// aliases (RMB) and a few others are deliberately excluded from the public docs.
 //
 // `decimals` is the number of decimal places we actually honour, which for fiat is
 // capped at 2 (KWD/BHD/OMR/IQD/TND/JOD/LYD are conventionally 3, but handled at 2).
@@ -218,7 +217,6 @@ export const currencies: Currency[] = [
   { code: "MATIC", name: "Polygon (MATIC)", type: "main_crypto", decimals: 18 },
   { code: "SHIB", name: "Shiba Inu", type: "main_crypto", decimals: 0 },
   { code: "SOL", name: "Solana", type: "main_crypto", decimals: 9 },
-  { code: "TON", name: "Toncoin", type: "main_crypto", decimals: 9 },
   { code: "TRX", name: "TRON", type: "main_crypto", decimals: 6 },
   { code: "UNI", name: "Uniswap Units", type: "main_crypto", decimals: 0 },
   { code: "USDC", name: "USD Coin (USDC)", type: "main_crypto", decimals: 6 },
@@ -232,9 +230,6 @@ export const currencies: Currency[] = [
   { code: "mETH", name: "Milliether", type: "sub_crypto", decimals: 15, base: "ETH", conversion: "1 ETH = 1,000 mETH" },
   { code: "uETH", name: "Microether", type: "sub_crypto", decimals: 12, base: "ETH", conversion: "1 ETH = 1,000,000 uETH" },
   { code: "mLTC", name: "Milli Litecoin", type: "sub_crypto", decimals: 5, base: "LTC", conversion: "1 LTC = 1,000 mLTC" },
-  { code: "milliTON", name: "Milli Toncoin", type: "sub_crypto", decimals: 6, base: "TON", conversion: "1 TON = 1,000 milliTON" },
-  { code: "microTON", name: "Micro Toncoin", type: "sub_crypto", decimals: 3, base: "TON", conversion: "1 TON = 1,000,000 microTON" },
-  { code: "nanoTON", name: "Nano Toncoin", type: "sub_crypto", decimals: 0, base: "TON", conversion: "1 TON = 1,000,000,000 nanoTON" },
 
   { code: "FUN", name: "Fun-mode credits", type: "virtual", decimals: 2 },
 ];
