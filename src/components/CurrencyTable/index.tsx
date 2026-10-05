@@ -12,7 +12,6 @@ const TYPE_ORDER: CurrencyType[] = ["main_fiat", "sub_fiat", "main_crypto", "sub
 function matches(c: Currency, q: string): boolean {
   if (!q) return true;
   const haystack = `${c.code} ${c.name} ${c.base ?? ""}`.toLowerCase();
-  // Every whitespace-separated term must match, so "milli ton" finds milliTON.
   return q
     .toLowerCase()
     .split(/\s+/)

@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.3
+
+- Docs: updated the list of [supported currencies](/currencies) — removed `TON`, `milliTON`, `microTON` and `nanoTON`.
+
 ## 1.10.2
 
 - Docs: sync the [Locales](/locales) list with the backend — added `zh_cn`, `cs`, `fi`, `el`, `hu`, `it`, `no`, `pl`.
