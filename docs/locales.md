@@ -36,6 +36,7 @@ Currently we support the following locales:
 | el    | Greek                       |
 | fi    | Finnish                     |
 | no    | Norwegian                   |
+| nl    | Dutch                       |
 
 The default locale is **`en_us`**.
 

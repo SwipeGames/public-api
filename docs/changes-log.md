@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.4
+
+- Docs: added Dutch (`nl`) to the list of [supported locales](/locales).
+
 ## 1.10.3
 
 - Docs: updated the list of [supported currencies](/currencies) — removed `TON`, `milliTON`, `microTON` and `nanoTON`.
