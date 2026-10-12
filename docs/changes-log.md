@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.5
+
+- Docs: updated the decimal places in the list of [supported currencies](/currencies) — `DOT` 10, `LUNA` 6, `SHIB` 18, `UNI` 18, `XLM` 7.
+
 ## 1.10.4
 
 - Docs: added Dutch (`nl`) to the list of [supported locales](/locales).
