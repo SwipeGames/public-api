@@ -161,8 +161,12 @@ type CreateFreeRoundsRequest struct {
 	// BetLine Number of bet line configured for this game/provider. You can find more information in related section
 	// [Free Rounds Bet Lines](/public-api/free-rounds-bet-lines).
 	//
+	// It is a 1-based index into the bet lines configured for the game and currency. The highest valid value
+	// is the number of bet lines that [Get Games' Information](/public-api/core/get-games-information)
+	// returns in `betLines` for that game and currency.
 	//
-	// Example: 20
+	//
+	// Example: 1
 	BetLine int32 `json:"betLine"`
 
 	// CID Client's ID (internal)

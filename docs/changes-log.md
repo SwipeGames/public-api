@@ -6,6 +6,13 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.6
+
+- Core: removed `maximum: 99` from `betLine` in [Create new free rounds campaign](/core/create-new-free-rounds-campaign). The highest valid value is the number of bet lines configured for the game and currency, as returned in `betLines` by [Get Games' Information](/core/get-games-information). The generated clients no longer reject a `betLine` above 99.
+- Core: documented the `400` response of [Create new free rounds campaign](/core/create-new-free-rounds-campaign). A `betLine` that is not configured for the game and currency now returns `400` with the number of configured bet lines in the message (it returned `500` before).
+- Core: removed `maximum: 99` from `quantity` in [Create new free rounds campaign](/core/create-new-free-rounds-campaign). The platform does not limit the number of free rounds to 99.
+- Docs: the [Bet Lines](/free-rounds-bet-lines) page now points to [Get Games' Information](/core/get-games-information) for the bet lines configured for each game.
+
 ## 1.10.5
 
 - Docs: updated the decimal places in the list of [supported currencies](/currencies) — `DOT` 10, `LUNA` 6, `SHIB` 18, `UNI` 18, `XLM` 7.
