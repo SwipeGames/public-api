@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.10.5
+ * OpenAPI spec version: 1.10.6
  */
 import * as zod from 'zod';
 
@@ -62,9 +62,7 @@ export const PostFreeRoundsHeader = zod.object({
   "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Authentication](\/authn) for more details)')
 })
 
-export const postFreeRoundsBodyQuantityMax = 99;
 
-export const postFreeRoundsBodyBetLineMax = 99;
 
 
 
@@ -75,8 +73,8 @@ export const PostFreeRoundsBody = zod.object({
   "gameIDs": zod.array(zod.string()).optional().describe('List of game IDs the campaign can be started in. If not provided, the campaign can be started in any game.\n\nThe `quantity` is a single allotment, not multiplied across games. The player may start the campaign in\nany one of the listed games, but once it is started in a game, the campaign is locked to that game — the\nremaining rounds can no longer be played in the other games.\n'),
   "userIDs": zod.array(zod.string()).optional().describe('List of player IDs (external). If not provided, free rounds will be available for all players.'),
   "currency": zod.string().describe('Currency code in ISO4217'),
-  "quantity": zod.number().min(1).max(postFreeRoundsBodyQuantityMax).describe('Number of free rounds. This is a single allotment for the campaign — when multiple `gameIDs` are\nprovided it is not multiplied per game. The player spends this allotment in the one game the campaign\nis started in.\n'),
-  "betLine": zod.number().min(1).max(postFreeRoundsBodyBetLineMax).describe('Number of bet line configured for this game\/provider. You can find more information in related section\n[Free Rounds Bet Lines](\/public-api\/free-rounds-bet-lines).\n'),
+  "quantity": zod.number().min(1).describe('Number of free rounds. This is a single allotment for the campaign — when multiple `gameIDs` are\nprovided it is not multiplied per game. The player spends this allotment in the one game the campaign\nis started in.\n'),
+  "betLine": zod.number().min(1).describe('Number of bet line configured for this game\/provider. You can find more information in related section\n[Free Rounds Bet Lines](\/public-api\/free-rounds-bet-lines).\n\nIt is a 1-based index into the bet lines configured for the game and currency. The highest valid value\nis the number of bet lines that [Get Games\' Information](\/public-api\/core\/get-games-information)\nreturns in `betLines` for that game and currency.\n'),
   "validFrom": zod.string().datetime({}).describe('Start date when free rounds become available.'),
   "validUntil": zod.string().datetime({}).optional().describe('End date when free rounds become unavailable. If not provided then this campaign never ends.\nIf you provide finite validity duration, it should not exceed 30 days.\n')
 })

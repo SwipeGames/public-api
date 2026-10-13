@@ -3,7 +3,7 @@ info:
   title: Swipe Games Core Public API
   description: |
     This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
-  version: 1.10.5
+  version: 1.10.6
 
 servers:
   - url: https://staging.platform.0.swipegames.io/api/v1
@@ -162,6 +162,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CreateFreeRoundsResponse"
+
+        400:
+          description: |
+            Invalid request. For example, the currency is not supported (code `currency_not_supported`), or no bet
+            lines are configured for the game and currency, or `betLine` is higher than the number of configured bet
+            lines. In the last case the message gives the number of configured bet lines.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         401:
           description: Wrong signature or API key
@@ -657,18 +667,20 @@ components:
           type: integer
           format: int32
           minimum: 1
-          maximum: 99
           example: 10
 
         betLine:
           description: |
             Number of bet line configured for this game/provider. You can find more information in related section
             [Free Rounds Bet Lines](/public-api/free-rounds-bet-lines).
+
+            It is a 1-based index into the bet lines configured for the game and currency. The highest valid value
+            is the number of bet lines that [Get Games' Information](/public-api/core/get-games-information)
+            returns in `betLines` for that game and currency.
           type: integer
           format: int32
           minimum: 1
-          maximum: 99
-          example: 20
+          example: 1
 
         validFrom:
           description: Start date when free rounds become available.

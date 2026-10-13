@@ -63,7 +63,9 @@ For example, with `[1:10,2:20,3:30]`, issuing 10 free rounds on `bet_line=2`:
 2.00 × 20 × 10 = 400.00 max exposure
 ```
 
-Please consult with this documentation about list of games and their bet lines configuration.
+### Bet lines configured for each game
+
+To see the bet lines that are configured for each game, call [Get Games' Information](/core/get-games-information). The `betLines` field of each game lists its bet lines per currency. The number of entries for a game and currency is the highest `betLine` value that you can use when you create free rounds.
 
 ### Catch game type example configuration
 

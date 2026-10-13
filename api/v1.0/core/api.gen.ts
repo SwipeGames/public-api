@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.10.5
+ * OpenAPI spec version: 1.10.6
  */
 /**
  * Currency filter for the games list
@@ -140,15 +140,17 @@ provided it is not multiplied per game. The player spends this allotment in the 
 is started in.
 
    * @minimum 1
-   * @maximum 99
    */
   quantity: number;
   /**
    * Number of bet line configured for this game/provider. You can find more information in related section
 [Free Rounds Bet Lines](/public-api/free-rounds-bet-lines).
 
+It is a 1-based index into the bet lines configured for the game and currency. The highest valid value
+is the number of bet lines that [Get Games' Information](/public-api/core/get-games-information)
+returns in `betLines` for that game and currency.
+
    * @minimum 1
-   * @maximum 99
    */
   betLine: number;
   /** Start date when free rounds become available. */
@@ -492,6 +494,11 @@ export type postFreeRoundsResponse200 = {
   status: 200
 }
 
+export type postFreeRoundsResponse400 = {
+  data: ErrorResponse
+  status: 400
+}
+
 export type postFreeRoundsResponse401 = {
   data: ErrorResponse
   status: 401
@@ -510,7 +517,7 @@ export type postFreeRoundsResponse500 = {
 export type postFreeRoundsResponseSuccess = (postFreeRoundsResponse200) & {
   headers: Headers;
 };
-export type postFreeRoundsResponseError = (postFreeRoundsResponse401 | postFreeRoundsResponse409 | postFreeRoundsResponse500) & {
+export type postFreeRoundsResponseError = (postFreeRoundsResponse400 | postFreeRoundsResponse401 | postFreeRoundsResponse409 | postFreeRoundsResponse500) & {
   headers: Headers;
 };
 
