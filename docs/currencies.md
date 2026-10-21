@@ -59,6 +59,7 @@ Amounts in the Core API and the Integration Adapter API are **decimal strings in
 
 - **Fiat carries up to 2 decimal places.** Up to, not exactly — see below.
 - **Crypto carries up to its own precision** (e.g. `BTC` 8, `ETH` 18).
+- **Amounts and balances are never signed.** A negative value is invalid. Zero is valid for a win amount (a round without a win) and for a balance. Field-specific limits still apply.
 
 The **Decimals** column in the table above is the number of decimal places we actually honour. Two cases catch integrators out:
 

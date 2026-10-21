@@ -145,7 +145,7 @@ type BetLineInfo struct {
 
 // BetLineValue defines model for BetLineValue.
 type BetLineValue struct {
-	// MaxBet Maximum bet amount for this line (in currency units)
+	// MaxBet Maximum bet amount for this line (in currency units). Always non-negative, never signed.
 	//
 	// Example: 1.00
 	MaxBet string `json:"maxBet"`
@@ -273,8 +273,8 @@ type CreateNewGameRequest struct {
 	GameID string `json:"gameID"`
 
 	// InitDemoBalance Initial demo balance for the user (in currency units). Only used in demo mode (`demo: true`),
-	// ignored in real mode. Must be greater than the game's minimum bet, otherwise the request fails
-	// with `400`. If omitted, the demo balance defaults to 10 000 USD converted into the requested `currency`.
+	// ignored in real mode. Always non-negative, never signed. Must be greater than the game's minimum bet,
+	// otherwise the request fails with `400`. If omitted, the demo balance defaults to 10 000 USD converted into the requested `currency`.
 	//
 	// **Applied once, when the demo balance is created.** The demo balance is stored per
 	// (`cID`, `extCID`, `user.id`, `currency`). `initDemoBalance` is used only when no demo balance
@@ -396,7 +396,7 @@ type FreeRoundsInfoResponse struct {
 	// Id Free rounds ID (internal). The provider-generated free rounds identifier.
 	Id uuid.UUID `json:"id"`
 
-	// MaxBet Maximum bet amount per attempt, in main currency units.
+	// MaxBet Maximum bet amount per attempt, in main currency units. Always non-negative, never signed.
 	//
 	// Example: 0.10
 	MaxBet string `json:"maxBet"`

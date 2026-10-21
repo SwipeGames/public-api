@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.10.6
+ * OpenAPI spec version: 1.10.7
  */
 /**
  * Currency filter for the games list
@@ -81,9 +81,10 @@ instead of returning a `400 locale_not_supported` error. Defaults to `false`.
 and we use our demo balance for the game). If false, the game will be launched in real mode.
  */
   demo: boolean;
-  /** Initial demo balance for the user (in currency units). Only used in demo mode (`demo: true`),
-ignored in real mode. Must be greater than the game's minimum bet, otherwise the request fails
-with `400`. If omitted, the demo balance defaults to 10 000 USD converted into the requested `currency`.
+  /**
+   * Initial demo balance for the user (in currency units). Only used in demo mode (`demo: true`),
+ignored in real mode. Always non-negative, never signed. Must be greater than the game's minimum bet,
+otherwise the request fails with `400`. If omitted, the demo balance defaults to 10 000 USD converted into the requested `currency`.
 
 **Applied once, when the demo balance is created.** The demo balance is stored per
 (`cID`, `extCID`, `user.id`, `currency`). `initDemoBalance` is used only when no demo balance
@@ -96,7 +97,9 @@ Sending a different `initDemoBalance` does not reset, top up, or overwrite that 
 **There is no Public API operation to change the demo balance after it is created.** To start a demo
 game from a specific balance, send a `user.id` that has no demo balance yet for this `currency`, or
 omit `user` — for demo games we generate a new user ID on every call, so `initDemoBalance` always applies.
- */
+
+   * @pattern ^(0|[1-9]\d*)(\.\d+)?$
+   */
   initDemoBalance?: string;
   /** User information we show in the game. User should be provided for real game.
  */
@@ -177,7 +180,10 @@ export interface FreeRoundsInfoResponse {
   gameIDs?: string[];
   /** Total number of free rounds granted for the campaign. */
   quantity: number;
-  /** Maximum bet amount per attempt, in main currency units. */
+  /**
+   * Maximum bet amount per attempt, in main currency units. Always non-negative, never signed.
+   * @pattern ^(0|[1-9]\d*)(\.\d+)?$
+   */
   maxBet: string;
   /** Maximum target multiplier for the campaign. */
   maxMult: number;
@@ -220,7 +226,10 @@ export interface GameInfoImages {
 }
 
 export interface BetLineValue {
-  /** Maximum bet amount for this line (in currency units) */
+  /**
+   * Maximum bet amount for this line (in currency units). Always non-negative, never signed.
+   * @pattern ^(0|[1-9]\d*)(\.\d+)?$
+   */
   maxBet: string;
   /** Maximum multiplier applied to the bet */
   maxCoeff: string;
