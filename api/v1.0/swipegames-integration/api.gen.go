@@ -123,6 +123,7 @@ type BalanceResponse struct {
 	// Balance The player's balance in selected currency **main** units (**not cents**).
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed. A balance of `"0"` is valid.
 	//
 	//
 	// Example: 100.10
@@ -134,6 +135,7 @@ type BetRequest struct {
 	// Amount The amount of the bet in currency **main** units (**not cents**).
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed.
 	//
 	//
 	// Example: 100.10
@@ -190,6 +192,7 @@ type BetResponse struct {
 	// Balance The player's balance in selected currency **main** units (note: not cents) after the bet is applied.
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed. A balance of `"0"` is valid.
 	//
 	//
 	// Example: 100.10
@@ -245,6 +248,7 @@ type RefundRequest struct {
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 	// Refunds are always done for the whole bet amount.
+	// Always non-negative, never signed.
 	//
 	//
 	// Example: 100.10
@@ -288,6 +292,7 @@ type RefundResponse struct {
 	// Balance The user's balance in selected currency **main** units (note: not cents) after the refund is applied.
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed. A balance of `"0"` is valid.
 	//
 	//
 	// Example: 100.10
@@ -303,6 +308,7 @@ type RefundResponse struct {
 type WinRequest struct {
 	// Amount The amount of the win in currency **main** units (note: not cents). Currency selected by the client during the
 	// `Create New Game` call. Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed. Zero is valid: a round without a win sends `"0"`.
 	//
 	//
 	// Example: 100.10
@@ -360,6 +366,7 @@ type WinResponse struct {
 	// Balance The player's balance in selected currency **main** units (note: not cents) after the win is applied.
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed. A balance of `"0"` is valid.
 	//
 	//
 	// Example: 100.10
@@ -525,7 +532,7 @@ type ClientInterface interface {
 
 	// PostRefundWithBody Refund
 	//
-	// This endpoint is used to place a refund for bet or win action.
+	// This endpoint is used to place a refund for a bet.
 	// We send refund to the client side in case of Bet 500 error or timeout, also
 	// in case when player cancels the game.
 	//
@@ -538,7 +545,7 @@ type ClientInterface interface {
 
 	// PostRefund Refund
 	//
-	// This endpoint is used to place a refund for bet or win action.
+	// This endpoint is used to place a refund for a bet.
 	// We send refund to the client side in case of Bet 500 error or timeout, also
 	// in case when player cancels the game.
 	//
@@ -649,7 +656,7 @@ func (c *Client) PostBet(ctx context.Context, params *PostBetParams, body PostBe
 
 // PostRefundWithBody Refund
 //
-// This endpoint is used to place a refund for bet or win action.
+// This endpoint is used to place a refund for a bet.
 // We send refund to the client side in case of Bet 500 error or timeout, also
 // in case when player cancels the game.
 //
@@ -672,7 +679,7 @@ func (c *Client) PostRefundWithBody(ctx context.Context, params *PostRefundParam
 
 // PostRefund Refund
 //
-// This endpoint is used to place a refund for bet or win action.
+// This endpoint is used to place a refund for a bet.
 // We send refund to the client side in case of Bet 500 error or timeout, also
 // in case when player cancels the game.
 //
@@ -1050,7 +1057,7 @@ type ClientWithResponsesInterface interface {
 
 	// PostRefundWithBodyWithResponse Refund
 	//
-	// This endpoint is used to place a refund for bet or win action.
+	// This endpoint is used to place a refund for a bet.
 	// We send refund to the client side in case of Bet 500 error or timeout, also
 	// in case when player cancels the game.
 	//
@@ -1063,7 +1070,7 @@ type ClientWithResponsesInterface interface {
 
 	// PostRefundWithResponse Refund
 	//
-	// This endpoint is used to place a refund for bet or win action.
+	// This endpoint is used to place a refund for a bet.
 	// We send refund to the client side in case of Bet 500 error or timeout, also
 	// in case when player cancels the game.
 	//
@@ -1433,7 +1440,7 @@ func (c *ClientWithResponses) PostBetWithResponse(ctx context.Context, params *P
 
 // PostRefundWithBodyWithResponse Refund
 //
-// This endpoint is used to place a refund for bet or win action.
+// This endpoint is used to place a refund for a bet.
 // We send refund to the client side in case of Bet 500 error or timeout, also
 // in case when player cancels the game.
 //
@@ -1452,7 +1459,7 @@ func (c *ClientWithResponses) PostRefundWithBodyWithResponse(ctx context.Context
 
 // PostRefundWithResponse Refund
 //
-// This endpoint is used to place a refund for bet or win action.
+// This endpoint is used to place a refund for a bet.
 // We send refund to the client side in case of Bet 500 error or timeout, also
 // in case when player cancels the game.
 //
@@ -1928,59 +1935,60 @@ func RegisterHandlersWithOptions(router EchoRouter, si ServerInterface, options 
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"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",
+	"7Ftrd9s2k/4rc9ieE9mlaPlWJ94Pe5w47VF71sk6Sb3dKGuB5JBCTQIMAFrW9s1/f88AIEVdnCaNGzep",
+	"8iUWiMtgLs8zxIC/B4ksKylQGB0c/x7oZIIls38+ZgUTCZ6jrqTQSE2VkhUqw9F2iF0H+jNFnSheGS5F",
+	"cBy8nCBUBZuheqDB9wIuQGOBicEUklopFMkMtrdLxsX2NtSCGw297W0hDSQkzfb2VjQST5qe7dh4BmaC",
+	"kBQchYG0VlzktmX8RCEzCGc4hR9ZiWNIWFFEI/EDZ6ZZkqOGhClFS9cVGLm9DXuQYsJLVpDQCer/AC1L",
+	"hB5GeQTjn57/Og5h/PP5Bf33y9npeMvPIKTAaCROiimbafrVF5gzw68xBIHXqEDzXGAawUmrBZnBeBQM",
+	"RsEYuIZrVvA0GokgDPCGlVWBwXGwOxhEu4MgDCpmDCpS6P/1Bv96vdt/9GY0Sre3eqNRNBql323957dB",
+	"GJhZRaO0IUUE796FgcK3NVeYBsevWxu9aTvK+DdMTPAuDB6jOce3NWqzaltWylqY9aZ1z2grpPYYDdn2",
+	"H2bSO7VZGGRqeLqq7B8UIpzLWqQahqfQwxuamxWkxZcTriHjWKTkSJWS1zzFFKQoZpBJBRmNVW5sjGSI",
+	"6QQVwpjWts43pi7jreWtkKIum5Uuqc+lm+aSp+tEtw/XSX8mBfnA2xpJeJKJTGq7Q48LvxWQAl5MeYXW",
+	"wPoBaJ6SCZ7IukghRjtIsxLtDCnPMlTkJTn1XpY9PnqIB3vZw/7e4GC3f/BwL+0/Sg7ifraXsKNHWXJ0",
+	"iPtBGGRSlcwEx0Fdr9lTGNz0c9n3jdQlevVqeNpt7/OyksqGh2AlzmeqmJkEx0HOzaSOo0SWO7mUeYE7",
+	"9jkFp0atuRTrFPbCPVoyNVhLcw0zWSuQUwHzfqHVDt6wxBCW1Eid5s7AhYuids2x9xgfureG19DQgmfP",
+	"XrpuuaahPerSWXwLFJpaCRfAK3OFMJ3wZEITde2r7RZ4isLwjKMCJqwH++gi03IBin5ptPKsWJntxnvJ",
+	"fnrQx8Ps+/7Rw0eDPouTtI/Z7t7+weH31LLOU83NOq3/WMiYFcWs8dWOaD2yO1wfbLXeS2BnFBOaJTT8",
+	"Nuf9r1ob8t1aYwpMA7M7LitpLPBd4YxGWoP6Ea/s4gK1NXVeM8WEQafazgpWEAZKFgVh5H6/lMJMYMpF",
+	"KqeEi1L5fdip2nkIA2ZSpLAPdoQOSTaHusT/mhu0YvXGpKUxfAdjH9irCJHsHSUJS7F/yA4O+we7h0d9",
+	"9vAw6x+lg7199v3DR8gO7znK3LTryIuedKgrGok+jBXmdcHU2D0tkQkNvo06hbaThctuDwux5BE9jQhd",
+	"sNZo3aPRnKhL4mI/I6lGoaXkuU7nz97P5/ZpF0XChqq9f88B+VbK/4z5nJAGj6FNALaAZQbnocQ1sKoq",
+	"uCXUTar30WnDekR7tUK6pOsFwGlJpfEtlzPUykzIPIolV1zkOynGdZ6T1qtaVVKjjhbkpwkvzY243N3b",
+	"/+BU1Iu9zj2fKiVV46AX3EyeyBRPRHqSuK0t79T2B+UH2D10wXIoDOaKWaQ+SVlFrve8jguewMnzYQRD",
+	"ASxNOT1nBRjZ4GEpBeDC1OFIcAOJFIZxYfHcE4DjUzNhBpxoMWqX5zSK9d7r+/eSJq+RJTdbEQwzv1Qi",
+	"U1xI5XhXupHw80x5UcCEibRA4DRtIlXKRV7MLJNOuZlApbhU3MxAkme6laOR+FXWkDDRrADIrbVL1Jrl",
+	"CHL+J81E8kRABgDm3H7C9Egszt0MmE5QQCzNBJjCdgsRDI3HSp51UxM7edgN7vdsy27JhmkhE1bw/8fU",
+	"rctysovCghFYtOYjsYeLy9ms2Mu6uqyeyCkt6mdwSEe0zX3qsfRqdIsznq+1eEMwmUI9GUPfrqaJw10T",
+	"xLUxUiwuHsFzJ0TChAVPKQwXNVpdyNo0gxs8pGQYKpYTRgH9G5oHmhg+qwtnm7aXZw7Am4or1OARwj6j",
+	"NEwaYNeMFywuyA9mpVQYwTMCNFrAYYZdHNPQr9ZOYNUZk/MXkpEPkyN1dEre1+6F2rjIPRaVPJ8Yu/xU",
+	"qisntM3xyaPEAwNYxpimmPo1fW6bMM2FDEmL1vVkhcLHDgicgmExbdElSCFobqnLG14hdZ+Lz3LGxTJn",
+	"27120GqOvs7Ap8ywVWd4shD1jY+mzLBuIDKtuwhEj1s/XnAiOCO7FIX/3eI2mPY10Mm9IiTFw23A2YS4",
+	"RyQXfpZ229XnYdizcbgUgh4rmv0xn/Z0FEiKvRTSXGaUlgRh0OQKtlHXFaV4SA/s1LjSTDLUwlzGhUyu",
+	"bEuM5rLgJTd2kNbtD8NLbH9woess4wlt5DKjtGyeN1067087LQsi2t1fJlIIl8hdWohe6wQpGsYLvSZp",
+	"wmQieEJmdV1aNraTdfRu3xLs221DtyGhBD2leIjRYsYyRKwztrfJqjAnECuOGXRamyTYsQ8X8FTkBdeT",
+	"jmAftuwSzTcyrOP3cyRD3MGhk7ITvffcaTn1/DIyTKchC3oN7aZSYOs704ksXD7nFHIfh1VS8fzl2szz",
+	"meI5t7lU5x15ePoBxz1NPkp7HJ42Zu5OY3MsHxZx4wF2c0PhdJwwbZMvTqy2XhDHMjFav1BI6GYPzeap",
+	"MfQIRWRtQtConBJTHyUhoEm+xNfhez6jO0l9PnuNyiYfu9FhNPDE355hysrTIE0Ss+RqylRqjyeY4TEv",
+	"uJltzvs2532f9bzP88zmyO/vjnFLSUj3fMwfi7Ws1Z6YvS9D+VNnZLW+0xOyJsnZHJJ9lkMyr+6/4pxs",
+	"sabmFro0N2srah9/anbBxR2k1FMuPi6fhg/3xZG4xRnh/n3xf1HJ1veOLdLW/iBN1gaYVYxGSsq9p35Z",
+	"xd8pF7cXf8OR8FaKpajn0EW7TxWbkt6VTIhYerbyQUObasmmdLxJJTep5IemkgQjmzzyaykdT7n449Lx",
+	"lIv3lY7JI76c0rHNMv4epWObqmyy4s+SFZOu//qUeMrFXeXDNICLTK7zxc4Z45rS8Mnz4UoJuVMubrjN",
+	"IrORULIrXGQbauXzibUtZTnHU7LOJ4uzPS+QaQROCinJS+3JJQmxcB5pJPhyyO2C2dqHsXr98Pp3EAb+",
+	"PI7cKdodREf2dLdCwSoeHAf70SDa95hpo3ynE+Y5mls0jCKtJBcLusrRdIoIcyiYq8FqU9e2pMW8LtqZ",
+	"XBk+1USIb2ueXBUz+rOSWvO4wHAktJzPjTcVKo4WaXxFM8ssLDhVEXBZpQxTInE0j1ufqphiJRpUOjh+",
+	"va7Ai9rYeGWGRLXo/foXVDybkZ2bHi+aHvpNb0eTRWzO2e84xzfXzai+cqP67bzaZQ2lVNgUj7ZsRSs4",
+	"DibIUiSw97z2P/3zp//96umLl/0Xwx/Pgm6wGFVj6G90k61WAuvvm0VeIGhD2+fGZnm2UsqNPRa2xV1b",
+	"vV0KvZmso5EYiTPLHMZL/WmpaNSMu7dc1Fr9bY1qNjd6l8M/3N5vqLNjcBvOe4MB/ZdIYdCdEVhGTax/",
+	"7vym3SWH+XzfKsyC4+CbnfknAzv+e4Gd5Y8FLAwvepe8Ing5GOze2aJ/cF1ojQwXSop8HsBOoIN7FOiV",
+	"RuVuuFh/XbiiMTy14OWq0u/C4PAO7fXxkr5w1TBXLpaJzZT8e2ldlkzNHJZCh6BZTjAanPsoeEJRELyh",
+	"ITuxo49K6o+hEZt5AWu+OWgubkQj8fQa1QwML9u7Ji5Lc51DmKI9w7H3bhxG27J2dx17fYpx06Y+TOgp",
+	"vcptb+uZSJqB7iOGz85btsyZ0IpTyjoS5Neuirk3GEDv2c9b82twUsEhvUfYlX01k0a5y06khUwWhZwS",
+	"Y439qaff3DqCfC61eYzmn8aOb1xn1OaxTGd3B5Tzj27WBFmjolimM3KChkhe//Ti2Rk8YUK6KyU/SFW+",
+	"6e2w2kzENyRAP2me9enleWtlq+/+SvDv3Cpes6lnPzucvU/0esxaH9+w0FfCQkvk4zDqfaTjsO4TeMeD",
+	"pTtJc18PXHhiaSrFC7f37Asc97gtM3iMBg4Hg4ZEFbR3TVih5Ug0Xe3tx/mdyQQL3SW7kThxZyEe20kc",
+	"MfOzWgs2JDe/kGmUxeBaGF50KWRvMFhgj9sYwBVGNyRwJ36/eA/uq+GBpeL5hgo2VHA/VNCC1fvYYMrF",
+	"J1CBL5cvoPLqS8iUCx0SPrvaJYoUl0vLPTsL1w75fU2eaxhshSPx519bIrigRisM1/MXgk+jD7/jmCVX",
+	"udvSnyaUCy42bHInodO5//HVUEm32rThkQ2P3A+POIy6lUTevft3AAAA//8=",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

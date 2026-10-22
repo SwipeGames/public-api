@@ -6,6 +6,14 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.7
+
+- Integration: all `amount` and `balance` fields of the [Integration Adapter API](/swipegames-integration) are documented as non-negative and never signed. Zero stays valid for a win amount (a round without a win sends `0`) and for a balance. A negative `balance` in a 200 answer is treated as an unreadable balance: the bet is refunded, the win is retried, the refund is retried, the balance call fails. See [Amounts and balances](/swipegames-integration#amounts-and-balances).
+- Core: added `pattern: '^(0|[1-9]\d*)(\.\d+)?$'` and the non-negative rule to `initDemoBalance` in [Create new game](/core/create-new-game), and to `maxBet` in the free rounds info response and in bet lines. The generated Zod schemas and PHP models now reject a signed value in these fields; the generated Go types are unchanged.
+- Docs: the [Decimal places](/currencies#decimal-places) section states that amounts and balances are never signed.
+- Integration: the [Refund](/swipegames-integration/refund) description now states that a refund is sent only for a bet.
+- Docs: the Integration Skill and the AI prompts on the [Integration Tools](/tools) page now state the non-negative balance rule. The skill also states the correct Free Rounds handling: free bets and free wins do not change the player's balance; only the bonus withdrawal does.
+
 ## 1.10.6
 
 - Core: removed `maximum: 99` from `betLine` in [Create new free rounds campaign](/core/create-new-free-rounds-campaign). The highest valid value is the number of bet lines configured for the game and currency, as returned in `betLines` by [Get Games' Information](/core/get-games-information). The generated clients no longer reject a `betLine` above 99.

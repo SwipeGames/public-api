@@ -25,7 +25,7 @@ import Heading from "@theme/Heading";
 
 
 <Schema
-  schema={{"type":"object","required":["maxBet","maxCoeff"],"properties":{"maxBet":{"description":"Maximum bet amount for this line (in currency units)","type":"string","example":"1.00"},"maxCoeff":{"description":"Maximum multiplier applied to the bet","type":"string","example":"5.00"}},"title":"BetLineValue"}}
+  schema={{"type":"object","required":["maxBet","maxCoeff"],"properties":{"maxBet":{"description":"Maximum bet amount for this line (in currency units). Always non-negative, never signed.","type":"string","pattern":"^(0|[1-9]\\d*)(\\.\\d+)?$","example":"1.00"},"maxCoeff":{"description":"Maximum multiplier applied to the bet","type":"string","example":"5.00"}},"title":"BetLineValue"}}
   schemaType={"response"}
 >
   

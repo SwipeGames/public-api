@@ -108,6 +108,7 @@ type BalanceResponse struct {
 	// Balance The player's balance in selected currency **main** units (**not cents**).
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed. A balance of `"0"` is valid.
 	//
 	//
 	// Example: 100.10
@@ -119,6 +120,7 @@ type BetRequest struct {
 	// Amount The amount of the bet in currency **main** units (**not cents**).
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed.
 	//
 	//
 	// Example: 100.10
@@ -175,6 +177,7 @@ type BetResponse struct {
 	// Balance The player's balance in selected currency **main** units (note: not cents) after the bet is applied.
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed. A balance of `"0"` is valid.
 	//
 	//
 	// Example: 100.10
@@ -230,6 +233,7 @@ type RefundRequest struct {
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
 	// Refunds are always done for the whole bet amount.
+	// Always non-negative, never signed.
 	//
 	//
 	// Example: 100.10
@@ -273,6 +277,7 @@ type RefundResponse struct {
 	// Balance The user's balance in selected currency **main** units (note: not cents) after the refund is applied.
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed. A balance of `"0"` is valid.
 	//
 	//
 	// Example: 100.10
@@ -288,6 +293,7 @@ type RefundResponse struct {
 type WinRequest struct {
 	// Amount The amount of the win in currency **main** units (note: not cents). Currency selected by the client during the
 	// `Create New Game` call. Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed. Zero is valid: a round without a win sends `"0"`.
 	//
 	//
 	// Example: 100.10
@@ -345,6 +351,7 @@ type WinResponse struct {
 	// Balance The player's balance in selected currency **main** units (note: not cents) after the win is applied.
 	// Currency selected by the client during the `Create New Game` call.
 	// Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
+	// Always non-negative, never signed. A balance of `"0"` is valid.
 	//
 	//
 	// Example: 100.10

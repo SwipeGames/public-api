@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.10.6
+ * OpenAPI spec version: 1.10.7
  */
 import * as zod from 'zod';
 
@@ -25,6 +25,8 @@ export const PostCreateNewGameHeader = zod.object({
 })
 
 export const postCreateNewGameBodyFallbackToDefaultLocaleDefault = false;
+export const postCreateNewGameBodyInitDemoBalanceRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
+
 
 export const PostCreateNewGameBody = zod.object({
   "cID": zod.string().uuid().describe('Client\'s ID. It\'s provided by Swipe Games and is used as your identifier.\n'),
@@ -38,7 +40,7 @@ export const PostCreateNewGameBody = zod.object({
   "fallbackToDefaultLocale": zod.boolean().default(postCreateNewGameBodyFallbackToDefaultLocaleDefault).describe('If `true` and the requested `locale` is not supported, the game is created with the default locale (`en_us`)\ninstead of returning a `400 locale_not_supported` error. Defaults to `false`.\n'),
   "platform": zod.enum(['desktop', 'mobile']).describe('Platform type where the game can be launched').describe('Platform code. This is used to identify the platform where the game is launched.'),
   "demo": zod.boolean().describe('Demo mode. If true, the game will be launched in demo mode (means no callbacks will be fired on your side,\nand we use our demo balance for the game). If false, the game will be launched in real mode.\n'),
-  "initDemoBalance": zod.string().optional().describe('Initial demo balance for the user (in currency units). Only used in demo mode (`demo: true`),\nignored in real mode. Must be greater than the game\'s minimum bet, otherwise the request fails\nwith `400`. If omitted, the demo balance defaults to 10 000 USD converted into the requested `currency`.\n\n\*\*Applied once, when the demo balance is created.\*\* The demo balance is stored per\n(`cID`, `extCID`, `user.id`, `currency`). `initDemoBalance` is used only when no demo balance\nexists yet for that combination.\n\n\*\*For an existing user the value is ignored.\*\* If the user already has a demo balance for the same\n`cID`, `extCID` and `currency`, the game starts with the balance left from the previous demo games.\nSending a different `initDemoBalance` does not reset, top up, or overwrite that balance.\n\n\*\*There is no Public API operation to change the demo balance after it is created.\*\* To start a demo\ngame from a specific balance, send a `user.id` that has no demo balance yet for this `currency`, or\nomit `user` — for demo games we generate a new user ID on every call, so `initDemoBalance` always applies.\n'),
+  "initDemoBalance": zod.string().regex(postCreateNewGameBodyInitDemoBalanceRegExp).optional().describe('Initial demo balance for the user (in currency units). Only used in demo mode (`demo: true`),\nignored in real mode. Always non-negative, never signed. Must be greater than the game\'s minimum bet,\notherwise the request fails with `400`. If omitted, the demo balance defaults to 10 000 USD converted into the requested `currency`.\n\n\*\*Applied once, when the demo balance is created.\*\* The demo balance is stored per\n(`cID`, `extCID`, `user.id`, `currency`). `initDemoBalance` is used only when no demo balance\nexists yet for that combination.\n\n\*\*For an existing user the value is ignored.\*\* If the user already has a demo balance for the same\n`cID`, `extCID` and `currency`, the game starts with the balance left from the previous demo games.\nSending a different `initDemoBalance` does not reset, top up, or overwrite that balance.\n\n\*\*There is no Public API operation to change the demo balance after it is created.\*\* To start a demo\ngame from a specific balance, send a `user.id` that has no demo balance yet for this `currency`, or\nomit `user` — for demo games we generate a new user ID on every call, so `initDemoBalance` always applies.\n'),
   "user": zod.object({
   "id": zod.string().describe('User\'s ID (external). This is User\'s ID on your side.'),
   "firstName": zod.string().optional(),
@@ -104,12 +106,15 @@ export const GetFreeRoundsHeader = zod.object({
   "X-REQUEST-SIGN": zod.string().describe('Request signature (see [Authentication](\/authn) for more details)')
 })
 
+export const getFreeRoundsResponseMaxBetRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
+
+
 export const GetFreeRoundsResponse = zod.object({
   "id": zod.string().uuid().describe('Free rounds ID (internal). The provider-generated free rounds identifier.'),
   "extID": zod.string().describe('Free rounds ID (external). The id the campaign was registered under by the operator.'),
   "gameIDs": zod.array(zod.string()).optional().describe('List of game IDs the campaign is configured for.'),
   "quantity": zod.number().describe('Total number of free rounds granted for the campaign.'),
-  "maxBet": zod.string().describe('Maximum bet amount per attempt, in main currency units.'),
+  "maxBet": zod.string().regex(getFreeRoundsResponseMaxBetRegExp).describe('Maximum bet amount per attempt, in main currency units. Always non-negative, never signed.'),
   "maxMult": zod.number().describe('Maximum target multiplier for the campaign.'),
   "currency": zod.string().describe('Currency code in ISO4217.'),
   "validFrom": zod.string().datetime({}).describe('Start date when free rounds become available.'),
@@ -160,6 +165,9 @@ export const GetGamesHeader = zod.object({
   "Accept-Encoding": zod.enum(['gzip']).optional().describe('Optional. Set to `gzip` to receive a gzip-compressed response.\nRecommended for this endpoint because the response can exceed 1 MB.\n')
 })
 
+export const getGamesResponseBetLinesItemValuesItemMaxBetRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');
+
+
 export const GetGamesResponseItem = zod.object({
   "title": zod.string().describe('Game\'s title in English'),
   "id": zod.string().describe('Game\'s ID (internal)'),
@@ -179,7 +187,7 @@ export const GetGamesResponseItem = zod.object({
   "betLines": zod.array(zod.object({
   "currency": zod.string().describe('Currency code in ISO4217'),
   "values": zod.array(zod.object({
-  "maxBet": zod.string().describe('Maximum bet amount for this line (in currency units)'),
+  "maxBet": zod.string().regex(getGamesResponseBetLinesItemValuesItemMaxBetRegExp).describe('Maximum bet amount for this line (in currency units). Always non-negative, never signed.'),
   "maxCoeff": zod.string().describe('Maximum multiplier applied to the bet')
 })).describe('List of bet line values (0-indexed array maps to 1-based bet lines).\n')
 })).optional().describe('List of bet lines supported for this game per currency. Available\nonly if game has free spins. See more info in related section [Free Rounds Bet Lines](\/public-api\/free-rounds-bet-lines).\n')
