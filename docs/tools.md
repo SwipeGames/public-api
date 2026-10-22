@@ -99,9 +99,7 @@ const client = new SwipeGamesClient({
   (e.g., "0.90" = €0.90, "100.10" = €100.10). Never use floating-point math on them;
   if you store another unit (e.g. integer cents), convert at the boundary with
   integer/string arithmetic. Amounts and balances are never signed; zero is valid for
-  a balance and for a win amount. Never answer with a negative balance — a 200 answer
-  with one is treated as unreadable (bet: we refund the bet; win: we retry the win;
-  refund: we retry the refund; balance: the call fails).
+  a balance and for a win amount. Never answer with a negative balance.
 - The `sessionID` in reverse calls is the one we provided when calling
   `createNewGame()` — use it to identify the player/session in our system.
 - The platform enforces a 5-second timeout on all reverse calls. Keep handlers fast.
@@ -236,9 +234,7 @@ client, err := swipegames.NewClient(swipegames.ClientConfig{
   (e.g., "0.90" = €0.90, "100.10" = €100.10). Never use floating-point math on them;
   if you store another unit (e.g. integer cents), convert at the boundary with
   integer/string arithmetic. Amounts and balances are never signed; zero is valid for
-  a balance and for a win amount. Never answer with a negative balance — a 200 answer
-  with one is treated as unreadable (bet: we refund the bet; win: we retry the win;
-  refund: we retry the refund; balance: the call fails).
+  a balance and for a win amount. Never answer with a negative balance.
 - The `SessionID` in reverse calls is the one we provided when calling
   `CreateNewGame()` — use it to identify the player/session in our system.
 - The platform enforces a 5-second timeout on all reverse calls. Keep handlers fast.
@@ -379,9 +375,7 @@ $client = new SwipeGamesClient(new ClientConfig(
   (e.g., "0.90" = €0.90, "100.10" = €100.10). Never use floating-point math on them;
   if you store another unit (e.g. integer cents), convert at the boundary with
   integer/string arithmetic. Amounts and balances are never signed; zero is valid for
-  a balance and for a win amount. Never answer with a negative balance — a 200 answer
-  with one is treated as unreadable (bet: we refund the bet; win: we retry the win;
-  refund: we retry the refund; balance: the call fails).
+  a balance and for a win amount. Never answer with a negative balance.
 - The `sessionID` in reverse calls is the one we provided when calling
   `createNewGame()` — use it to identify the player/session in our system.
 - The platform enforces a 5-second timeout on all reverse calls. Keep handlers fast.
@@ -528,9 +522,7 @@ signed /balance call. The signing-rules link above has copy-pasteable worked exa
   (e.g., "0.90" = €0.90, "100.10" = €100.10). Never use floating-point math on them;
   if you store another unit (e.g. integer cents), convert at the boundary with
   integer/string arithmetic. Amounts and balances are never signed; zero is valid for
-  a balance and for a win amount. Never answer with a negative balance — a 200 answer
-  with one is treated as unreadable (bet: we refund the bet; win: we retry the win;
-  refund: we retry the refund; balance: the call fails).
+  a balance and for a win amount. Never answer with a negative balance.
 - The sessionID in reverse calls is the one we provided when launching the game —
   use it to identify the player/session in our system.
 - The platform enforces a 5-second timeout on all reverse calls. Keep handlers fast.

@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.8
+
+- **Correction:** removed the statement added in 1.10.7 that a negative `balance` in a 200 answer is treated as an unreadable balance (bet refunded, win retried, refund retried, balance call fails). The platform does not check the sign of a `balance` you return. The rule stays the same: never answer with a negative `balance`. See [Amounts and balances](/swipegames-integration#amounts-and-balances).
+
 ## 1.10.7
 
 - Integration: all `amount` and `balance` fields of the [Integration Adapter API](/swipegames-integration) are documented as non-negative and never signed. Zero stays valid for a win amount (a round without a win sends `0`) and for a balance. A negative `balance` in a 200 answer is treated as an unreadable balance: the bet is refunded, the win is retried, the refund is retried, the balance call fails. See [Amounts and balances](/swipegames-integration#amounts-and-balances).
