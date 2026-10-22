@@ -17,7 +17,7 @@ The platform makes four reverse calls to your endpoints during a game session. T
 
 All amounts and balances are **decimal strings in the currency's main unit — not cents** (e.g. `"0.90"` = €0.90, `"100.10"` = €100.10; fiat carries up to 2 decimal places), matching `^(0|[1-9]\d*)(\.\d+)?$`. Never run floating-point math on them. If your wallet stores another unit (e.g. integer cents), convert at the boundary with integer/string arithmetic — never `parseFloat`, multiply, or divide as a float — so you don't introduce rounding error.
 
-Amounts and balances are never signed. Zero is valid for a balance and for a win amount. Never answer with a negative balance: a `200` answer with one is treated as unreadable. For a bet, we refund the bet. For a win, we retry the win. For a refund, we retry the refund. For a balance call, the call fails.
+Amounts and balances are never signed. Zero is valid for a balance and for a win amount. Never answer with a negative balance.
 
 Details: https://swipegames.github.io/public-api/swipegames-integration#amounts-and-balances
 

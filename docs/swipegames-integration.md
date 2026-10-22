@@ -357,13 +357,6 @@ All requests from our platform must be processed in an idempotent way. This mean
 
 All `amount` and `balance` values are non-negative decimal strings in the currency's main unit. Zero is valid for a `balance` and for a win `amount` (a round without a win sends `"0"`). Never answer with a signed `balance`.
 
-If a 200 (OK) answer contains a negative `balance`, we treat the balance as unreadable:
-
-- `bet` — we refund the bet.
-- `win` — we retry the win.
-- `refund` — we retry the refund.
-- `balance` — the balance call fails.
-
 ### Retry and refund policies
 
 #### Bet
