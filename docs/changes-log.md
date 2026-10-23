@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.9
+
+- security: bump golang.org/x/net to v0.61.0 and github.com/getkin/kin-openapi to v0.152.0; Go directive 1.26.10 (ENG-1900)
+
 ## 1.10.8
 
 - **Correction:** removed the statement added in 1.10.7 that a negative `balance` in a 200 answer is treated as an unreadable balance (bet refunded, win retried, refund retried, balance call fails). The platform does not check the sign of a `balance` you return. The rule stays the same: never answer with a negative `balance`. See [Amounts and balances](/swipegames-integration#amounts-and-balances).
