@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.10
+
+- Go directive 1.27.3 (ENG-2678)
+
 ## 1.10.9
 
 - security: bump golang.org/x/net to v0.61.0 and github.com/getkin/kin-openapi to v0.152.0; Go directive 1.26.10 (ENG-1900)
