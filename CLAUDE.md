@@ -11,7 +11,7 @@ Swipe Games Public API — documentation site, OpenAPI specs, and generated clie
 ## Repository Structure
 
 ```
-go.mod                           # Root Go module (server/client, Echo, go 1.26.10)
+go.mod                           # Root Go module (server/client, Echo, go 1.27.3)
 api/v1.0/
   core/
     api.yaml                     # Core Public API spec (includes ErrorResponse, User)
@@ -40,7 +40,7 @@ openapitools.json                # openapi-generator-cli version pinning
 
 The Go code is split into multiple modules to allow lightweight SDK imports:
 
-- **Root module** (`github.com/swipegames/public-api`): Server + client + types + spec. Requires Echo, go 1.26.10. Used by services.
+- **Root module** (`github.com/swipegames/public-api`): Server + client + types + spec. Requires Echo, go 1.27.3. Used by services.
 - **Core types** (`github.com/swipegames/public-api/api/v1.0/core/types`): Core API types only (includes ErrorResponse, User). No Echo, go 1.13. No external dependencies.
 - **Integration types** (`github.com/swipegames/public-api/api/v1.0/swipegames-integration/types`): Integration types only (includes ErrorResponseWithCodeAndAction). No Echo, go 1.13. No external dependencies.
 
