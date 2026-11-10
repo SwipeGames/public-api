@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.10.10
+ * OpenAPI spec version: 1.10.11
  */
 import * as zod from 'zod';
 
@@ -13,7 +13,9 @@ import * as zod from 'zod';
 for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
 
 The `currency` and `locale` are validated against the supported sets (see [Locales](/locales)). An unsupported value
-returns `400` with code `currency_not_supported` / `locale_not_supported`. For an unsupported locale you can set
+returns `400` with code `currency_not_supported` / `locale_not_supported`. The `currency` must also be enabled for
+your client (see [Currencies](/currencies#currencies-enabled-for-your-client)); a currency that is not enabled
+returns `400` with code `currency_not_supported`, also in `demo` mode. For an unsupported locale you can set
 `fallbackToDefaultLocale: true` to create the game with the default locale (`en_us`) instead of receiving the error.
 If the user is blacklisted or the client has no access to the requested game, the request returns `403`
 (`account_blocked` / `game_not_found`).
@@ -156,7 +158,7 @@ export const GetGamesQueryParams = zod.object({
   "cID": zod.string().uuid().describe('Client\'s ID'),
   "extCID": zod.string().describe('External Client\'s ID'),
   "excludeBetLines": zod.boolean().default(getGamesQueryExcludeBetLinesDefault).describe('When `true`, the `betLines` field is omitted from each game in the response.\nBet lines data is only relevant for free rounds campaigns — exclude it to\nsignificantly reduce payload size if you don\'t need it. In the response flag `hasFreeSpins`\nis always set to `false` when `excludeBetLines` is `true`.\nDefaults to `false`.\n'),
-  "currencyFilters": zod.array(zod.enum(['main', 'main_fiat', 'main_crypto', 'sub_fiat', 'sub_crypto', 'virtual']).describe('Currency filter for the games list')).optional().describe('Optional comma-separated list of currency filters. When provided, each game\'s\n`currencies` and `betLines` contain only the currency codes matching any of the\nfilters (plus the `additionalCurrencies`, if given):\n- `main` — all main currencies (`main_fiat` + `main_crypto`)\n- `main_fiat` — main fiat currencies (USD, EUR, …)\n- `main_crypto` — main crypto currencies (BTC, ETH, USDT, …)\n- `sub_fiat` — denomination-scaled fiat units (COP#, PHPT, TWD2, …)\n- `sub_crypto` — crypto sub-units (mBTC, uETH, …)\n- `virtual` — virtual currencies (DEMO, FUN)\n\nWhen omitted, all supported currencies are returned (virtual excluded), as before.\n'),
+  "currencyFilters": zod.array(zod.enum(['main', 'main_fiat', 'main_crypto', 'sub_fiat', 'sub_crypto', 'virtual']).describe('Currency filter for the games list')).optional().describe('Optional comma-separated list of currency filters. When provided, each game\'s\n`currencies` and `betLines` contain only the currency codes matching any of the\nfilters (plus the `additionalCurrencies`, if given):\n- `main` — all main currencies (`main_fiat` + `main_crypto`)\n- `main_fiat` — main fiat currencies (USD, EUR, …)\n- `main_crypto` — main crypto currencies (BTC, ETH, USDT, …)\n- `sub_fiat` — denomination-scaled fiat units (COP#, PHPT, TWD2, …)\n- `sub_crypto` — crypto sub-units (mBTC, uETH, …)\n- `virtual` — virtual currencies (DEMO, FUN)\n\nWhen omitted, all supported currencies are returned (virtual excluded), as before.\n\nWith or without filters, `currencies` and `betLines` contain only the currencies enabled\nfor your client (see [Currencies](\/currencies#currencies-enabled-for-your-client)).\n'),
   "additionalCurrencies": zod.array(zod.string()).optional().describe('Optional comma-separated list of currency codes to include in addition to the\ncodes matched by `currencyFilters`. Only meaningful together with `currencyFilters`.\nUnknown codes result in a `400` response.\n')
 })
 

@@ -29,7 +29,7 @@ Every currency has a type. These are the values accepted by the `currencyFilters
 
 Two behaviours worth knowing:
 
-- **Omitting `currencyFilters` returns all non-virtual currencies** — every type except `virtual`. This is the default, and matches the behaviour from before the parameter existed.
+- **Omitting `currencyFilters` returns all non-virtual currencies [enabled for your client](#currencies-enabled-for-your-client)** — every type except `virtual`. This is the default, and matches the behaviour from before the parameter existed.
 - `additionalCurrencies` adds specific codes on top of whatever `currencyFilters` matched. An unknown code there is rejected with a `400`.
 
 ### Scaled fiat (`sub_fiat`)
@@ -52,6 +52,10 @@ A sub-unit is the **same coin re-denominated smaller**, so that everyday amounts
 ### Virtual currencies (`virtual`)
 
 Virtual currencies have **no real exchange rate** and carry no monetary value. They are used for demo and fun-mode play, and are **not** returned by [Get Games Information](/core/get-games-information) unless you ask for them explicitly with `currencyFilters=virtual`.
+
+## Currencies enabled for your client
+
+By default, every supported currency is enabled for your client. Swipe Games can limit your client to a set of currencies, for all your `extCID` values or for one `extCID`. Then [Get Games Information](/core/get-games-information) lists only the enabled currencies in `currencies` and `betLines`, and [Create New Game](/core/create-new-game) (`demo` and `real`) and [Create new free rounds campaign](/core/create-new-free-rounds-campaign) in another currency return `400` with code `currency_not_supported`. A game session that is already open keeps its currency.
 
 ## Decimal places
 

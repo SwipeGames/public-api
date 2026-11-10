@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.10.11
+
+- Core: documented that a currency must be enabled for your client. [Create new game](/core/create-new-game) (`demo` and `real`) and [Create new free rounds campaign](/core/create-new-free-rounds-campaign) in a currency that is not enabled return `400` with code `currency_not_supported`. [Get Games' Information](/core/get-games-information) lists only the enabled currencies in `currencies` and `betLines`. By default every currency is enabled. See [Currencies enabled for your client](/currencies#currencies-enabled-for-your-client) (ENG-2683).
+
 ## 1.10.10
 
 - Go directive 1.27.3 (ENG-2678)

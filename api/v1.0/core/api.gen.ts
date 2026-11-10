@@ -4,7 +4,7 @@
  * Swipe Games Core Public API
  * This is the Core API for Swipe Games Public API. It provides endpoints to create new games, manage free rounds campaigns, and more.
 
- * OpenAPI spec version: 1.10.10
+ * OpenAPI spec version: 1.10.11
  */
 /**
  * Currency filter for the games list
@@ -409,6 +409,9 @@ filters (plus the `additionalCurrencies`, if given):
 
 When omitted, all supported currencies are returned (virtual excluded), as before.
 
+With or without filters, `currencies` and `betLines` contain only the currencies enabled
+for your client (see [Currencies](/currencies#currencies-enabled-for-your-client)).
+
  */
 currencyFilters?: CurrencyFilter[];
 /**
@@ -425,7 +428,9 @@ additionalCurrencies?: string[];
 for the game. You can redirect the user to this URL to start playing the game or open it in iFrame.
 
 The `currency` and `locale` are validated against the supported sets (see [Locales](/locales)). An unsupported value
-returns `400` with code `currency_not_supported` / `locale_not_supported`. For an unsupported locale you can set
+returns `400` with code `currency_not_supported` / `locale_not_supported`. The `currency` must also be enabled for
+your client (see [Currencies](/currencies#currencies-enabled-for-your-client)); a currency that is not enabled
+returns `400` with code `currency_not_supported`, also in `demo` mode. For an unsupported locale you can set
 `fallbackToDefaultLocale: true` to create the game with the default locale (`en_us`) instead of receiving the error.
 If the user is blacklisted or the client has no access to the requested game, the request returns `403`
 (`account_blocked` / `game_not_found`).
