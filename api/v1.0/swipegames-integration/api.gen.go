@@ -513,7 +513,8 @@ type ClientInterface interface {
 	// Please make sure that this endpoint responds as quickly as possible,
 	// so player's experience is not affected.
 	//
-	// In case we receive not 200 (OK) response or 5 seconds timeout we will send following `refund request.
+	// In case we receive a 5xx response or a 5 seconds timeout we will send a `refund` request.
+	// A 4xx response declines the bet without a refund.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -528,7 +529,8 @@ type ClientInterface interface {
 	// Please make sure that this endpoint responds as quickly as possible,
 	// so player's experience is not affected.
 	//
-	// In case we receive not 200 (OK) response or 5 seconds timeout we will send following `refund request.
+	// In case we receive a 5xx response or a 5 seconds timeout we will send a `refund` request.
+	// A 4xx response declines the bet without a refund.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -538,7 +540,7 @@ type ClientInterface interface {
 	// PostRefundWithBody Refund
 	//
 	// This endpoint is used to place a refund for a bet.
-	// We send refund to the client side in case of Bet 500 error or timeout, also
+	// We send refund to the client side in case of Bet 5xx error or timeout, also
 	// in case when player cancels the game.
 	//
 	// After timeout or any error this request will be retrying until we receive 200(OK) response.
@@ -551,7 +553,7 @@ type ClientInterface interface {
 	// PostRefund Refund
 	//
 	// This endpoint is used to place a refund for a bet.
-	// We send refund to the client side in case of Bet 500 error or timeout, also
+	// We send refund to the client side in case of Bet 5xx error or timeout, also
 	// in case when player cancels the game.
 	//
 	// After timeout or any error this request will be retrying until we receive 200(OK) response.
@@ -617,7 +619,8 @@ func (c *Client) GetBalance(ctx context.Context, params *GetBalanceParams, reqEd
 // Please make sure that this endpoint responds as quickly as possible,
 // so player's experience is not affected.
 //
-// In case we receive not 200 (OK) response or 5 seconds timeout we will send following `refund request.
+// In case we receive a 5xx response or a 5 seconds timeout we will send a `refund` request.
+// A 4xx response declines the bet without a refund.
 //
 // Takes any type of body and a specified content type.
 //
@@ -642,7 +645,8 @@ func (c *Client) PostBetWithBody(ctx context.Context, params *PostBetParams, con
 // Please make sure that this endpoint responds as quickly as possible,
 // so player's experience is not affected.
 //
-// In case we receive not 200 (OK) response or 5 seconds timeout we will send following `refund request.
+// In case we receive a 5xx response or a 5 seconds timeout we will send a `refund` request.
+// A 4xx response declines the bet without a refund.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -662,7 +666,7 @@ func (c *Client) PostBet(ctx context.Context, params *PostBetParams, body PostBe
 // PostRefundWithBody Refund
 //
 // This endpoint is used to place a refund for a bet.
-// We send refund to the client side in case of Bet 500 error or timeout, also
+// We send refund to the client side in case of Bet 5xx error or timeout, also
 // in case when player cancels the game.
 //
 // After timeout or any error this request will be retrying until we receive 200(OK) response.
@@ -685,7 +689,7 @@ func (c *Client) PostRefundWithBody(ctx context.Context, params *PostRefundParam
 // PostRefund Refund
 //
 // This endpoint is used to place a refund for a bet.
-// We send refund to the client side in case of Bet 500 error or timeout, also
+// We send refund to the client side in case of Bet 5xx error or timeout, also
 // in case when player cancels the game.
 //
 // After timeout or any error this request will be retrying until we receive 200(OK) response.
@@ -1038,7 +1042,8 @@ type ClientWithResponsesInterface interface {
 	// Please make sure that this endpoint responds as quickly as possible,
 	// so player's experience is not affected.
 	//
-	// In case we receive not 200 (OK) response or 5 seconds timeout we will send following `refund request.
+	// In case we receive a 5xx response or a 5 seconds timeout we will send a `refund` request.
+	// A 4xx response declines the bet without a refund.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -1053,7 +1058,8 @@ type ClientWithResponsesInterface interface {
 	// Please make sure that this endpoint responds as quickly as possible,
 	// so player's experience is not affected.
 	//
-	// In case we receive not 200 (OK) response or 5 seconds timeout we will send following `refund request.
+	// In case we receive a 5xx response or a 5 seconds timeout we will send a `refund` request.
+	// A 4xx response declines the bet without a refund.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -1063,7 +1069,7 @@ type ClientWithResponsesInterface interface {
 	// PostRefundWithBodyWithResponse Refund
 	//
 	// This endpoint is used to place a refund for a bet.
-	// We send refund to the client side in case of Bet 500 error or timeout, also
+	// We send refund to the client side in case of Bet 5xx error or timeout, also
 	// in case when player cancels the game.
 	//
 	// After timeout or any error this request will be retrying until we receive 200(OK) response.
@@ -1076,7 +1082,7 @@ type ClientWithResponsesInterface interface {
 	// PostRefundWithResponse Refund
 	//
 	// This endpoint is used to place a refund for a bet.
-	// We send refund to the client side in case of Bet 500 error or timeout, also
+	// We send refund to the client side in case of Bet 5xx error or timeout, also
 	// in case when player cancels the game.
 	//
 	// After timeout or any error this request will be retrying until we receive 200(OK) response.
@@ -1409,7 +1415,8 @@ func (c *ClientWithResponses) GetBalanceWithResponse(ctx context.Context, params
 // Please make sure that this endpoint responds as quickly as possible,
 // so player's experience is not affected.
 //
-// In case we receive not 200 (OK) response or 5 seconds timeout we will send following `refund request.
+// In case we receive a 5xx response or a 5 seconds timeout we will send a `refund` request.
+// A 4xx response declines the bet without a refund.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -1430,7 +1437,8 @@ func (c *ClientWithResponses) PostBetWithBodyWithResponse(ctx context.Context, p
 // Please make sure that this endpoint responds as quickly as possible,
 // so player's experience is not affected.
 //
-// In case we receive not 200 (OK) response or 5 seconds timeout we will send following `refund request.
+// In case we receive a 5xx response or a 5 seconds timeout we will send a `refund` request.
+// A 4xx response declines the bet without a refund.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -1446,7 +1454,7 @@ func (c *ClientWithResponses) PostBetWithResponse(ctx context.Context, params *P
 // PostRefundWithBodyWithResponse Refund
 //
 // This endpoint is used to place a refund for a bet.
-// We send refund to the client side in case of Bet 500 error or timeout, also
+// We send refund to the client side in case of Bet 5xx error or timeout, also
 // in case when player cancels the game.
 //
 // After timeout or any error this request will be retrying until we receive 200(OK) response.
@@ -1465,7 +1473,7 @@ func (c *ClientWithResponses) PostRefundWithBodyWithResponse(ctx context.Context
 // PostRefundWithResponse Refund
 //
 // This endpoint is used to place a refund for a bet.
-// We send refund to the client side in case of Bet 500 error or timeout, also
+// We send refund to the client side in case of Bet 5xx error or timeout, also
 // in case when player cancels the game.
 //
 // After timeout or any error this request will be retrying until we receive 200(OK) response.
@@ -1940,61 +1948,62 @@ func RegisterHandlersWithOptions(router EchoRouter, si ServerInterface, options 
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"7Ft7c9s2Ev8qO2xnIrsULb+axPfHjfNoR+2ck3OS+nqRzwLJJYWaBBgAtKzr5bvfLABS1MNu2rhxmyr/",
-	"xCKAxWJfv+Uu+HOQyLKSAoXRwdHPgU4mWDL75xNWMJHgKepKCo30qFKyQmU42gmxm0B/pqgTxSvDpQiO",
-	"gtcThKpgM1QPNPhZwAVoLDAxmEJSK4UimcH2dsm42N6GWnCjobe9LaSBhLjZ3t6KRuJpM7NdG8/ATBCS",
-	"gqMwkNaKi9w+GT9VyAzCCU7hW1biGBJWFNFIfMOZabbkqCFhStHWdQVGbm/DHqSY8JIVxHSC+m+gZYnQ",
-	"wyiPYPzdyx/HIYy/Pz2j/344eTbe8hSEFBiNxHExZTNNv/oCc2b4FYYg8AoVaJ4LTCM4bqUgMxiPgsEo",
-	"GAPXcMUKnkYjEYQBXrOyKjA4CnYHg2h3EIRBxYxBRQL9T2/wv7e7/cfno1G6vdUbjaLRKP1q6+9fBmFg",
-	"ZhWt0oYEEbx/HwYK39VcYRocvW11dN5OlPFPmJjgfRg8QXOK72rUZlW3rJS1MOtV68boKCT2GA3p9i+m",
-	"0jvVWRhkavhsVdjfKEQ4lbVINQyfQQ+viTYrSIqvJ1xDxrFIyZAqJa94iilIUcwgkwoyWqvc2hhJEdMJ",
-	"KoQx7W2Nb0xTxlvLRyFBXTQ7XdCcC0fmgqfrWLeD67g/kYJs4F2NxDzxRCq106HHhT8KSAGvprxCq2D9",
-	"ADRPSQVPZV2kEKNdpFmJlkLKswwVCgM5zV7mPX74CA/2skf9vcHBbv/g0V7af5wcxP1sL2EPH2fJw0Pc",
-	"D8Igk6pkJjgK6nrNmcLgup/Lvn9IU6I3b4bPus/7vKyksu4hWIlzShUzk+AoyLmZ1HGUyHInlzIvcMeO",
-	"k3Nq1JpLsU5gr9zQkqrBapprmMlagZwKmM8LrXTwmiWGYkmNNGluDFw4L2r3HHuLkdnt7jU0tOHJi9du",
-	"Wq5paY+mdDbfAoWmVsI58AqtEKYTnkyIUFe/2h6BpygMzzgqYMJasPcuUi0XoOiXRsvPipbZbryX7KcH",
-	"fTzMvu4/fPR40GdxkvYx293bPzj8mp6ss1RzvU7q3xYyZkUxa2y1w1qP9A5XB1ut9VKwM4oJzRJafpPx",
-	"/qPWhmy31pgC08DsictKGhv4LnFGK61C/Yo3dnOB2qo6r5liwqATbWcHywgDJYuCYuR+v5TCTGDKRSqn",
-	"FBelgnpOqqVDMWAmRQr7YFfokHhzUZfwX3ODlq3emKQ0hq9g7B17NUIkew+ThKXYP2QHh/2D3cOHffbo",
-	"MOs/TAd7++zrR4+RHd6zlzmy68CLRjrQFY1EH8YK87pgauxGS2RCg39Gk0I7yYbL7gx6QMPQ04jQDdYa",
-	"rXlsOepVrZIJ0zie25YGBhWblSgMTLmZyNpFNMqaIuiALNeW06wuCkgx5iaCE0n6tq4BmSwKOdURHF8x",
-	"XrC4wDkC6Loi8WFqKWvnaMJgrhgx17iVqEtKFPxxSW8KkYTsuQ7Ou7qfT7s977Cj3WgXNimF98M5cNyY",
-	"mnzCvFNIg0fQJipbwDKDc5fnGlhVFRzTzyV/+ZQp6U2R981KckCyXgiMLfg1tmWnZrUyE1KPYsklF/lO",
-	"inGd5yT1qlaV1KijBf6J4IW5Fhe7e/sfnDJ7tteZ53OlpGoM9IybyVOZ4rFIjxN3tOWT2vmg/AJ7hm5Q",
-	"H869Eo5TVpHpvazjgidw/HIYwVAAS1NO46wAI5u4XUoBuEA6HAluIJHCMC4s7nigcrhvJsyAYy1GF1la",
-	"wXrr9fN7SZN/yZKbrQiGmd8qkSkupJy8y91IeDpTXhQwYSItEDiRTaRKuciLmQ1EFPSgUlwqbmYgyTLd",
-	"ztFI/ChrSJhodgDkVtslas1yBDn/kygRPxGQAoA5s58wPRKLtJsF0wkKiKWZAFPYHiGCofExnWfdFMoS",
-	"D7vOfcux7JGsmxYyYQX/L6ZuX5aTXhQWzGA6Vx+xPVzczsZuz+vqtnoip7Spp+AiHTDyD+ewS69wNxjj",
-	"6VqNN0CYKdSTMfTtbgRT/hHEtTFSLG4ewUv7P6nLBk8pDBc1tpjmFzfxkIAIKpZTjAL6NzQPNNQas7pw",
-	"umlneeQAvK64Qg1Szce4tqGatZjHxKyUCiN4IRK3gYsZdnNMQ79bS8CKM0ZQWEhGNkyG1JEpWV97FnrG",
-	"Re5jUcnzibHbT6W6dEx7fFUoHhjAMsY0xdTv6XPwhGkuZEhSpIkgKxTed0DgFAyL6YgukQtBcwtdXvEK",
-	"afqcfZYzLpbh2541OF+JbqE3hGfMsFVjeLrg9Y2NpsywriMyrbsRiIZbO14wIjghvRSF/93GbTDt66rj",
-	"e4VJ8oebAmfj4j4iOfezsNvuPnfDnvXDJRf0saI5H/PpWUeAJNgLIc1FRmlJEAZNrmAftrlUEAaWNK48",
-	"Jh5qYS7iQiaX9kmM5qLgJTd2kdbtD8NLbH9woess4wkd5CKj9HGeN1046087TxZYtKe/SKQQLuG8sCF6",
-	"rRGkaBgv9JqkCZOJ4Amp1U1p0dgS68jdvs3QYAu3IUUJGiV/iJF+TZdDxDple52sMnMMseKYQedpk6w7",
-	"9OECnou84HrSYezDtl2C+YaHdfh+iqSIOyiOKUvo1vrYcur558gwnYRs0GtgN5UCW9uZTmTh8jknkPso",
-	"qknF89drM88Xiufc5lKdd3kqu/xiWarJR+mMw2eNmrtkbI7l3SJuLMAebiicjBOmbfLFCdXWM+JQJkZr",
-	"Fwoputni3jw1hh5FEVmbEDQqJ8TUe0kIaJI/42v7PdcSj1Ofz1LxiTSxGx1GAw/8ba1VVh4GiUjMkssp",
-	"U6ktozDDY15wM9vUJTd1yU9al/Q4sylN/tFj3FIS0q2P+bJYi1ptxey2DOU31chqfacVsibJ2RTJPkmR",
-	"zIv796iTLfb+3EYX5npt5+/XV83OuLiDlJpq378qn4YPt8WRuMEY4f5t8d+oZGt7RzbS1iJtKy3MCkaj",
-	"SHVjqWS/neYDJeMTRpu0/YM/Vxt7ysXNbexwJLweYynqeXAj+aSKTUkzSiaoNfRorV3a9H02TfBNsrlJ",
-	"Nj802aTosck0P5cm+JSLX26CT7m4rQlOFnFbE/zmPvN9NJdtHvLHaC7bZGaTN3+SvJlk/fsnzVMu7ipj",
-	"pgVcZHKdLXaqkGuax8cvhytN5k5DucE2G5mNhJJd4iLa0NPuXRHb7HKGp2SdTxapvSyQaQROArFXWmxt",
-	"k5joypto+obJzYyRNLixcv3wDnkQBr5iR+YU7e5GA1v/rVCwigdHwX40iPZ9zLRevtNx8xzNDRJGkVaS",
-	"iwVZ5WjArAkFczFYaeraNr2Yl0VLyTXqU02A+K7mySX1wzVUUmseF9Qn1nJOG68rVBxtpPE9zyyzYcGJ",
-	"igKXFcowJRBH86S1qYopVqJBpYOjt+tawKiN9VdmiFUbvd/+gIpn1OyEZsarZoY+7+1o0ojNOfsd4/ji",
-	"qlnVV25Vv6WrXdZAzdmmvbRle17BUTBBliIFe49r/+qfPv/nm+evXvdfDb89CbrOYlSNob+bTrpacaw/",
-	"bhZ5hqCNVO62gEhdL5UbWzgmqsz2d5dcbybraCRG4sQih/Fcf1wqGjXr7i0XtVp/V6OazZXexfAP1/d5",
-	"GDhH0g609wYD+i+RwqCrIlhETax97vyk3TWIOb0vFWbBUfDFzvzjhx03qneWP3uwYXjRuuQlhZeDwe6d",
-	"bfoLF4rW8HCmpMjnDuwYOrhHht5oVO4OjLXXhUscw2c2eLm+9fswOBwM7pHTV65f5hrKMrGZkn8vrcuS",
-	"qZmLpdABaJZTGA1OvRc8JS8IzmnJTuzgo5L618CIzbyANV9PNFc7opF4foVqBoaX7W0UO1e7ySFM0VZ5",
-	"7M0cF6Nt47u7j71gxbhpUx8m9JRe5ba39UwkzUL3OcYnxy3bCE1oxymCwgT5letz7g0G0Hvx/db8opxU",
-	"cAgaE7uz73fSKncdiqTgLsASYo19XdQfbh1AvpTaPEHzV0PHczcZtXki09ndBcr550NrnMwPQSzTGRlB",
-	"AyRvv3v14gSeMiHdpZNvpCrPezusNhPxBTHQT5qxPr08b60c9f3vGfw7947XHOrF9y7O3mf0esJaG9+g",
-	"0GeCQkvg42LUbaDjYt1H4I4j4Ctp7juIMw8sfmjxfp99geM+bssMnqCBw8GgAVEF7W0UVmg5Es1Uez9y",
-	"fqsywUJ3wW4kjl0txK0mQkzMPFWrwQbk5lc2jbIxuBaGF10I2RsMFtDjJgRwrdMNCNyJ3S/elPtscGCp",
-	"vb6Bgg0U3A8UtMHqNjSYcvERUOAb6gtRefUlhJqvIcVn17tEkeJy87lnqXDtIv/8A7YBNWd/+2tLBGf0",
-	"0DLD9fyF4OPgw5+YyjC5O9JvBpQzLjZocieu07kh8tlASbfbtMGRDY7cD464GHUjiLx///8BAA==",
+	"7Ft7d9u2kv8qc9h7TmVfipZfTeL9Y4/zaI9uzzrZPG72buS1QGJI4ZoEGAC0rL2b775nAJCiLNlNWzdu",
+	"U+WfWAQwGMzrN5wB/xVlqqqVRGlNdPKvyGQzrJj78ykrmczwNZpaSYP0qNaqRm0Fugmpn0B/cjSZFrUV",
+	"SkYn0dsZQl2yBepvDYRZICQYLDGzyCFrtEaZLWB3t2JC7u5CI4U1MNjdlcpCRtzs7u4kE/msndmtTRdg",
+	"ZwhZKVBa4I0WsnBPps80MotwhnP4gVU4hYyVZTKR3wtm2y0FGsiY1rR1U4NVu7twABwzUbGSmM7Q/BsY",
+	"VSEMMCkSmP7t1T+mMUx/fP2e/vv72fPpTqAglcRkIk/LOVsY+jWUWDArrjAGiVeowYhCIk/gtJOCymE6",
+	"iUaTaArCwBUrBU8mMoojvGZVXWJ0Eu2PRsn+KIqjmlmLmgT6P4PR/33YHz45n0z47s5gMkkmE/7XnX//",
+	"SxRHdlHTKmNJENGnT3Gk8WMjNPLo5EOno/Nuokr/iZmNPsXRU7Sv8WODxq7rllWqkXazav0YHYXEnqIl",
+	"3f7JVHqvOoujXI+frwv7e40Ir1UjuYHxcxjgNdFmJUnx7UwYyAWWnAyp1upKcOSgZLmAXGnIaa32a1Mk",
+	"RcxnqBGmtLczvilNme7cPAoJ6qLd6YLmXHgyF4JvYt0NbuL+TEmygY8NEvPEE6nUTYeBkOEooCS8mYsa",
+	"nYLNt2AEJxU8U03JIUW3yLAKHQUu8hw1SgsFzb7Je/roMR4d5I+HB6Oj/eHR4wM+fJIdpcP8IGOPnuTZ",
+	"o2M8jOIoV7piNjqJmmbDmeLoelioYXhIU5J378bP+8+HoqqVdu4hWYVLSjWzs+gkKoSdNWmSqWqvUKoo",
+	"cc+Nk3MaNEYouUlgb/zQDVWD07QwsFCNBjWXsJwXO+ngNcssxZIGadLSGIT0XtTtOQ0Wo/K73WtsacOz",
+	"l2/9tMLQ0gFN6W2+Axpto6V34DVaMcxnIpsRob5+jTuC4CityAVqYNJZcPAuUq2QoOmXQcfPmpbZfnqQ",
+	"HfKjIR7n3w0fPX4yGrI040PM9w8Oj46/oyebLNVeb5L6D6VKWVkuWlvtsTYgvcPV0U5nvRTsrGbSsIyW",
+	"32a8/9EYS7bbGOTADDB34qpW1gW+S1zQSqfQsOKd21yicaouGqaZtOhF29vBMcJAq7KkGHk4rJS0M5gL",
+	"ydWc4qLS0CxJdXQoBiyU5HAIboWJiTcfdQn/jbDo2BpMSUpT+CtMg2OvR4js4FGWMY7DY3Z0PDzaP340",
+	"ZI+P8+EjPjo4ZN89foLs+IG9zJPdBF400oOuZCKHMNVYNCXTUz9aIZMGwjOaFLtJLlz2Z9ADGoaBQYR+",
+	"sDbozGPHU68bnc2YwenStgwwqNmiQmlhLuxMNT6iUdaUQA9khXGc5k1ZAsdU2ATOFOnbuQbkqizV3CRw",
+	"esVEydISlwhgmprEh9xRNt7RpMVCM2KudSvZVJQohOOS3jQiCTlwHZ33db+cdnfe4Ub70S5uU4rgh0vg",
+	"uDU1+YJ5p1QWT6BLVHaA5RaXLi8MsLouBfKvJX/5kinpbZH33VpyQLJeCYwd+LW25abmjbYzUo9m2aWQ",
+	"xR7HtCkKknrd6FoZNMkK/0Twwl7Li/2Dw89OmQPbm8zzhdZKtwb6XtjZM8XxVPLTzB/t5kndfNBhgTtD",
+	"P6iPl14Jp5zVZHqvmrQUGZy+GicwlsA4FzTOSrCqjduVkoArpOOJFBYyJS0T0uFOACqP+3bGLHjWUvSR",
+	"pRNssN4wf5C1+ZeqhN1JYJyHrTLFcSXlFH3uJjLQmYuyhBmTvEQQRDZTmgtZlAsXiCjoQa2F0sIuQJFl",
+	"+p2TifyHaiBjst0BUDhtV2gMKxDU8k+iRPwkQAoA5s1+xsxErtJuF8xnKCFVdgZMY3eEBMY2xHSR91Mo",
+	"RzzuO/cdx3JHcm5aqoyV4n+R+31ZQXrRWDKLfKk+Ynu8up2L3YHX9W3NTM1p00DBRzpg5B/eYW+8wt1i",
+	"jK83arwFwlyjmU1h6HYjmAqPIG2sVXJ18wReuf9JXS54KmmFbLDDtLC4jYcERFCzgmIU0L+x/dZAYzBv",
+	"Sq+bblZADsDrWmg0oPRyTBgXqlmHeUwuKqUxgZcy8xv4mOE2Rx6H3ToCTpwpgsZSMbJhMqSeTMn6urPQ",
+	"MyGLEIsqUcys236u9KVnOuCrRvmtBaxS5Bx52DPk4BkzQqqYpEgTQdUog++AxDlYltIRfSIXgxEOuoLi",
+	"NdL0JfusYELehG931uh8LbrFwRCeM8vWjeHZite3NsqZZX1HZMb0IxANd3a8YkRwRnopy/C7i9tgu9dV",
+	"z/cak+QPtwXO1sVDRPLu52C3233phgPnhzdcMMSK9nwspGc9AZJgL6SyFzmlJVEctbmCe9jlUlEcOdK4",
+	"9ph4aKS9SEuVXbonKdqLUlTCukXGdD+sqLD7IaRp8lxkdJCLnNLHZd504a2f956ssOhOf5EpKX3CeeFC",
+	"9EYj4GiZKM2GpAmzmRQZqdVP6dDYEevJ3b3N0GAHtzFFCRolf0iRfs1vhohNyg46WWfmFFItMIfe0zZZ",
+	"9+gjJLyQRSnMrMfY5217A+ZbHjbh+2skRdxDcUw7QnfWx26mnn+MDNNLyAW9Fna5ktjZznymSp/PeYE8",
+	"RFFNaVG83Zh5vtSiEC6X6r3LU9nlJ8tSbT5KZxw/b9XcJ+NyrOAWaWsB7nBj6WWcMeOSL0GotpkRjzIp",
+	"OrvQSNHNFfeWqTEMKIqoxsZgUHsh8uAlMaDN/oiv7Q9cSzzlIZ+l4hNpYj85TkYB+Ltaq6oDDBKRlGWX",
+	"c6a5K6MwK1JRCrvY1iW3dckvWpcMOLMtTf7eY9yNJKRfHwtlsQ61uorZXRnKL6qRNeZeK2RtkrMtkn2R",
+	"IlkQ929RJ1vt/fmNLuz1xs7fz6+avRfyHlJqqn3/rHwaPt8WJ/IWY4SHt8X/Rq062ztxkbaRvKu0MCcY",
+	"g5Kb1lLJfnvNB0rGZ4w26foHf6w29lzI29vY8UQGPaZKNsvgRvLhms1JM1plaAwMaK1b2vZ9tk3wbbK5",
+	"TTY/N9mk6LHNNL+WJvhcyJ9ugs+FvKsJThZxVxP89j7zQzSXXR7y+2guu2Rmmzd/kbyZZP3bJ81zIe8r",
+	"Y6YFQuZqky32qpAbmsenr8ZrTeZeQ7nFNheZrYKKXeIq2tDT/l0R1+zyhqdVU8xWqb0qkRkEQQJxV1pc",
+	"bZOY6MubaIaGye2MkTSEdXL9/A55FEehYkfmlOzvJ/uu/lujZLWITqLDZJQchpjpvHyv5+YF2lskjJLX",
+	"SsgVWRVowW4IBUsxOGmaxjW9WJBFR8k36rkhQPzYiOyS+uEGamWMSEvqExu1pI3XNWqBLtKEnmeeu7Dg",
+	"RUWBywllzAnE0T7tbKpmmlVoUZvo5MOmFjAa6/yVWWLVRe8Pf0ctcmp2QjvjTTvDnA/2DGnE5ZzDnnF8",
+	"c9WuGmq/atjRNT5roOZs217acT2v6CSaIeNIwT7g2n8NX7/4z3cv3rwdvhn/cBb1ncXqBuNwN510teZY",
+	"v98s8j2CsUr72wKS+16qsK5wTFSZ6+/ecL2FapKJnMgzhxw2cP3rUtGkXfdguajT+scG9WKp9D6Gf76+",
+	"z+PIO5LxoH0wGtF/mZIWfRXBIWrm7HPvn8Zfg1jS+4vGPDqJvtlbfvyw50fN3s3PHlwYXrUudUnh5Wi0",
+	"f2+b/sSFog08vNdKFksH9gwdPSBD7wxqfwfG2evKJY7xcxe8fN/6Uxwdj0YPyOkb3y/zDWWVuUwpvJc2",
+	"VcX0wsdS6AE0KyiMRq+DFzwjL4jOacle6uGjVubnwIjLvIC1X0+0VzuSiXxxhXoBVlTdbRQ31/jJMczR",
+	"VXnczRwfo13ju7+Pu2DFhO1SHybNnF7ldnfNQmbtQv85xhfHLdcIzWjHOYLGDMUVSeL4+np5Q8694B2D",
+	"wcxtGlqdtMDfhPICmPoK5bQ9ECWncNSnwzErhQxX3UjWy3KZX7sJR18pY5+i/bOB6LmfjMY+VXxxf/F0",
+	"+ZXRBl8MQ5AqviBbafHmw9/evDyDZ0wqfzfle6Wr88Eea+xMfkMMDLN2bEjv2DtrR/30W2JE73ryhkO9",
+	"/NGH44cMck8Zb91iC1ZfCVjdwCgfo+7CJh/jfgU8eQKh4OY/l3gf8CcMrV4DdO95IoR3lcNTtC6wB6zV",
+	"0F1aYaVRE9lOddcol5cvMyxNHxMn8tSXTPxqBw9yEag6DbZYuLzZabWLwY20ouwjzcFoNHj5406HEbch",
+	"gO+wbkHgXux+9ULdV4MDN7rwWyjYQsHDQEEXrO5Cg7mQvwIKQt99JSqvv6tQjzam+OxbnCg53uxRDxwV",
+	"YXzkX37nNqIe7i9/u0ngPT10zAizfHn4dfARTkzVmsIf6RcDynsht2hyL67Tu0jy1UBJvym1xZEtjjwM",
+	"jvgYdSuIfPr0/wMA",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

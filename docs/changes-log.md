@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.11.1
+
+- Integration: a [Bet](/swipegames-integration/bet) answered with any 5xx status (not only 500) or a timeout is refunded. A 4xx is never refunded. See [Retry and refund policies](/swipegames-integration#retry-and-refund-policies). (ENG-2768)
+
 ## 1.11.0
 
 - Integration: added the value `purchase` to the `type` of the [Bet](/swipegames-integration/bet) request. `purchase` identifies a payment without gameplay. The amount is the full debit. No win call follows. Available only for supported games and integrations. (ENG-2948)
