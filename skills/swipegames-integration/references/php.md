@@ -76,7 +76,7 @@ $balance = deductFromWallet($bet->getSessionId(), $bet->getAmount());
 echo json_encode(ResponseBuilder::betResponse($balance, $yourTxID));
 ```
 
-For **GET /balance**, call `parseAndVerifyBalanceRequest($_GET, $signature)` (`->body` is an array) and reply with `ResponseBuilder::balanceResponse($balance)`. `parseAndVerifyWinRequest` / `parseAndVerifyRefundRequest` follow the same shape as bet, paired with `ResponseBuilder::winResponse` / `refundResponse` (the refund request carries `getOrigTxId()`). Request objects expose `getSessionId()`, `getAmount()`, `getTxId()`, `getRoundId()`, `getType()` (`'regular'` | `'free'`), and `getFrId()`. A lower-level boolean check (`verifyBetRequest`, etc.) exists if you parse the body yourself. See `references/error-codes.md` for the code list (`ResponseBuilder::errorResponse` also accepts `action:`, `actionData:`, `details:`).
+For **GET /balance**, call `parseAndVerifyBalanceRequest($_GET, $signature)` (`->body` is an array) and reply with `ResponseBuilder::balanceResponse($balance)`. `parseAndVerifyWinRequest` / `parseAndVerifyRefundRequest` follow the same shape as bet, paired with `ResponseBuilder::winResponse` / `refundResponse` (the refund request carries `getOrigTxId()`). Request objects expose `getSessionId()`, `getAmount()`, `getTxId()`, `getRoundId()`, `getType()` (`'regular'` | `'free'`; a bet can also be `'purchase'`), and `getFrId()`. A lower-level boolean check (`verifyBetRequest`, etc.) exists if you parse the body yourself. See `references/error-codes.md` for the code list (`ResponseBuilder::errorResponse` also accepts `action:`, `actionData:`, `details:`).
 
 ## Errors (Core API)
 

@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.10.11
+ * OpenAPI spec version: 1.11.0
  */
 /**
  * Error code. Could be handled by client accordingly (with localized message and related action).
@@ -88,6 +88,7 @@ Always non-negative, never signed. A balance of `"0"` is valid.
  * The type of the bet.
 - `regular` type means regular bet,
 - `free` type means free bet (see Free Rounds section).
+- `purchase` identifies a payment without gameplay. The amount is the full debit. No win call follows. Available only for supported games and integrations.
 
  */
 export type BetRequestType = typeof BetRequestType[keyof typeof BetRequestType];
@@ -96,12 +97,14 @@ export type BetRequestType = typeof BetRequestType[keyof typeof BetRequestType];
 export const BetRequestType = {
   regular: 'regular',
   free: 'free',
+  purchase: 'purchase',
 } as const;
 
 export interface BetRequest {
   /** The type of the bet.
 - `regular` type means regular bet,
 - `free` type means free bet (see Free Rounds section).
+- `purchase` identifies a payment without gameplay. The amount is the full debit. No win call follows. Available only for supported games and integrations.
  */
   type: BetRequestType;
   /** Session ID (external). This is your own Session ID, the exact value you provided in the `sessionID` field of the `Create New Game` call.
@@ -174,7 +177,7 @@ It is NOT the `gsID` (Game Session ID) returned by `Create New Game`, which is S
   /**
    * The amount of the win in currency **main** units (note: not cents). Currency selected by the client during the
 `Create New Game` call. Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
-Always non-negative, never signed. Zero is valid: a round without a win sends `"0"`.
+Always non-negative, never signed. Zero is valid: a round without a win sends `"0"`. A `purchase` bet has no win call.
 
    * @pattern ^(0|[1-9]\d*)(\.\d+)?$
    */
