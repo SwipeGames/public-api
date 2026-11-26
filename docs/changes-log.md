@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.11.0
+
+- Integration: added the value `purchase` to the `type` of the [Bet](/swipegames-integration/bet) request. `purchase` identifies a payment without gameplay. The amount is the full debit. No win call follows. Available only for supported games and integrations. (ENG-2948)
+
 ## 1.10.11
 
 - Core: documented that a currency must be enabled for your client. [Create new game](/core/create-new-game) (`demo` and `real`) and [Create new free rounds campaign](/core/create-new-free-rounds-campaign) in a currency that is not enabled return `400` with code `currency_not_supported`. [Get Games' Information](/core/get-games-information) lists only the enabled currencies in `currencies` and `betLines`. By default every currency is enabled. See [Currencies enabled for your client](/currencies#currencies-enabled-for-your-client) (ENG-2683).

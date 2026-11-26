@@ -9,14 +9,17 @@ import (
 
 // Defines values for BetRequestType.
 const (
-	BetRequestTypeFree    BetRequestType = "free"
-	BetRequestTypeRegular BetRequestType = "regular"
+	BetRequestTypeFree     BetRequestType = "free"
+	BetRequestTypePurchase BetRequestType = "purchase"
+	BetRequestTypeRegular  BetRequestType = "regular"
 )
 
 // Valid indicates whether the value is a known member of the BetRequestType enum.
 func (e BetRequestType) Valid() bool {
 	switch e {
 	case BetRequestTypeFree:
+		return true
+	case BetRequestTypePurchase:
 		return true
 	case BetRequestTypeRegular:
 		return true
@@ -159,6 +162,7 @@ type BetRequest struct {
 	// Type The type of the bet.
 	// - `regular` type means regular bet,
 	// - `free` type means free bet (see Free Rounds section).
+	// - `purchase` identifies a payment without gameplay. The amount is the full debit. No win call follows. Available only for supported games and integrations.
 	//
 	//
 	// Example: regular
@@ -168,6 +172,7 @@ type BetRequest struct {
 // BetRequestType The type of the bet.
 // - `regular` type means regular bet,
 // - `free` type means free bet (see Free Rounds section).
+// - `purchase` identifies a payment without gameplay. The amount is the full debit. No win call follows. Available only for supported games and integrations.
 //
 // Example: regular
 type BetRequestType string
@@ -293,7 +298,7 @@ type RefundResponse struct {
 type WinRequest struct {
 	// Amount The amount of the win in currency **main** units (note: not cents). Currency selected by the client during the
 	// `Create New Game` call. Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
-	// Always non-negative, never signed. Zero is valid: a round without a win sends `"0"`.
+	// Always non-negative, never signed. Zero is valid: a round without a win sends `"0"`. A `purchase` bet has no win call.
 	//
 	//
 	// Example: 100.10

@@ -355,7 +355,7 @@ All requests from our platform must be processed in an idempotent way. This mean
 
 ### Amounts and balances
 
-All `amount` and `balance` values are non-negative decimal strings in the currency's main unit. Zero is valid for a `balance` and for a win `amount` (a round without a win sends `"0"`). Never answer with a signed `balance`.
+All `amount` and `balance` values are non-negative decimal strings in the currency's main unit. Zero is valid for a `balance` and for a win `amount` (a round without a win sends `"0"`; a `purchase` bet has no win call). Never answer with a signed `balance`.
 
 ### Retry and refund policies
 
@@ -415,7 +415,7 @@ sequenceDiagram
 
 #### Game round (normal flow)
 
-Each game round consists of a **bet** followed by a **win**. Swipe Games sends a [POST /bet](/swipegames-integration/bet) to the Integrator to deduct the player's balance, and after the round completes, sends a [POST /win](/swipegames-integration/win) to credit winnings (amount is 0 if no win).
+Each game round consists of a **bet** followed by a **win**, except a `purchase` bet, which has no win call. Swipe Games sends a [POST /bet](/swipegames-integration/bet) to the Integrator to deduct the player's balance, and after the round completes, sends a [POST /win](/swipegames-integration/win) to credit winnings (amount is 0 if no win).
 
 ```mermaid
 sequenceDiagram
