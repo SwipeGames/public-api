@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.11.0
+ * OpenAPI spec version: 1.11.1
  */
 /**
  * Error code. Could be handled by client accordingly (with localized message and related action).
@@ -348,7 +348,8 @@ Every time player places a bet, we send a request to this endpoint and wait for 
 Please make sure that this endpoint responds as quickly as possible,
 so player's experience is not affected.
 
-In case we receive not 200 (OK) response or 5 seconds timeout we will send following `refund request.
+In case we receive a 5xx response or a 5 seconds timeout we will send a `refund` request.
+A 4xx response declines the bet without a refund.
 
  * @summary Bet
  */
@@ -488,7 +489,7 @@ export const postWin = async (winRequest: WinRequest, options?: RequestInit): Pr
 
 /**
  * This endpoint is used to place a refund for a bet.
-We send refund to the client side in case of Bet 500 error or timeout, also
+We send refund to the client side in case of Bet 5xx error or timeout, also
 in case when player cancels the game.
 
 After timeout or any error this request will be retrying until we receive 200(OK) response.

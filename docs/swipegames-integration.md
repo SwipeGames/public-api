@@ -364,8 +364,8 @@ All `amount` and `balance` values are non-negative decimal strings in the curren
 All error codes except 200 (OK) are considered as errors. We decline game's action in case of any error and player gets notification about it.
 
 Timeout over than 5 seconds will be considered as an error as well and refund will be issued afterwards in this case.
-In case of any 500 error from your side we will issue refund as well.
-All other errors aren't refundable, so if you want some transaction to be refundable, please return 500 error code.
+In case of any 5xx error (500–599) from your side we will issue refund as well.
+4xx errors aren't refundable, so if you want some transaction to be refundable, please return a 5xx error code (for example 500).
 We don't retry bet requests.
 
 #### Win
@@ -438,7 +438,7 @@ sequenceDiagram
 
 #### Error handling and refund flow
 
-When a [POST /bet](/swipegames-integration/bet) fails (500 error or timeout > 5s), the game action is declined and the player is notified. Swipe Games then issues a [POST /refund](/swipegames-integration/refund), retrying until a 200 OK is received.
+When a [POST /bet](/swipegames-integration/bet) fails (5xx error or timeout > 5s), the game action is declined and the player is notified. Swipe Games then issues a [POST /refund](/swipegames-integration/refund), retrying until a 200 OK is received.
 
 ```mermaid
 sequenceDiagram
@@ -449,7 +449,7 @@ sequenceDiagram
     Player->>Swipe Games: Place bet
     Swipe Games->>Integrator: POST /bet (sessionID, amount, txID, roundID)
     Note over Integrator: Deduct balance
-    Integrator--xSwipe Games: 500 error / timeout
+    Integrator--xSwipe Games: 5xx error / timeout
     Swipe Games-->>Player: Show error to player
 
     loop Retry until 200 OK
