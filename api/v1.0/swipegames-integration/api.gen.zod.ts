@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.11.1
+ * OpenAPI spec version: 1.12.0
  */
 import * as zod from 'zod';
 
@@ -93,7 +93,8 @@ export const PostWinBody = zod.object({
   "amount": zod.string().regex(postWinBodyAmountRegExp).describe('The amount of the win in currency \*\*main\*\* units (note: not cents). Currency selected by the client during the\n`Create New Game` call. Fiat currencies carry \*\*up to\*\* 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.\nAlways non-negative, never signed. Zero is valid: a round without a win sends `\"0\"`. A `purchase` bet has no win call.\n'),
   "txID": zod.string().uuid().describe('Globally unique identifier (UUID v4) for the win transaction on Swipe Games\' side.\nMust be used as an idempotency key on your side.\nUniqueness is guaranteed by Swipe Games for a rolling 3-month window.\nFor uniqueness guarantees beyond 3 months, use the composite key (`txID` + `roundID`).\n'),
   "roundID": zod.string().uuid().describe('Non unique ID for the round (internal) on Swipe Games\' side.\nCould be the same for different games.\n'),
-  "frID": zod.string().optional().describe('Free Rounds ID (external).\nThis field is provided only for free rounds wins (where `type` is `free`),\nduring bonus balance withdrawal process (type is `regular`).\n')
+  "frID": zod.string().optional().describe('Free Rounds ID (external).\nThis field is provided only for free rounds wins (where `type` is `free`),\nduring bonus balance withdrawal process (type is `regular`).\n'),
+  "bonusID": zod.string().optional().describe('Bonus ID (external) of a promo bonus this win pays, for example `chips_500` or `cashback`.\nThis field is provided only for a bonus payout, which is a separate `regular` win after the\npurchase round. It is never sent together with `frID`. A bonus without money (an item) is sent\nwith the amount `\"0\"`.\n')
 })
 
 export const postWinResponseBalanceRegExp = new RegExp('^(0|[1-9]\\d\*)(\\.\\d+)?$');

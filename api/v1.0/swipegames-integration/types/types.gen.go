@@ -294,7 +294,7 @@ type RefundResponse struct {
 	TxID string `json:"txID"`
 }
 
-// WinRequest defines model for WinRequest.
+// WinRequest Example: {"amount":"100.10","roundID":"b78e42f8-2041-482d-9c4b-f2ca79fc75e3","sessionID":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","txID":"c27ccade-5a45-4157-a85f-7d023a689ea5","type":"regular"}
 type WinRequest struct {
 	// Amount The amount of the win in currency **main** units (note: not cents). Currency selected by the client during the
 	// `Create New Game` call. Fiat currencies carry **up to** 2 decimal places; some (e.g. `JPY`, `KRW`, `VND`) carry none.
@@ -303,6 +303,15 @@ type WinRequest struct {
 	//
 	// Example: 100.10
 	Amount string `json:"amount"`
+
+	// BonusID Bonus ID (external) of a promo bonus this win pays, for example `chips_500` or `cashback`.
+	// This field is provided only for a bonus payout, which is a separate `regular` win after the
+	// purchase round. It is never sent together with `frID`. A bonus without money (an item) is sent
+	// with the amount `"0"`.
+	//
+	//
+	// Example: chips_500
+	BonusID *string `json:"bonusID,omitempty"`
 
 	// FrID Free Rounds ID (external).
 	// This field is provided only for free rounds wins (where `type` is `free`),
