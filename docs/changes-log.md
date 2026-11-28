@@ -6,6 +6,10 @@ slug: /changes-log
 
 # Changes Log
 
+## 1.12.0
+
+- Integration: added the optional field `bonusID` to the [Win](/swipegames-integration/win) request. It names the promo bonus (for example `chips_500`) that a separate `regular` win pays. It is never sent with `frID`. (ENG-2957)
+
 ## 1.11.1
 
 - Integration: a [Bet](/swipegames-integration/bet) answered with any 5xx status (not only 500) or a timeout is refunded. A 4xx is never refunded. See [Retry and refund policies](/swipegames-integration#retry-and-refund-policies). (ENG-2768)

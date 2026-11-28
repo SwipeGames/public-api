@@ -45,7 +45,7 @@ There is a hard **5-second** limit on every reverse call. Keep handlers fast; de
 
 ## Free rounds
 
-During a free-rounds campaign, bet/win requests arrive with `type: "free"` and an `frID`. These free bets and free wins are for tracking only — do not change the player's balance for them. The only request that changes the balance is the bonus withdrawal: a `win` with `type: "regular"` and the `frID`, which carries the total Free Rounds bonus. If you do not run free-rounds campaigns, every win will carry `type: "regular"` (the only non-`free` value of a win), and a bet will carry `regular` or `purchase`.
+During a free-rounds campaign, bet/win requests arrive with `type: "free"` and an `frID`. These free bets and free wins are for tracking only — do not change the player's balance for them. The only request that changes the balance is the bonus withdrawal: a `win` with `type: "regular"` and the `frID`, which carries the total Free Rounds bonus. A promo bonus payout is also a `win` with `type: "regular"`: it carries `bonusID` (never with `frID`). A bonus without money (an item, for example `chips_500`) comes with the amount `"0"`: credit it by its `bonusID`. If you do not run free-rounds campaigns, every win will carry `type: "regular"` (the only non-`free` value of a win), and a bet will carry `regular` or `purchase`.
 
 Details: https://swipegames.github.io/public-api/free-rounds
 

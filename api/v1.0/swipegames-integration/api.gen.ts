@@ -6,7 +6,7 @@
 It is used to make reverse calls to integrations working through Public API.
 Please implement this API on your side to support Swipe Games Public API.
 
- * OpenAPI spec version: 1.11.1
+ * OpenAPI spec version: 1.12.0
  */
 /**
  * Error code. Could be handled by client accordingly (with localized message and related action).
@@ -197,6 +197,12 @@ This field is provided only for free rounds wins (where `type` is `free`),
 during bonus balance withdrawal process (type is `regular`).
  */
   frID?: string;
+  /** Bonus ID (external) of a promo bonus this win pays, for example `chips_500` or `cashback`.
+This field is provided only for a bonus payout, which is a separate `regular` win after the
+purchase round. It is never sent together with `frID`. A bonus without money (an item) is sent
+with the amount `"0"`.
+ */
+  bonusID?: string;
 }
 
 export interface WinResponse {
